@@ -22,29 +22,37 @@ namespace Blackjack {
         public static void GeneratePlayer(string input, int index) {
             
         }
+
         
         static void Main(string[] args) {
-
+            int playerCount = 0;
             bool selectingplayeramount = true;
             Console.WriteLine("Hello how may players are you: from 1 - 7");
 
             while (selectingplayeramount){
                 string playeroutput = Console.ReadLine() ?? "";
-                int playerCount = SelectPlayeramount(playeroutput);
+                playerCount = SelectPlayeramount(playeroutput);
                 if(playerCount != 0){
                     selectingplayeramount = false;
                 }
             }
+
+            int i = 0;
+            while (playerCount >  i){
+                Console.WriteLine("All players ready");
+                Console.WriteLine(i);
+                i ++;
+            }
+            Console.WriteLine("All players ready");
+
         }
+        
     }
 }
 
 
 
-//int i = 0;
-/*while (playerCount >  i){
-    Console.WriteLine(i);
-}*/
+
 
 
 

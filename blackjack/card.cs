@@ -1,7 +1,7 @@
 
 public class Card {
-    public string Name {get; set;}
-    public string Type {get; set;}
+    public string Suit {get; set;}
+    public string Rank {get; set;}
     public int Value {get; set;}
     
 }
