@@ -5,4 +5,8 @@ public class Players {
     public void Add(int id, Player player){
         playerlist.Add(id, player);
     }
+
+    /*public playerssetbets(){
+        
+    }*/
 }

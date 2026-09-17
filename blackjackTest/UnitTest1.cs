@@ -66,6 +66,4 @@ public class UnitTest1 {
         Assert.Equal(2, players.playerlist[2].PlayerNumber);
 
     }
-
-    
 }

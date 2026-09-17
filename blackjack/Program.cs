@@ -27,6 +27,23 @@ namespace Blackjack {
             return obj;
         }
 
+        public static Deck CreateDeck(int deckamount, string[] basedeck){
+            Deck blackjackdeck = new Deck();
+            string[] newdeck = {};
+            int i = 0;
+            while (deckamount > i) {
+                newdeck = newdeck.Concat(basedeck).ToArray();
+                i++;
+            }
+            
+            blackjackdeck.PlayingCards = newdeck;
+            
+            while (true) {
+                bool sucsess = blackjackdeck.createDeck();
+                if (sucsess) {return blackjackdeck;}
+            }
+        }
+
 
         static void Main(string[] args) {
             int playerCount = 0;
@@ -51,6 +68,18 @@ namespace Blackjack {
                 i ++;
             }
             Console.WriteLine("All players ready");
+            Console.WriteLine("now select deck size");
+            CreateDeck(1, new string[] {"2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"});
+
+            
+            bool GameRunning = true;
+
+            List<Card> dealerhand = new List<Card>();
+
+
+            /*while (GameRunning) {
+                
+            }*/
             
         }
         

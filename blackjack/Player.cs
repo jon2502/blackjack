@@ -6,7 +6,7 @@ public class Player {
 
     public int Chips {get; set;} = 100;
 
-        public int bet {get; set;} = 0;
+    public int bet {get; set;} = 0;
 
     public List<Card> hand = new List<Card>();
 }

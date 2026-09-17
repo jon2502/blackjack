@@ -1,12 +1,12 @@
 
 public class Deck {
-    public static List<Card> deck = new List<Card>();
+    public  List<Card> deck = new List<Card>();
 
-    static private string[] cardSuit = {"diamonds","clubs","hearts","spades "};
-    static private string[] PlayingCards = {"2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"};
+    public string[] CardSuit {get; set;} = {"Diamonds","Clubs","Hearts","Spades"};
+    public string[] PlayingCards {get; set;} = {"2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"};
 
-    static void createDeck(){
-        foreach(string Suit in cardSuit){
+    public bool createDeck(){
+        foreach(string Suit in CardSuit){
             foreach(string Card in PlayingCards) {
                 Card obj = new Card();
                 obj.Suit = Suit;
@@ -22,9 +22,10 @@ public class Deck {
                         try{
                             obj.Value = Int32.Parse(Card);
                         } catch {
-                            Console.WriteLine("error");
-                            //clear deck
-                            //try again
+                            Console.WriteLine("error parsing resorting to base deck");
+                            deck.Clear();
+                            PlayingCards = new string[] {"2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"};
+                            return false;
                         }
                     break;
                 }
@@ -32,11 +33,14 @@ public class Deck {
                 deck.Add(obj);
             }
         }
-        if(deck.Count == 32){
-            
+        Console.WriteLine(deck.Count);
+        if(deck.Count % 52 == 0){
+            return true;
         }else {
-            //clear
-            // try again
+            Console.WriteLine("error");
+            deck.Clear();
+            PlayingCards = new string[] {"2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"};
+            return false;
         }
         
     }
