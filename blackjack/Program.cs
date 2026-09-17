@@ -2,17 +2,32 @@
 
 namespace Blackjack {
     public class Program {
-        public static int SelectPlayeramount(string input) {
+        public static int SelectPlayerAmount(string input) {
             try {
                 int playerCount = Int32.Parse(input);
                 if( playerCount >= 1 && playerCount <= 7){
                     return playerCount;
                 } else {
-                    Console.WriteLine("Select a valid option: please try again");
+                    Console.WriteLine("Please select a number between 1 and 7");
                     return 0;
                 }
             } catch {
-                Console.WriteLine("please select a number between 1 and 7");
+                Console.WriteLine("Please select a number between 1 and 7");
+                return 0;
+            }
+        }
+
+        public static int SelectDeckAmount(string input) {
+             try {
+                int DeckCount = Int32.Parse(input);
+                if( DeckCount >= 1 && DeckCount <= 8){
+                    return DeckCount;
+                } else {
+                    Console.WriteLine("Please select a number between 1 and 8");
+                    return 0;
+                }
+            } catch {
+                Console.WriteLine("Please select a number between 1 and 8");
                 return 0;
             }
         }
@@ -23,7 +38,7 @@ namespace Blackjack {
             if (!string.IsNullOrWhiteSpace(input)){
                 obj.Name = input;
             }
-            obj.PlayerNumber = index;
+            obj.PlayerID = index;
             return obj;
         }
 
@@ -52,7 +67,7 @@ namespace Blackjack {
 
             while (selectingplayeramount){
                 string playeroutput = Console.ReadLine() ?? "";
-                playerCount = SelectPlayeramount(playeroutput);
+                playerCount = SelectPlayerAmount(playeroutput);
                 if(playerCount != 0){
                     selectingplayeramount = false;
                 }
@@ -63,16 +78,27 @@ namespace Blackjack {
             while (playerCount >  i){
                 Console.WriteLine($"player {i+1} select write your name");
                 string playerName = Console.ReadLine() ?? "";
-                Player playerinfo = GeneratePlayer(playerName,i);
-                players.Add(i, playerinfo);
+                Player playerinfo = GeneratePlayer(playerName, i);
+                players.Add(playerinfo);
                 i ++;
             }
             Console.WriteLine("All players ready");
             Console.WriteLine("now select deck size");
-            CreateDeck(1, new string[] {"2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"});
 
+            bool selectingDeckAmount = true;
+            while (selectingDeckAmount){
+                string deckcount = Console.ReadLine() ?? "";
+                int deckcountInt = SelectDeckAmount(deckcount);
+                if(deckcountInt != 0){selectingDeckAmount = false;}
+            }
             
-            bool GameRunning = true;
+
+            string [] basedeck = {"2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"};
+            CreateDeck(1, basedeck);
+
+            players.Playerssetbets();
+
+            //bool GameRunning = true;
 
             List<Card> dealerhand = new List<Card>();
 

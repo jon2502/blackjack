@@ -2,14 +2,13 @@ using Blackjack;
 
 namespace blackjackTest;
 
-public class UnitTest1 {
-    
+public class PlayerTest {
     [Theory]
     [InlineData("test")]
     [InlineData("-1")]
     [InlineData("8")]
     public void selectPlayeramountTestIncorrect(string value){
-        int result = Program.SelectPlayeramount(value);
+        int result = Program.SelectPlayerAmount(value);
         Assert.Equal(0, result);
     }
 
@@ -22,7 +21,7 @@ public class UnitTest1 {
     [InlineData("6")]
     [InlineData("7")]
     public void selectPlayeramountTestIntCorrect(string value) {
-        int result = Program.SelectPlayeramount(value);
+        int result = Program.SelectPlayerAmount(value);
         int intValue = Int32.Parse(value);
         Assert.Equal(intValue, result);
     }
@@ -50,20 +49,20 @@ public class UnitTest1 {
         testlist.Add(Program.GeneratePlayer("Aiden",0));
         testlist.Add(Program.GeneratePlayer("",1));
         testlist.Add(Program.GeneratePlayer("Jennifer",2));
+        
 
         foreach(Player player in testlist){
-            players.Add(player.PlayerNumber, player);
+            players.Add(player);
         }
     
-        // Then
         Assert.Equal("Aiden", players.playerlist[0].Name);
-        Assert.Equal(0, players.playerlist[0].PlayerNumber);
+        Assert.Equal(0, players.playerlist[0].PlayerID);
 
         Assert.Equal("Jhon Doe", players.playerlist[1].Name);
-        Assert.Equal(1, players.playerlist[1].PlayerNumber);
+        Assert.Equal(1, players.playerlist[1].PlayerID);
 
         Assert.Equal("Jennifer", players.playerlist[2].Name);
-        Assert.Equal(2, players.playerlist[2].PlayerNumber);
+        Assert.Equal(2, players.playerlist[2].PlayerID);
 
     }
 }

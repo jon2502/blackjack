@@ -3,6 +3,35 @@ using Blackjack;
 namespace blackjackTest;
 
 public class Decktest {
+    [Theory]
+    [InlineData("1")]
+    [InlineData("2")]
+    [InlineData("3")]
+    [InlineData("4")]
+    [InlineData("5")]
+    [InlineData("6")]
+    [InlineData("7")]
+    [InlineData("8")]
+
+    public void DeckSelectionTest(string input){
+        int result = Program.SelectDeckAmount(input);
+        int intValue = Int32.Parse(input);
+        Assert.Equal(intValue, result);
+
+    }
+
+    [Theory]
+    [InlineData("-1")]
+    [InlineData("0")]
+    [InlineData("9")]
+    [InlineData("10")]
+    [InlineData("test")]
+    public void DeckSelectionTestfail(string input){
+        int result = Program.SelectDeckAmount(input);
+        Assert.Equal(0, result);
+
+    }
+
     [Fact]
     public void DeckGenerationtest(){
         Deck testdeck = new Deck();
