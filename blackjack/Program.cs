@@ -5,9 +5,7 @@ namespace Blackjack {
         public static int SelectPlayeramount(string input) {
             try {
                 int playerCount = Int32.Parse(input);
-                Console.WriteLine(playerCount);
                 if( playerCount >= 1 && playerCount <= 7){
-                    Console.WriteLine(playerCount);
                     return playerCount;
                 } else {
                     Console.WriteLine("Select a valid option: please try again");
@@ -19,11 +17,17 @@ namespace Blackjack {
             }
         }
 
-        public static void GeneratePlayer(string input, int index) {
-            
+        public static Player GeneratePlayer(string input, int index) {
+
+            Player obj = new Player();
+            if (!string.IsNullOrWhiteSpace(input)){
+                obj.Name = input;
+            }
+            obj.PlayerNumber = index;
+            return obj;
         }
 
-        
+
         static void Main(string[] args) {
             int playerCount = 0;
             bool selectingplayeramount = true;
@@ -38,13 +42,16 @@ namespace Blackjack {
             }
 
             int i = 0;
+            Players players = new Players();
             while (playerCount >  i){
-                Console.WriteLine("All players ready");
-                Console.WriteLine(i);
+                Console.WriteLine($"player {i+1} select write your name");
+                string playerName = Console.ReadLine() ?? "";
+                Player playerinfo = GeneratePlayer(playerName,i);
+                players.Add(i, playerinfo);
                 i ++;
             }
             Console.WriteLine("All players ready");
-
+            
         }
         
     }
