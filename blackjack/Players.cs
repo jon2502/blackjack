@@ -6,25 +6,10 @@ public class Players {
         playerlist.Add(player);
     }
 
-    public void Playerssetbets(){
-        foreach (Player player in playerlist) {
-            Console.WriteLine($"{player.Name} place your bet");
-            bool betting = true;
-            while (betting) {
-                string amount = Console.ReadLine() ?? "";
-                try {
-                    int Intamount = Int32.Parse(amount);
-                    if (Intamount > player.Chips) {
-                        Console.WriteLine($"{player.Name} balance to low");
-                    } else {
-                        player.Chips -= Intamount;
-                        player.Bet += Intamount;
-                        betting = false;
-                    }
-                } catch {
-                    Console.WriteLine($"{player.Name} please select a valid full number");
-                }
-            }
+    public void AllPlayersLose(){
+        foreach(Player player in playerlist) {
+            player.Bet = 0;
+            player.State = false;
         }
     }
 }

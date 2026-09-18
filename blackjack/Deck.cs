@@ -1,14 +1,29 @@
+using System;
+using System.Collections;
+using System.Linq;
+
+
+
 
 public class Deck {
     public  List<Card> deck = new List<Card>();
+
+    public int Decksize {get; set;} = 1;
 
     private static readonly string [] CardSuit = {"♦","♣","♥","♠"};
 
     public string[] PlayingCards {get; set;} = {"2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"};
 
-    private static readonly string [] DeafultPlayingCards= {"2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"};
+    private static readonly string [] DefaultPlayingCards= {"2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"};
 
     public bool CreateDeck(){
+        if (Decksize > 1) {
+                int i = 1;
+                while (Decksize > i) {
+                PlayingCards = PlayingCards.Concat(PlayingCards).ToArray();
+                i++;
+            }
+        }
         foreach(string Suit in CardSuit){
             foreach(string Card in PlayingCards) {
                 Card obj = new Card();
@@ -29,27 +44,28 @@ public class Deck {
                             }else {
                                 Console.WriteLine("ERROR Value under or outside accepted parameters");
                                 deck.Clear();
-                                PlayingCards = DeafultPlayingCards;
+                                PlayingCards = DefaultPlayingCards;
                                 return false;
                             }
                         } catch {
                             Console.WriteLine("ERROR parsing resorting to base deck");
                             deck.Clear();
-                            PlayingCards = DeafultPlayingCards;
+                            PlayingCards = DefaultPlayingCards;
                             return false;
                         }
                     break;
                 }
                 deck.Add(obj);
             }
+    
         }
-        if(deck.Count % 52 == 0){
+        if(deck.Count / Decksize == 52){
             deck = deck.Shuffle().ToList();
             return true;
         }else {
             Console.WriteLine("ERROR Incorrect decksize, resorting to base deck");
             deck.Clear();
-            PlayingCards = DeafultPlayingCards;
+            PlayingCards = DefaultPlayingCards;
             return false;
         }
         

@@ -2,7 +2,7 @@ using Blackjack;
 
 namespace blackjackTest;
 
-public class Decktest {
+public class DeckTest {
     [Theory]
     [InlineData("1")]
     [InlineData("2")]
@@ -14,10 +14,13 @@ public class Decktest {
     [InlineData("8")]
 
     public void DeckSelectionTest(string input){
-        int result = Program.SelectDeckAmount(input);
-        int intValue = Int32.Parse(input);
-        Assert.Equal(intValue, result);
+        Deck blackjackdeck = new Deck();
 
+        bool result = Program.SelectDeckAmount(input, blackjackdeck);
+        int intValue = Int32.Parse(input);
+        
+        Assert.True(result);
+        Assert.Equal(intValue, blackjackdeck.Decksize);
     }
 
     [Theory]
@@ -27,8 +30,10 @@ public class Decktest {
     [InlineData("10")]
     [InlineData("test")]
     public void DeckSelectionTestfail(string input){
-        int result = Program.SelectDeckAmount(input);
-        Assert.Equal(0, result);
+        Deck blackjackdeck = new Deck();
+
+        bool result = Program.SelectDeckAmount(input, blackjackdeck);
+        Assert.False(result);
 
     }
 
@@ -54,8 +59,12 @@ public class Decktest {
 
     [Fact]
     public void DeckGenerationtesparsefail(){
-        string[] testList = {"2", "3", "4", "test", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"};
-        Deck testdeck = Program.CreateDeck(1, testList);
+        Deck testdeck = new Deck();
+        testdeck.PlayingCards  = new string[]  {"2", "3", "4", "test", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"};
+        bool result = testdeck.CreateDeck();
+        Assert.False(result);
+
+        testdeck = Program.Generating(testdeck);
         Assert.Contains(testdeck.deck, card => card.Rank == "2");
         Assert.Contains(testdeck.deck, card => card.Rank == "3");
         Assert.Contains(testdeck.deck, card => card.Rank == "4");
@@ -70,8 +79,12 @@ public class Decktest {
     [InlineData("11")]
     [InlineData("12")]
     public void DeckGenerationValueOverandUnder(string value){
-        string[] testList = {value, "3", "4", "test", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"};
-        Deck testdeck = Program.CreateDeck(1, testList);
+        Deck testdeck = new Deck();
+        testdeck.PlayingCards = new  string[] {value, "3", "4", "test", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"};
+        bool result = testdeck.CreateDeck();
+        Assert.False(result);
+
+        testdeck = Program.Generating(testdeck);
         Assert.Contains(testdeck.deck, card => card.Rank == "2");
         Assert.DoesNotContain(testdeck.deck, card => card.Rank == value);
         Assert.Equal(52, testdeck.deck.Count);
@@ -79,8 +92,9 @@ public class Decktest {
 
     [Fact]
     public void TestingtwoDecks() {
-        string[] testList = {"2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"};
-        Deck testdeck = Program.CreateDeck(2, testList);
+        Deck testdeck = new Deck();
+        testdeck.Decksize = 2;
+        testdeck.CreateDeck();
         Assert.Equal(104, testdeck.deck.Count);
     }
 }

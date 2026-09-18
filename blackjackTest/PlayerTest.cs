@@ -1,8 +1,10 @@
 using Blackjack;
+using Xunit.Abstractions;
 
 namespace blackjackTest;
 
 public class PlayerTest {
+
     [Theory]
     [InlineData("test")]
     [InlineData("-1")]
@@ -80,11 +82,50 @@ public class PlayerTest {
 
         Deck testdeck = new Deck();
         bool result = testdeck.CreateDeck();
+        Dealer dealer = new Dealer();
 
-        Program.GetStartingHands(players, testdeck);
+        Program.GetStartingHands(players, dealer, testdeck);
 
-        Assert.Equal(48, testdeck.deck.Count);
+        Assert.Equal(46, testdeck.deck.Count);
         Assert.Equal(2, players.playerlist[0].Hand.Count);
         Assert.Equal(2, players.playerlist[1].Hand.Count);
+        Assert.Equal(2, dealer.Hand.Count);
     }
+
+    [Fact]
+    public void BetTest() {
+        Player JhoneDoe = new Player();
+        Player Aiden = new Player();
+        Player Jane = new Player();
+        
+        JhoneDoe.PlayerID = 0;
+        
+        Aiden.PlayerID = 1;
+        Aiden.Name = "Aiden";
+
+        Jane.PlayerID = 2;
+        Jane.Name = "Jane";
+
+        bool JhondoeResult = JhoneDoe.SetBet("tets");
+        bool AideneResult = Aiden.SetBet("150");
+        bool JaneResult = Jane.SetBet("20");
+
+        Assert.False(JhondoeResult);
+        Assert.False(AideneResult);
+        Assert.True(JaneResult);
+
+        Assert.Equal(0,JhoneDoe.Bet);
+        Assert.Equal(0,Aiden.Bet);
+        Assert.Equal(20,Jane.Bet);
+
+        Assert.Equal(100,JhoneDoe.Chips);
+        Assert.Equal(100,Aiden.Chips);
+        Assert.Equal(80,Jane.Chips);
+    }
+
+    [Fact]
+    public void AllPlayersloseTest() {
+        
+    }
+
 }
