@@ -8,7 +8,7 @@ public class Deck {
 
     private static readonly string [] DeafultPlayingCards= {"2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"};
 
-    public bool createDeck(){
+    public bool CreateDeck(){
         foreach(string Suit in CardSuit){
             foreach(string Card in PlayingCards) {
                 Card obj = new Card();
@@ -24,7 +24,6 @@ public class Deck {
                     default:
                         try{
                             int value = Int32.Parse(Card);
-                            Console.WriteLine(value);
                             if(value >= 1 && value <= 11) {
                                 obj.Value = value;
                             }else {
@@ -44,8 +43,8 @@ public class Deck {
                 deck.Add(obj);
             }
         }
-        Console.WriteLine(deck.Count);
         if(deck.Count % 52 == 0){
+            deck = deck.Shuffle().ToList();
             return true;
         }else {
             Console.WriteLine("ERROR Incorrect decksize, resorting to base deck");
@@ -54,5 +53,12 @@ public class Deck {
             return false;
         }
         
+    }
+
+    public Card DrawCard(){
+        Card card = deck.First();
+        deck.RemoveAt(0);
+        return card;
+        //function for removing card
     }
 }

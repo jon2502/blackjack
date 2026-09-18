@@ -25,8 +25,6 @@ public class Players {
                     Console.WriteLine($"{player.Name} please select a valid full number");
                 }
             }
-
-            
         }
     }
 }

@@ -41,7 +41,7 @@ public class PlayerTest {
     }
 
     [Fact]
-    public void playerDictionarytest()
+    public void playerListtest()
     {
         Players players = new Players();
         List<Player> testlist = new List<Player>();
@@ -64,5 +64,27 @@ public class PlayerTest {
         Assert.Equal("Jennifer", players.playerlist[2].Name);
         Assert.Equal(2, players.playerlist[2].PlayerID);
 
+    }
+
+    [Fact]
+    public void StartingHandTest() {
+        Players players = new Players();
+        List<Player> testlist = new List<Player>();
+
+        testlist.Add(Program.GeneratePlayer("Aiden",0));
+        testlist.Add(Program.GeneratePlayer("",1));
+
+        foreach(Player player in testlist){
+            players.Add(player);
+        }
+
+        Deck testdeck = new Deck();
+        bool result = testdeck.CreateDeck();
+
+        Program.GetStartingHands(players, testdeck);
+
+        Assert.Equal(48, testdeck.deck.Count);
+        Assert.Equal(2, players.playerlist[0].Hand.Count);
+        Assert.Equal(2, players.playerlist[1].Hand.Count);
     }
 }

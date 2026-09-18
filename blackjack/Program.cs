@@ -54,58 +54,87 @@ namespace Blackjack {
             blackjackdeck.PlayingCards = newdeck;
             
             while (true) {
-                bool sucsess = blackjackdeck.createDeck();
-                if (sucsess) {return blackjackdeck;}
+                bool sucsess = blackjackdeck.CreateDeck();
+                if (sucsess) {
+                    return blackjackdeck;
+                    }
             }
         }
 
-
-        static void Main(string[] args) {
-            int playerCount = 0;
-            bool selectingplayeramount = true;
-            Console.WriteLine("Hello how may players are you: from 1 - 7");
-
-            while (selectingplayeramount){
-                string playeroutput = Console.ReadLine() ?? "";
-                playerCount = SelectPlayerAmount(playeroutput);
-                if(playerCount != 0){
-                    selectingplayeramount = false;
+        public static void GetStartingHands(Players players, Deck blackjackdeck){
+            int i = 0;
+            while(2 >= i) {
+                foreach(Player player in players.playerlist){
+                    Card card = blackjackdeck.DrawCard();
+                    player.DrawACard(card);
+                    i++;
                 }
             }
+        }
 
-            int i = 0;
-            Players players = new Players();
-            while (playerCount >  i){
-                Console.WriteLine($"player {i+1} select write your name");
-                string playerName = Console.ReadLine() ?? "";
-                Player playerinfo = GeneratePlayer(playerName, i);
-                players.Add(playerinfo);
-                i ++;
-            }
-            Console.WriteLine("All players ready");
-            Console.WriteLine("now select deck size");
+        public static Players Setup() {
+             int playerCount = 0;
+                bool selectingplayeramount = true;
+                Console.WriteLine("Hello how may players are you: from 1 - 7");
 
-            bool selectingDeckAmount = true;
-            while (selectingDeckAmount){
-                string deckcount = Console.ReadLine() ?? "";
-                int deckcountInt = SelectDeckAmount(deckcount);
-                if(deckcountInt != 0){selectingDeckAmount = false;}
-            }
-            
-            string [] basedeck = {"2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"};
-            CreateDeck(1, basedeck);
+                while (selectingplayeramount){
+                    string playeroutput = Console.ReadLine() ?? "";
+                    playerCount = SelectPlayerAmount(playeroutput);
+                    if(playerCount != 0){
+                        selectingplayeramount = false;
+                    }
+                }
 
-            players.Playerssetbets();
+                int i = 0;
+                Players players = new Players();
+                while (playerCount >  i){
+                    Console.WriteLine($"player {i+1} select write your name");
+                    string playerName = Console.ReadLine() ?? "";
+                    Player playerinfo = GeneratePlayer(playerName, i);
+                    players.Add(playerinfo);
+                    i ++;
+                }
+                return players;
+        }
 
-            //bool GameRunning = true;
+        /*public bool TurnSequence() {
+            return true;
+        }
 
-            List<Card> dealerhand = new List<Card>();
+        static public int testfuntion() {
+         
+        }*/
 
+        static void Main(string[] args) {
+            Players players = Setup();
 
-            /*while (GameRunning) {
+            bool playing = true;
+            while (playing) {
+                Console.WriteLine("select deck size");
+
+                bool selectingDeckAmount = true;
+                while (selectingDeckAmount){
+                    string deckcount = Console.ReadLine() ?? "";
+                    int deckcountInt = SelectDeckAmount(deckcount);
+                    if(deckcountInt != 0){selectingDeckAmount = false;}
+                }
                 
-            }*/
-            
+                string [] basedeck = {"2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"};
+                Deck blackjackdeck = CreateDeck(1, basedeck);
+
+                players.Playerssetbets();
+
+                //bool GameRunning = true;
+
+                List<Card> dealerhand = new List<Card>();
+                GetStartingHands(players, blackjackdeck);
+
+                //TurnSequence();
+
+                Console.WriteLine("game is over");
+                Console.WriteLine("play another round: y");
+                Console.WriteLine("stop playing: n");
+            }
         }
         
     }

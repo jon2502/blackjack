@@ -35,8 +35,11 @@ public class Decktest {
     [Fact]
     public void DeckGenerationtest(){
         Deck testdeck = new Deck();
-        bool result = testdeck.createDeck();
-        Assert.Equal("♦", testdeck.deck[1].Suit);
+        bool result = testdeck.CreateDeck();
+        Assert.Contains(testdeck.deck, card => card.Suit == "♦");
+        Assert.Contains(testdeck.deck, card => card.Suit == "♣");
+        Assert.Contains(testdeck.deck, card => card.Suit == "♥");
+        Assert.Contains(testdeck.deck, card => card.Suit == "♠");
         Assert.True(result);
     }
 
@@ -44,19 +47,21 @@ public class Decktest {
     public void DeckGenerationtestfail(){
         Deck testdeck = new Deck();
         testdeck.PlayingCards = new string[] {"3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"};
-        bool result = testdeck.createDeck();
+        bool result = testdeck.CreateDeck();
         Assert.Empty(testdeck.deck);
         Assert.False(result);
     }
 
     [Fact]
     public void DeckGenerationtesparsefail(){
-        string[] testdeck = {"2", "3", "4", "test", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"};
-        Deck result = Program.CreateDeck(1, testdeck);
-        Assert.Equal("2", result.deck[0].Rank);
-        Assert.Equal("3", result.deck[1].Rank);
-        Assert.Equal("4", result.deck[2].Rank);
-        Assert.Equal(52, result.deck.Count);
+        string[] testList = {"2", "3", "4", "test", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"};
+        Deck testdeck = Program.CreateDeck(1, testList);
+        Assert.Contains(testdeck.deck, card => card.Rank == "2");
+        Assert.Contains(testdeck.deck, card => card.Rank == "3");
+        Assert.Contains(testdeck.deck, card => card.Rank == "4");
+        Assert.Contains(testdeck.deck, card => card.Value == 11);
+        Assert.Contains(testdeck.deck, card => card.Suit == "♦");
+        Assert.Equal(52, testdeck.deck.Count);
     }
 
     [Theory]
@@ -65,18 +70,17 @@ public class Decktest {
     [InlineData("11")]
     [InlineData("12")]
     public void DeckGenerationValueOverandUnder(string value){
-        string[] testdeck = {value, "3", "4", "test", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"};
-        Deck result = Program.CreateDeck(1, testdeck);
-        Assert.Equal("2", result.deck[0].Rank);
-        Assert.NotEqual(value, result.deck[0].Rank);
-        Assert.Equal(52, result.deck.Count);
+        string[] testList = {value, "3", "4", "test", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"};
+        Deck testdeck = Program.CreateDeck(1, testList);
+        Assert.Contains(testdeck.deck, card => card.Rank == "2");
+        Assert.DoesNotContain(testdeck.deck, card => card.Rank == value);
+        Assert.Equal(52, testdeck.deck.Count);
     }
 
     [Fact]
     public void TestingtwoDecks() {
-        string[] testdeck = {"2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"};
-        Deck result = Program.CreateDeck(2, testdeck);
-        Assert.Equal("♦", result.deck[0].Suit);
-        Assert.Equal(104, result.deck.Count);
+        string[] testList = {"2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"};
+        Deck testdeck = Program.CreateDeck(2, testList);
+        Assert.Equal(104, testdeck.deck.Count);
     }
 }
