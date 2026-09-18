@@ -2,8 +2,11 @@
 public class Deck {
     public  List<Card> deck = new List<Card>();
 
-    public string[] CardSuit {get; set;} = {"Diamonds","Clubs","Hearts","Spades"};
+    private static readonly string [] CardSuit = {"♦","♣","♥","♠"};
+
     public string[] PlayingCards {get; set;} = {"2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"};
+
+    private static readonly string [] DeafultPlayingCards= {"2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"};
 
     public bool createDeck(){
         foreach(string Suit in CardSuit){
@@ -20,16 +23,24 @@ public class Deck {
                     break;
                     default:
                         try{
-                            obj.Value = Int32.Parse(Card);
+                            int value = Int32.Parse(Card);
+                            Console.WriteLine(value);
+                            if(value >= 1 && value <= 11) {
+                                obj.Value = value;
+                            }else {
+                                Console.WriteLine("ERROR Value under or outside accepted parameters");
+                                deck.Clear();
+                                PlayingCards = DeafultPlayingCards;
+                                return false;
+                            }
                         } catch {
-                            Console.WriteLine("error parsing resorting to base deck");
+                            Console.WriteLine("ERROR parsing resorting to base deck");
                             deck.Clear();
-                            PlayingCards = new string[] {"2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"};
+                            PlayingCards = DeafultPlayingCards;
                             return false;
                         }
                     break;
                 }
-            
                 deck.Add(obj);
             }
         }
@@ -37,9 +48,9 @@ public class Deck {
         if(deck.Count % 52 == 0){
             return true;
         }else {
-            Console.WriteLine("error");
+            Console.WriteLine("ERROR Incorrect decksize, resorting to base deck");
             deck.Clear();
-            PlayingCards = new string[] {"2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"};
+            PlayingCards = DeafultPlayingCards;
             return false;
         }
         

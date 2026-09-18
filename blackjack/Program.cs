@@ -92,7 +92,6 @@ namespace Blackjack {
                 if(deckcountInt != 0){selectingDeckAmount = false;}
             }
             
-
             string [] basedeck = {"2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"};
             CreateDeck(1, basedeck);
 
