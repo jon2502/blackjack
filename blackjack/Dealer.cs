@@ -1,5 +1,5 @@
 public class Dealer : Participants {
-        
+        virtual
     public void DealerCheck(Players players) {
         if(Hand[0].Rank == "A" && Hand.Count == 2) {
             Console.WriteLine($"{Name} has an Ace would you like you place insurance?");

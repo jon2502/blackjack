@@ -9,7 +9,7 @@ public class Players {
     public void AllPlayersLose(){
         foreach(Player player in playerlist) {
             player.Bet = 0;
-            player.State = false;
+            player.InGame = false;
         }
     }
 }

@@ -45,7 +45,7 @@ public class DealerTest {
         Assert.False(result);
         dealer.DealerCheck(players);
         foreach (Player player in players.playerlist){
-            Assert.True(player.State);
+            Assert.True(player.InGame);
             Assert.NotEqual(0, player.Bet);
         }
         dealer.Hand.Clear();
@@ -65,7 +65,7 @@ public class DealerTest {
         bool newresult = dealer.DealerBlackjack();
         Assert.True(newresult);
         foreach (Player player in players.playerlist){
-            Assert.False(player.State);
+            Assert.False(player.InGame);
             Assert.Equal(0, player.Bet);
         }
     }

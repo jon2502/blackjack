@@ -59,31 +59,6 @@ namespace Blackjack {
             }
         }
 
-        public static Players Setup() {
-             int playerCount = 0;
-                bool selectingplayeramount = true;
-                Console.WriteLine("Hello how may players are you: from 1 - 7");
-
-                while (selectingplayeramount){
-                    string playeroutput = Console.ReadLine() ?? "";
-                    playerCount = SelectPlayerAmount(playeroutput);
-                    if(playerCount != 0){
-                        selectingplayeramount = false;
-                    }
-                }
-
-                int i = 0;
-                Players players = new Players();
-                while (playerCount >  i){
-                    Console.WriteLine($"player {i+1} select write your name");
-                    string playerName = Console.ReadLine() ?? "";
-                    Player playerinfo = GeneratePlayer(playerName, i);
-                    players.Add(playerinfo);
-                    i ++;
-                }
-                return players;
-        }
-
         public static Deck Generating(Deck blackjackdeck) {
             while (true) {
                 bool result = blackjackdeck.CreateDeck();
@@ -93,7 +68,27 @@ namespace Blackjack {
 
 
         static void Main(string[] args) {
-            Players players = Setup();
+            int playerCount = 0;
+            bool selectingplayeramount = true;
+            Console.WriteLine("Hello how may players are you: from 1 - 7");
+
+            while (selectingplayeramount){
+                string playeroutput = Console.ReadLine() ?? "";
+                playerCount = SelectPlayerAmount(playeroutput);
+                if(playerCount != 0){
+                    selectingplayeramount = false;
+                }
+            }
+
+            int i = 0;
+            Players players = new Players();
+            while (playerCount >  i){
+                Console.WriteLine($"player {i+1} select write your name");
+                string playerName = Console.ReadLine() ?? "";
+                Player playerinfo = GeneratePlayer(playerName, i);
+                players.Add(playerinfo);
+                i ++;
+            }
 
             //bool playing = true;
 

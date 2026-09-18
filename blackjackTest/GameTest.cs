@@ -49,10 +49,10 @@ public class GameTest {
         Aiden.PlayerBlackjack();
         Jane.PlayerBlackjack();
 
-        Assert.True(Aiden.State);
+        Assert.True(Aiden.InGame);
         Assert.Equal(0, Aiden.Retuns);
 
-        Assert.False(Jane.State);
+        Assert.False(Jane.InGame);
         Assert.Equal(30, Jane.Retuns);
 
     }
