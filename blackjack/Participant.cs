@@ -1,4 +1,4 @@
-public class Participants {
+public class Participant {
     public string Name {get; set;} = "Jhon Doe";
 
     public List<Card> Hand = new List<Card>();
