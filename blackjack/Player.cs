@@ -31,8 +31,12 @@ public class Player : Participant {
     public bool SetInsurance(string value) {
         try {
             int Intamount = Int32.Parse(value);
+            
             if (Intamount > Chips) {
                 Console.WriteLine($"{Name} balance to low");
+                return false;
+            } else if (Intamount> Bet / 2) {
+                Console.WriteLine($"{Name} Inssurance can max be half your bet");
                 return false;
             } else {
                 Chips -= Intamount;

@@ -93,23 +93,32 @@ public class PlayerTest {
     [Fact]
     public void InsuranceTest() {
         Game game = new Game();
-        string [] PlayerNames = {"", "Aiden", "Jane"};
+        string [] PlayerNames = {"", "Aiden", "Jane", "jack"};
         game.SetPlayerNames(PlayerNames);
+        game.players[2].SetBet("40");
+        game.players[3].SetBet("20");
+
 
         bool JhondoeResult = game.players[0].SetInsurance("tets");
         bool AideneResult = game.players[1].SetInsurance("150");
         bool JaneResult = game.players[2].SetInsurance("20");
+        bool JackResult =  game.players[3].SetInsurance("20");
+
 
         Assert.False(JhondoeResult);
         Assert.False(AideneResult);
         Assert.True(JaneResult);
+        Assert.False(JackResult);
 
         Assert.Equal(0, game.players[0].Insurance);
         Assert.Equal(0, game.players[1].Insurance);
         Assert.Equal(20, game.players[2].Insurance);
+        Assert.Equal(0, game.players[3].Insurance);
 
         Assert.Equal(100, game.players[0].Chips);
         Assert.Equal(100, game.players[1].Chips);
-        Assert.Equal(80, game.players[2].Chips);
+        Assert.Equal(40, game.players[2].Chips);
+        Assert.Equal(80, game.players[3].Chips);
+
     }
 }

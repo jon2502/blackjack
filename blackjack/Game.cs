@@ -48,27 +48,25 @@ public class Game {
             }
             Card Dealercard = blackjackdeck.DrawCard();
             dealer.DrawACard(Dealercard);
-            Insurrance();
             i++;
         }
     }
 
     public void Insurrance(){
-          if(dealer.Hand[0].Rank == "A" && dealer.Hand.Count == 2) {
-            Console.WriteLine($"{dealer.Name} has an Ace would you like you place insurance?");
-            //todo
-            bool result = dealer.DealerBlackjack();
-            if (result) {
-                AllPlayersLose();
-            }
-        }
-    }
-
-    public void AllPlayersLose(){
-        foreach(Player player in players) {
+        bool result = dealer.DealerBlackjack();
+        if (result) {
+            foreach (Player player in players) {
             player.Bet = 0;
             player.InGame = false;
+            player.Retuns = player.Insurance * 2;
+            player.Insurance = 0;
         }
+        } else {
+            foreach (Player player in players) {
+                player.Insurance = 0;
+            }
+        }
+        
     }
 
 }

@@ -43,11 +43,16 @@ namespace Blackjack {
 
                 }
             }
-
-            game.GetStartingHands(blackjackdeck);
+            
             foreach (Player player in game.players) {
                 player.Blackjack();
             }
+
+            game.GetStartingHands(blackjackdeck);
+            if(game.dealer.Hand[0].Rank == "A" && game.dealer.Hand.Count == 2){
+                Console.WriteLine($"{game.dealer.Name} has an Ace would you like you place insurance?");
+            }
+
 
             //TurnSequence();
 
