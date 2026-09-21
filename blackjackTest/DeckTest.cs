@@ -105,7 +105,7 @@ public class DeckTest {
         testdeck.DeckSize = 1;
 
         Game game = new Game();
-        string [] PlayerNames = {""};
+        List<string> PlayerNames = new List<string> {""};
         game.SetPlayerNames(PlayerNames);
 
         for (int i = 0; i < 100; i++){

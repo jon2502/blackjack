@@ -11,16 +11,16 @@ namespace Blackjack {
                 bool sucsess = game.SetPlayerCount(playeroutput);
                 if(sucsess == true){break;}
             }
-
+            
             int i = 0;
-            string [] NameList = {};
+            List<string> NameList = new List<string>();
             while (game.PlayerCount >  i){
                 Console.WriteLine($"player {i+1} select write your name");
                 string playerName = Console.ReadLine() ?? "";
-                NameList.Append(playerName);
+                NameList.Add(playerName);
                 i ++;
             }
-
+            Console.WriteLine($"Namelist is {NameList.Count()} long");
             game.SetPlayerNames(NameList);
             //bool playing = true;
 
@@ -34,6 +34,7 @@ namespace Blackjack {
             }
             blackjackdeck.CreateDeck();
             
+            Console.WriteLine($"{game.players[0].Name}");
             foreach (Player player in game.players) {
                 Console.WriteLine($"{player.Name} place your bet");
                 while (true) {
@@ -43,44 +44,51 @@ namespace Blackjack {
 
                 }
             }
-            foreach (Player player in game.players){
-                player.Hand.Add(new List<Card>());
-            }
-            game.dealer.Hand.Add(new List<Card>());
-            
+            Console.WriteLine("finished");
+
             game.GetStartingHands(blackjackdeck);
 
             foreach (Player player in game.players) {
                 player.Blackjack();
             }
 
-            if(game.dealer.Hand[0][0].Rank == "A" && game.dealer.Hand.Count == 2){
+            if(game.dealer.Hand[0][0].Rank == "A" && game.dealer.Hand[0].Count == 2){
                 Console.WriteLine($"{game.dealer.Name} has an Ace would you like you place insurance?");
                 foreach (Player player in game.players) {
-                    Console.WriteLine($"{player.Name} would you like to place insurance or surrender");
-                    Console.WriteLine("i : place insurance");
-                    Console.WriteLine("s : surrender");
-                    Console.WriteLine("anyother key : continue");
-                    while (true) {
-                        string output = Console.ReadLine() ?? "";
-                        if (output == "y" || output == "n"){
-                            if(output == "y") {
-                                Console.WriteLine($"{player.Name} How much would you like to place into insurance?");
-                                while (true) {
-                                    string input = Console.ReadLine() ?? "";
-                                    bool sucsess = player.SetInsurance(input);
-                                    if(sucsess){break;}
-                                }
-                            }
-                            break;
+                    for (int handcount = 0; handcount < player.Hand.Count; handcount++) {
+                        if(player.Hand.Count > 1)
+                        {
+                            Console.WriteLine($"{player.Name} would you like to place insurance on hand {handcount} with a bet of {player.Bet[i]}");
                         } else {
-                            Console.WriteLine($"{player.Name} please select a vaild value");
+                            Console.WriteLine($"{player.Name} would you like to place insurance");
+                        }
+                        Console.WriteLine("i : place insurance");
+                        Console.WriteLine("anyother key : continue");
+                        while (true) {
+                            string output = Console.ReadLine() ?? "";
+                            if (output == "y" || output == "n"){
+                                if(output == "y") {
+                                    Console.WriteLine($"{player.Name} How much would you like to place into insurance?");
+                                    while (true) {
+                                        string input = Console.ReadLine() ?? "";
+                                        bool sucsess = player.SetInsurance(input, handcount);
+                                        if(sucsess){break;}
+                                    }
+                                }
+                                break;
+                            } else {
+                                Console.WriteLine($"{player.Name} please select a vaild value");
+                            }
                         }
                     }
-
                 }
             }
-
+            game.dealer.DealerBlackjack();
+            while (true){
+                Card card = blackjackdeck.DrawCard();
+                bool result = game.dealer.Dealerhit(card);
+                if(result == true){break;}
+            }
             //Split
             /*
             foreach(Player player in game.players){
@@ -93,14 +101,17 @@ namespace Blackjack {
                 }
             }*/
 
+            while(game.Playing == true) {
+        
 
+                game.CheckIfGamesOver();
+            }
             //TurnSequence();
 
             //Console.WriteLine("game is over");
             //Console.WriteLine("play another round: y");
             //Console.WriteLine("stop playing: n");
                 
-            
         }
     }
 }

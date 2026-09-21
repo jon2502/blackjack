@@ -33,7 +33,7 @@ public class PlayerTest {
     public void playerListtest()
     {
         Game game = new Game();
-        string [] PlayerNames = {"Aiden", "", "Jennifer"};
+         List<string> PlayerNames = new List<string> {"Aiden", "", "Jennifer"};
         
         game.SetPlayerNames(PlayerNames);
     
@@ -51,7 +51,7 @@ public class PlayerTest {
     [Fact]
     public void StartingHandTest() {
         Game game = new Game();
-        string [] PlayerNames = {"Aiden", "Jennifer"};
+         List<string> PlayerNames = new List<string> {"Aiden", "Jennifer"};
         game.SetPlayerNames(PlayerNames);
 
         Deck testdeck = new Deck();
@@ -68,7 +68,7 @@ public class PlayerTest {
     [Fact]
     public void SetBetTest() {
         Game game = new Game();
-        string [] PlayerNames = {"", "Aiden", "Jane"};
+        List<string> PlayerNames = new List<string> {"", "Aiden", "Jane"};
         game.SetPlayerNames(PlayerNames);
 
 
@@ -81,9 +81,9 @@ public class PlayerTest {
         Assert.False(AideneResult);
         Assert.True(JaneResult);
 
-        Assert.Equal(0, game.players[0].Bet);
-        Assert.Equal(0, game.players[1].Bet);
-        Assert.Equal(20, game.players[2].Bet);
+        Assert.Empty(game.players[0].Bet);
+        Assert.Empty(game.players[1].Bet);
+        Assert.Equal(20, game.players[2].Bet[0]);
 
         Assert.Equal(100, game.players[0].Chips);
         Assert.Equal(100, game.players[1].Chips);
@@ -93,17 +93,17 @@ public class PlayerTest {
     [Fact]
     public void SetInsuranceTest() {
         Game game = new Game();
-        string [] PlayerNames = {"", "Aiden", "Jane", "jack", "Sofia"};
+        List<string> PlayerNames = new List<string> {"", "Aiden", "Jane", "jack", "Sofia"};
         game.SetPlayerNames(PlayerNames);
         game.players[2].SetBet("40");
         game.players[3].SetBet("20");
         game.players[4].SetBet("100");
 
-        bool JhondoeResult = game.players[0].SetInsurance("tets");
-        bool AideneResult = game.players[1].SetInsurance("150");
-        bool JaneResult = game.players[2].SetInsurance("20");
-        bool JackResult =  game.players[3].SetInsurance("20");
-        bool SofiaResult =  game.players[4].SetInsurance("0");
+        bool JhondoeResult = game.players[0].SetInsurance("tets", 0);
+        bool AideneResult = game.players[1].SetInsurance("150", 0);
+        bool JaneResult = game.players[2].SetInsurance("20", 0);
+        bool JackResult =  game.players[3].SetInsurance("20", 0);
+        bool SofiaResult =  game.players[4].SetInsurance("0", 0);
 
 
 
@@ -113,11 +113,11 @@ public class PlayerTest {
         Assert.False(JackResult);
         Assert.True(SofiaResult);
 
-        Assert.Equal(0, game.players[0].Insurance);
-        Assert.Equal(0, game.players[1].Insurance);
-        Assert.Equal(20, game.players[2].Insurance);
-        Assert.Equal(0, game.players[3].Insurance);
-        Assert.Equal(0, game.players[4].Insurance);
+        Assert.Empty(game.players[0].Insurance);
+        Assert.Empty(game.players[1].Insurance);
+        Assert.Equal(20, game.players[2].Insurance[0]);
+        Assert.Empty(game.players[3].Insurance);
+        Assert.Equal(0, game.players[4].Insurance[0]);
 
         Assert.Equal(100, game.players[0].Chips);
         Assert.Equal(100, game.players[1].Chips);
@@ -125,6 +125,21 @@ public class PlayerTest {
         Assert.Equal(80, game.players[3].Chips);
         Assert.Equal(0, game.players[4].Chips);
 
+
+    }
+
+    [Fact]
+     public void SurrenderTest(){
+        Game game = new Game();
+        List<string> PlayerNames = new List<string> {""};
+        game.SetPlayerNames(PlayerNames);
+        game.players[0].SetBet("100");
+        game.players[0].Surrender();
+
+        Assert.Empty(game.players[0].Bet);
+        Assert.Empty(game.players[0].Insurance);
+        Assert.Equal(50, game.players[0].Chips);
+        Assert.False(game.players[0].InGame);
 
     }
 }

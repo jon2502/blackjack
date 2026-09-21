@@ -6,7 +6,7 @@ public class GameTest {
     [Fact]
     public void PlayerBlackjackTest() {
         Game game = new Game();
-        string [] PlayerNames = {"Aiden", "Jane"};
+        List<string> PlayerNames = new List<string> {"Aiden", "Jane"};
         game.SetPlayerNames(PlayerNames);
 
         game.players[0].SetBet("10");
@@ -53,8 +53,8 @@ public class GameTest {
 
     [Fact]
      public void PlayerBustTest(){
-         Game game = new Game();
-        string [] PlayerNames = {"Aiden", "Jane"};
+        Game game = new Game();
+        List<string> PlayerNames = new List<string>{"Aiden", "Jane"};
         game.SetPlayerNames(PlayerNames);
 
         game.players[0].SetBet("10");
@@ -99,9 +99,26 @@ public class GameTest {
         game.players[1].PlayerBust();
 
         Assert.True( game.players[0].InGame);
-        Assert.Equal(10,  game.players[0].Bet);
+        Assert.Equal(10,  game.players[0].Bet[0]);
 
         Assert.False(game.players[1].InGame);
-        Assert.Equal(0,  game.players[1].Bet);
+        Assert.Equal(0,  game.players[1].Bet[0]);
     }
+
+    [Fact]
+    public void GameDone() {
+        Game game = new Game();
+        List<string> PlayerNames = new List<string>{"Aiden", "Jane"};
+        game.SetPlayerNames(PlayerNames);
+
+        foreach(Player player in game.players){
+            player.Hand.Clear();
+            player.CheckPlayerState();
+        }
+        Assert.False(game.players[0].InGame);
+        Assert.False(game.players[1].InGame);
+
+        game.CheckIfGamesOver();
+        Assert.False(game.Playing);
     }
+}

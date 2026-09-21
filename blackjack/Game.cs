@@ -1,3 +1,5 @@
+using System;
+
 public class Game {
     public List<Player> players = new List<Player>();
 
@@ -13,6 +15,7 @@ public class Game {
     public bool SetPlayerCount(string input){
         try {
             int output = Int32.Parse(input);
+            Console.WriteLine(output);
             if( output >= 1 && output <= 7){
                 PlayerCount = output;
                 return true;
@@ -26,8 +29,9 @@ public class Game {
         }
     }
 
-    public void SetPlayerNames(string[] playernames){
+    public void SetPlayerNames(List<string> playernames){
         int length = playernames.Count();
+        Console.WriteLine(length);
         for (int i = 0; i < length; i++){
             Player player = new Player();
             if (!string.IsNullOrWhiteSpace(playernames[i])){
@@ -35,7 +39,9 @@ public class Game {
             }
             player.PlayerID = i;
             players.Add(player);
-        }    }
+            Console.WriteLine(player.Name);
+        }
+        }
 
     public void GetStartingHands(Deck blackjackdeck) {
         int i = 0;
@@ -50,23 +56,43 @@ public class Game {
             dealer.DrawACard(Dealercard, 0);
             i++;
         }
+        foreach (Player player in players) {
+            Console.WriteLine($"{player.Name}'s hand is {player.Hand[0][0].Suit}{player.Hand[0][0].Rank} and {player.Hand[0][1].Suit}{player.Hand[0][1].Rank}");
+        }
+        Console.WriteLine($"the {dealer.Name} has a {dealer.Hand[0][0].Suit}{dealer.Hand[0][0].Rank}");
+
     }
+
+
 
     public void Insurrance(){
         bool result = dealer.DealerBlackjack();
         if (result) {
             foreach (Player player in players) {
-            player.Bet = 0;
+            player.Bet.Clear();
             player.InGame = false;
-            player.Retuns = player.Insurance * 2;
-            player.Insurance = 0;
+            for (int i = 0; i < player.Insurance.Count; i++)
+            {
+                player.Retuns += player.Insurance[i] * 2;
+
+            }
+            player.Insurance.Clear();
+            player.Hand.Clear();
+            player.CheckPlayerState();
         }
         } else {
             foreach (Player player in players) {
-                player.Insurance = 0;
+                player.Insurance.Clear();
             }
         }
-        
+    }
+
+    public void CheckIfGamesOver() {
+        //testdeck.deck, card => card.Rank == "2"
+        bool check = players.All(player => player.InGame == false);
+        if (check) {
+            Playing = false;
+        }
     }
 
 }

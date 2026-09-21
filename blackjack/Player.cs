@@ -1,3 +1,4 @@
+using System;
 
 public class Player : Participant {
     //public List<List<Card>> splithand  = new List<List<Card>>();
@@ -5,12 +6,11 @@ public class Player : Participant {
     public int PlayerID {get; set;}
     public double Chips {get; set;} = 100;
 
-    public double Bet {get; set;} = 0;
+    public List<double> Bet {get; set;} = new List<double>();
 
-    public double Insurance {get; set;} = 0;
+    public List<double> Insurance {get; set;} = new List<double>();
 
     public double Retuns {get; set;} = 0;
-
 
     public bool SetBet(string value) {
         try {
@@ -19,8 +19,10 @@ public class Player : Participant {
                 Console.WriteLine($"{Name} balance to low");
                 return false;
             } else {
+                Console.WriteLine(Intamount);
                 Chips -= Intamount;
-                Bet += Intamount;
+                Bet.Add(Intamount);
+                Console.WriteLine($"{Name} bet is {Bet[0]}");
                 return true;
             }
         } catch {
@@ -37,19 +39,19 @@ public class Player : Participant {
         return true;
     }*/
 
-    public bool SetInsurance(string value) {
+    public bool SetInsurance(string value, int i) {
         try {
             int Intamount = Int32.Parse(value);
             
             if (Intamount > Chips) {
                 Console.WriteLine($"{Name} balance to low");
                 return false;
-            } else if (Intamount> Bet / 2) {
+            } else if (Intamount > Bet[i] / 2) {
                 Console.WriteLine($"{Name} Inssurance can max be half your bet");
                 return false;
             } else {
                 Chips -= Intamount;
-                Insurance += Intamount;
+                Insurance.Add(Intamount); 
                 return true;
             }
         } catch {
@@ -63,7 +65,7 @@ public class Player : Participant {
         if(result) {
             Console.WriteLine($"{Name} got BlackJack");
             InGame = false;
-            Retuns = Bet * 1.5;
+            Retuns = Bet[0] * 1.5;
         }
     }
 
@@ -74,7 +76,7 @@ public class Player : Participant {
             if(result) {
                 Console.WriteLine($"{Name} Bust");
                 InGame = false;
-                Bet = 0;
+                Bet[i] = 0;
         }
         }
 
@@ -97,9 +99,17 @@ public class Player : Participant {
     }*/
 
     public void Surrender() {
-        InGame = false;
-        Chips += Bet/2;
-        Bet = 0;
+        Chips += Bet[0]/2;
+        Bet.Clear();
+        Hand.Clear();
+        CheckPlayerState();
+    }
 
+    public void CheckPlayerState(){
+        if(Hand.Count <= 0){
+            InGame = false;
+        } else {
+            InGame = true;
+        }
     }
 }
