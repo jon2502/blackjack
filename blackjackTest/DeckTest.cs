@@ -16,11 +16,11 @@ public class DeckTest {
     public void DeckSelectionTest(string input){
         Deck blackjackdeck = new Deck();
 
-        bool result = Program.SelectDeckAmount(input, blackjackdeck);
+        bool result = blackjackdeck.SetDecksize(input);
         int intValue = Int32.Parse(input);
         
         Assert.True(result);
-        Assert.Equal(intValue, blackjackdeck.Decksize);
+        Assert.Equal(intValue, blackjackdeck.DeckSize);
     }
 
     [Theory]
@@ -32,7 +32,7 @@ public class DeckTest {
     public void DeckSelectionTestfail(string input){
         Deck blackjackdeck = new Deck();
 
-        bool result = Program.SelectDeckAmount(input, blackjackdeck);
+        bool result =  blackjackdeck.SetDecksize(input);;
         Assert.False(result);
 
     }
@@ -64,7 +64,7 @@ public class DeckTest {
         bool result = testdeck.CreateDeck();
         Assert.False(result);
 
-        testdeck = Program.Generating(testdeck);
+        testdeck.CreateDeck();
         Assert.Contains(testdeck.deck, card => card.Rank == "2");
         Assert.Contains(testdeck.deck, card => card.Rank == "3");
         Assert.Contains(testdeck.deck, card => card.Rank == "4");
@@ -84,7 +84,7 @@ public class DeckTest {
         bool result = testdeck.CreateDeck();
         Assert.False(result);
 
-        testdeck = Program.Generating(testdeck);
+        testdeck.CreateDeck();
         Assert.Contains(testdeck.deck, card => card.Rank == "2");
         Assert.DoesNotContain(testdeck.deck, card => card.Rank == value);
         Assert.Equal(52, testdeck.deck.Count);
@@ -93,7 +93,7 @@ public class DeckTest {
     [Fact]
     public void TestingtwoDecks() {
         Deck testdeck = new Deck();
-        testdeck.Decksize = 2;
+        testdeck.DeckSize = 2;
         testdeck.CreateDeck();
         Assert.Equal(104, testdeck.deck.Count);
     }

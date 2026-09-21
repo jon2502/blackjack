@@ -3,18 +3,34 @@ using System;
 public class Deck {
     public  List<Card> deck = new List<Card>();
 
-    public int Decksize {get; set;} = 1;
+    public int DeckSize {get; set;} = 1;
 
-    private static readonly string [] CardSuit = {"♦","♣","♥","♠"};
+    private  readonly string [] CardSuit = {"♦","♣","♥","♠"};
 
     public string[] PlayingCards {get; set;} = {"2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"};
 
     private static readonly string [] DefaultPlayingCards= {"2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"};
 
+    public bool SetDecksize(string input) {
+        try {
+            int Output = Int32.Parse(input);
+            if( Output >= 1 && Output <= 8){
+                DeckSize = Output;
+                return true;
+            } else {
+                Console.WriteLine("Please select a number between 1 and 8");
+                return false;
+            }
+        } catch {
+            Console.WriteLine("Please select a number between 1 and 8");
+            return false;
+        }
+    }
+
     public bool CreateDeck(){
-        if (Decksize > 1) {
+        if (DeckSize > 1) {
                 int i = 1;
-                while (Decksize > i) {
+                while (DeckSize > i) {
                 PlayingCards = PlayingCards.Concat(PlayingCards).ToArray();
                 i++;
             }
@@ -54,7 +70,7 @@ public class Deck {
             }
     
         }
-        if(deck.Count / Decksize == 52){
+        if(deck.Count / DeckSize == 52){
             deck = deck.Shuffle().ToList();
             return true;
         }else {

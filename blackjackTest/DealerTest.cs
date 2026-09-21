@@ -6,6 +6,7 @@ public class DealerTest {
 
     [Fact]
     public void DealerBlackjackTest(){
+        string [] PlayerNames = {"Aiden", "Jane"};
         Player Aiden = new Player{
             PlayerID = 0,
             Name = "Aiden",
@@ -15,16 +16,12 @@ public class DealerTest {
             Name = "Jane",
         };
         
-        Players players = new Players();
-        players.Add(Aiden);
-        players.Add(Jane);
+        Game game = new Game();
+        game.SetPlayerNames(PlayerNames);
 
-        Dealer dealer = new Dealer{
-            Name = "dealer"
-        };
 
-        bool AideneResult = Aiden.SetBet("10");
-        bool JaneResult = Jane.SetBet("20");
+        game.players[0].SetBet("10");
+        game.players[1].SetBet("20");
 
         Card two = new Card {
             Suit = "♠",
@@ -38,17 +35,17 @@ public class DealerTest {
             Value = 10,
         };
 
-        dealer.Hand.Add(two);
-        dealer.Hand.Add(king);
+        game.dealer.Hand.Add(two);
+        game.dealer.Hand.Add(king);
         
-        bool result = dealer.DealerBlackjack();
+        bool result = game.dealer.DealerBlackjack();
         Assert.False(result);
-        dealer.DealerCheck(players);
-        foreach (Player player in players.playerlist){
+        game.Insurrance();
+        foreach (Player player in game.players){
             Assert.True(player.InGame);
             Assert.NotEqual(0, player.Bet);
         }
-        dealer.Hand.Clear();
+        game.dealer.Hand.Clear();
 
   
         Card ace = new Card {
@@ -58,13 +55,13 @@ public class DealerTest {
         };
 
 
-        dealer.Hand.Add(ace);
-        dealer.Hand.Add(king);
+        game.dealer.Hand.Add(ace);
+        game.dealer.Hand.Add(king);
 
-        dealer.DealerCheck(players);
-        bool newresult = dealer.DealerBlackjack();
+        game.Insurrance();
+        bool newresult = game.dealer.DealerBlackjack();
         Assert.True(newresult);
-        foreach (Player player in players.playerlist){
+        foreach (Player player in game.players){
             Assert.False(player.InGame);
             Assert.Equal(0, player.Bet);
         }

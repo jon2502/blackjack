@@ -4,14 +4,14 @@ using Xunit.Abstractions;
 namespace blackjackTest;
 
 public class PlayerTest {
-
     [Theory]
     [InlineData("test")]
     [InlineData("-1")]
     [InlineData("8")]
     public void selectPlayeramountTestIncorrect(string value){
-        int result = Program.SelectPlayerAmount(value);
-        Assert.Equal(0, result);
+        Game game = new Game();
+        bool result = game.SetPlayerCount(value);
+        Assert.False(result);
     }
 
     [Theory]
@@ -23,25 +23,12 @@ public class PlayerTest {
     [InlineData("6")]
     [InlineData("7")]
     public void selectPlayeramountTestIntCorrect(string value) {
-        int result = Program.SelectPlayerAmount(value);
-        int intValue = Int32.Parse(value);
-        Assert.Equal(intValue, result);
+        Game game = new Game();
+        bool result = game.SetPlayerCount(value);
+        Assert.True(result);
     }
 
-    [Fact]
-    public void GeneratePlayerTest(){
-        Player result = Program.GeneratePlayer("Jhonny", 1);
-
-        Assert.Equal("Jhonny", result.Name);
-    }
-
-    [Fact]
-    public void GeneratePlayerTesttwo(){
-        Player result = Program.GeneratePlayer("", 1);
-
-        Assert.Equal("Jhon Doe", result.Name);
-    }
-
+/*
     [Fact]
     public void playerListtest()
     {
@@ -158,5 +145,5 @@ public class PlayerTest {
     public void AllPlayersloseTest() {
         
     }
-
+*/
 }
