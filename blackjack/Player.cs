@@ -1,4 +1,4 @@
-public class Player : Participants {
+public class Player : Participant {
     public int PlayerID {get; set;}
     public double Chips {get; set;} = 100;
 

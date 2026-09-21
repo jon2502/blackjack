@@ -1,4 +1,4 @@
-public class Dealer : Participants {
+public class Dealer : Participant {
         virtual
     public void DealerCheck(Players players) {
         if(Hand[0].Rank == "A" && Hand.Count == 2) {
