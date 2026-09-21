@@ -1,5 +1,5 @@
 public class Dealer : Participant {
-        virtual
+    
     /*public void DealerCheck(List<Player> players) {
       
     }*/

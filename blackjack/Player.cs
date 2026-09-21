@@ -1,3 +1,5 @@
+using System.Security.Cryptography.X509Certificates;
+
 public class Player : Participant {
     public int PlayerID {get; set;}
     public double Chips {get; set;} = 100;
@@ -49,6 +51,15 @@ public class Player : Participant {
             Console.WriteLine($"{Name} got BlackJack");
             InGame = false;
             Retuns = Bet * 1.5;
+        }
+    }
+
+    public void PlayerBust() {
+        bool result = BustCheck();
+         if(result) {
+            Console.WriteLine($"{Name} Bust");
+            InGame = false;
+            Bet = 0;
         }
     }
 

@@ -28,122 +28,88 @@ public class PlayerTest {
         Assert.True(result);
     }
 
-/*
+
     [Fact]
     public void playerListtest()
     {
-        Players players = new Players();
-        List<Player> testlist = new List<Player>();
-
-        testlist.Add(Program.GeneratePlayer("Aiden",0));
-        testlist.Add(Program.GeneratePlayer("",1));
-        testlist.Add(Program.GeneratePlayer("Jennifer",2));
+        Game game = new Game();
+        string [] PlayerNames = {"Aiden", "", "Jennifer"};
         
-
-        foreach(Player player in testlist){
-            players.Add(player);
-        }
+        game.SetPlayerNames(PlayerNames);
     
-        Assert.Equal("Aiden", players.playerlist[0].Name);
-        Assert.Equal(0, players.playerlist[0].PlayerID);
+        Assert.Equal("Aiden", game.players[0].Name);
+        Assert.Equal(0, game.players[0].PlayerID);
 
-        Assert.Equal("Jhon Doe", players.playerlist[1].Name);
-        Assert.Equal(1, players.playerlist[1].PlayerID);
+        Assert.Equal("Jhon Doe", game.players[1].Name);
+        Assert.Equal(1, game.players[1].PlayerID);
 
-        Assert.Equal("Jennifer", players.playerlist[2].Name);
-        Assert.Equal(2, players.playerlist[2].PlayerID);
+        Assert.Equal("Jennifer", game.players[2].Name);
+        Assert.Equal(2, game.players[2].PlayerID);
 
     }
 
     [Fact]
     public void StartingHandTest() {
-        Players players = new Players();
-        List<Player> testlist = new List<Player>();
-
-        testlist.Add(Program.GeneratePlayer("Aiden",0));
-        testlist.Add(Program.GeneratePlayer("",1));
-
-        foreach(Player player in testlist){
-            players.Add(player);
-        }
+        Game game = new Game();
+        string [] PlayerNames = {"Aiden", "Jennifer"};
+        game.SetPlayerNames(PlayerNames);
 
         Deck testdeck = new Deck();
-        bool result = testdeck.CreateDeck();
-        Dealer dealer = new Dealer();
+        testdeck.CreateDeck();
 
-        Program.GetStartingHands(players, dealer, testdeck);
+        game.GetStartingHands(testdeck);
 
         Assert.Equal(46, testdeck.deck.Count);
-        Assert.Equal(2, players.playerlist[0].Hand.Count);
-        Assert.Equal(2, players.playerlist[1].Hand.Count);
-        Assert.Equal(2, dealer.Hand.Count);
+        Assert.Equal(2, game.players[0].Hand.Count);
+        Assert.Equal(2, game.players[1].Hand.Count);
+        Assert.Equal(2, game.dealer.Hand.Count);
     }
 
     [Fact]
     public void BetTest() {
-        Player JhoneDoe = new Player();
-        Player Aiden = new Player();
-        Player Jane = new Player();
-        
-        JhoneDoe.PlayerID = 0;
-        
-        Aiden.PlayerID = 1;
-        Aiden.Name = "Aiden";
+        Game game = new Game();
+        string [] PlayerNames = {"", "Aiden", "Jane"};
+        game.SetPlayerNames(PlayerNames);
 
-        Jane.PlayerID = 2;
-        Jane.Name = "Jane";
 
-        bool JhondoeResult = JhoneDoe.SetBet("tets");
-        bool AideneResult = Aiden.SetBet("150");
-        bool JaneResult = Jane.SetBet("20");
+
+        bool JhondoeResult = game.players[0].SetBet("tets");
+        bool AideneResult = game.players[1].SetBet("150");
+        bool JaneResult = game.players[2].SetBet("20");
 
         Assert.False(JhondoeResult);
         Assert.False(AideneResult);
         Assert.True(JaneResult);
 
-        Assert.Equal(0,JhoneDoe.Bet);
-        Assert.Equal(0,Aiden.Bet);
-        Assert.Equal(20,Jane.Bet);
+        Assert.Equal(0, game.players[0].Bet);
+        Assert.Equal(0, game.players[1].Bet);
+        Assert.Equal(20, game.players[2].Bet);
 
-        Assert.Equal(100,JhoneDoe.Chips);
-        Assert.Equal(100,Aiden.Chips);
-        Assert.Equal(80,Jane.Chips);
+        Assert.Equal(100, game.players[0].Chips);
+        Assert.Equal(100, game.players[1].Chips);
+        Assert.Equal(80, game.players[2].Chips);
     }
 
     [Fact]
     public void InsuranceTest() {
-        Player JhoneDoe = new Player();
-        Player Aiden = new Player();
-        Player Jane = new Player();
-        
-        JhoneDoe.PlayerID = 0;
-        
-        Aiden.PlayerID = 1;
-        Aiden.Name = "Aiden";
+        Game game = new Game();
+        string [] PlayerNames = {"", "Aiden", "Jane"};
+        game.SetPlayerNames(PlayerNames);
 
-        Jane.PlayerID = 2;
-        Jane.Name = "Jane";
-
-        bool JhondoeResult = JhoneDoe.SetInsurance("tets");
-        bool AideneResult = Aiden.SetInsurance("150");
-        bool JaneResult = Jane.SetInsurance("20");
+        bool JhondoeResult = game.players[0].SetInsurance("tets");
+        bool AideneResult = game.players[1].SetInsurance("150");
+        bool JaneResult = game.players[2].SetInsurance("20");
 
         Assert.False(JhondoeResult);
         Assert.False(AideneResult);
         Assert.True(JaneResult);
 
-        Assert.Equal(0,JhoneDoe.Insurance);
-        Assert.Equal(0,Aiden.Insurance);
-        Assert.Equal(20,Jane.Insurance);
+        Assert.Equal(0, game.players[0].Insurance);
+        Assert.Equal(0, game.players[1].Insurance);
+        Assert.Equal(20, game.players[2].Insurance);
 
-        Assert.Equal(100,JhoneDoe.Chips);
-        Assert.Equal(100,Aiden.Chips);
-        Assert.Equal(80,Jane.Chips);
+        Assert.Equal(100, game.players[0].Chips);
+        Assert.Equal(100, game.players[1].Chips);
+        Assert.Equal(80, game.players[2].Chips);
     }
-
-    [Fact]
-    public void AllPlayersloseTest() {
-        
-    }
-*/
 }

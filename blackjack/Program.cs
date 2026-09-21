@@ -6,7 +6,6 @@ namespace Blackjack {
             Game game = new Game();
 
             Console.WriteLine("Hello how may players are you: from 1 - 7");
-
             while (true){
                 string playeroutput = Console.ReadLine() ?? "";
                 bool sucsess = game.SetPlayerCount(playeroutput);
@@ -24,6 +23,7 @@ namespace Blackjack {
 
             game.SetPlayerNames(NameList);
             //bool playing = true;
+
             Deck blackjackdeck = new Deck();
 
             Console.WriteLine("select deck size");
@@ -32,9 +32,7 @@ namespace Blackjack {
                 bool sucsess = blackjackdeck.SetDecksize(deckcount);
                 if(sucsess == true){break;}
             }
-
             blackjackdeck.CreateDeck();
-            
             
             foreach (Player player in game.players) {
                 Console.WriteLine($"{player.Name} place your bet");
@@ -45,11 +43,11 @@ namespace Blackjack {
 
                 }
             }
-            //bool GameRunning = true;
-            /*GetStartingHands(players, blackjackdeck);
-            foreach (Player player in players.playerlist) {
+
+            game.GetStartingHands(blackjackdeck);
+            foreach (Player player in game.players) {
                 player.Blackjack();
-            }*/
+            }
 
             //TurnSequence();
 

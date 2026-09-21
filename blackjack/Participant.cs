@@ -6,6 +6,7 @@ public class Participant {
     public bool InGame {get; set;} = true;
 
     public bool Bust {get; set;} = false;
+
     public void DrawACard(Card card){
        Hand.Add(card); 
     }
@@ -17,11 +18,13 @@ public class Participant {
         return false;
     }
 
-    public virtual void BustCheck(){
+    public bool BustCheck(){
         int Handsum = Hand.Sum(card => card.Value);
         if(Handsum > 21) {
             Bust = true;
+            return true;
         }
+        return false;
     }
 
 }

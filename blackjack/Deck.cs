@@ -9,7 +9,7 @@ public class Deck {
 
     public string[] PlayingCards {get; set;} = {"2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"};
 
-    private static readonly string [] DefaultPlayingCards= {"2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"};
+    private readonly string [] DefaultPlayingCards= {"2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"};
 
     public bool SetDecksize(string input) {
         try {
