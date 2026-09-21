@@ -1,9 +1,4 @@
 using System;
-using System.Collections;
-using System.Linq;
-
-
-
 
 public class Deck {
     public  List<Card> deck = new List<Card>();

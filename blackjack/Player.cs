@@ -26,6 +26,23 @@ public class Player : Participant {
         }
     }
 
+    public bool SetInsurance(string value) {
+        try {
+            int Intamount = Int32.Parse(value);
+            if (Intamount > Chips) {
+                Console.WriteLine($"{Name} balance to low");
+                return false;
+            } else {
+                Chips -= Intamount;
+                Insurance += Intamount;
+                return true;
+            }
+        } catch {
+            Console.WriteLine($"{Name} please select a valid full number");
+            return false;
+        }
+    }
+
     public void PlayerBlackjack() {
         bool result = Blackjack();
         if(result) {

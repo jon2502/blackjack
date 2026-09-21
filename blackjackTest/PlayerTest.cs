@@ -124,6 +124,37 @@ public class PlayerTest {
     }
 
     [Fact]
+    public void InsuranceTest() {
+        Player JhoneDoe = new Player();
+        Player Aiden = new Player();
+        Player Jane = new Player();
+        
+        JhoneDoe.PlayerID = 0;
+        
+        Aiden.PlayerID = 1;
+        Aiden.Name = "Aiden";
+
+        Jane.PlayerID = 2;
+        Jane.Name = "Jane";
+
+        bool JhondoeResult = JhoneDoe.SetInsurance("tets");
+        bool AideneResult = Aiden.SetInsurance("150");
+        bool JaneResult = Jane.SetInsurance("20");
+
+        Assert.False(JhondoeResult);
+        Assert.False(AideneResult);
+        Assert.True(JaneResult);
+
+        Assert.Equal(0,JhoneDoe.Insurance);
+        Assert.Equal(0,Aiden.Insurance);
+        Assert.Equal(20,Jane.Insurance);
+
+        Assert.Equal(100,JhoneDoe.Chips);
+        Assert.Equal(100,Aiden.Chips);
+        Assert.Equal(80,Jane.Chips);
+    }
+
+    [Fact]
     public void AllPlayersloseTest() {
         
     }
