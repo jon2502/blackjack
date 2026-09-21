@@ -1,6 +1,7 @@
-using System.Security.Cryptography.X509Certificates;
 
 public class Player : Participant {
+    //public List<List<Card>> splithand  = new List<List<Card>>();
+
     public int PlayerID {get; set;}
     public double Chips {get; set;} = 100;
 
@@ -27,6 +28,14 @@ public class Player : Participant {
             return false;
         }
     }
+
+/*    public bool CanInsure() {
+        if(Chips < Bet/2) {
+            Console.WriteLine($"{Name} dosent have enough to insure");
+            return false;
+        }
+        return true;
+    }*/
 
     public bool SetInsurance(string value) {
         try {
@@ -59,23 +68,38 @@ public class Player : Participant {
     }
 
     public void PlayerBust() {
-        bool result = BustCheck();
-         if(result) {
-            Console.WriteLine($"{Name} Bust");
-            InGame = false;
-            Bet = 0;
+        int length = Hand.Count;
+        for (int i = 0; i < length; i++){
+            bool result = BustCheck(i);
+            if(result) {
+                Console.WriteLine($"{Name} Bust");
+                InGame = false;
+                Bet = 0;
         }
-    }
+        }
 
-    public void DoubleDown() {
-        InGame = false;
-    }
-    public void Split() {
         
     }
 
+    public void DoubleDown() {
+
+        InGame = false;
+    }
+
+    /*public bool Splitcheck(List<Card> hand) {
+        if(hand[0].Rank == hand[1].Rank){
+            return true;
+        } return false;
+    }
+
+    public void Split() {
+        
+    }*/
+
     public void Surrender() {
         InGame = false;
+        Chips += Bet/2;
+        Bet = 0;
 
     }
 }

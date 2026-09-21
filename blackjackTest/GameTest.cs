@@ -35,11 +35,11 @@ public class GameTest {
             Value = 5,
         };
 
-        game.players[0].Hand.Add(two);
-        game.players[0].Hand.Add(five);
+        game.players[0].Hand[0].Add(two);
+        game.players[0].Hand[0].Add(five);
 
-        game.players[1].Hand.Add(ace);
-        game.players[1].Hand.Add(king);
+        game.players[1].Hand[0].Add(ace);
+        game.players[1].Hand[0].Add(king);
 
         game.players[0].PlayerBlackjack();
         game.players[1].PlayerBlackjack();
@@ -88,12 +88,12 @@ public class GameTest {
             Value = 5,
         };
 
-        game.players[0].Hand.Add(two);
-        game.players[0].Hand.Add(five);
+        game.players[0].Hand[0].Add(two);
+        game.players[0].Hand[0].Add(five);
 
-        game.players[1].Hand.Add(ten);
-        game.players[1].Hand.Add(king);
-        game.players[1].Hand.Add(three);
+        game.players[1].Hand[0].Add(ten);
+        game.players[1].Hand[0].Add(king);
+        game.players[1].Hand[0].Add(three);
 
         game.players[0].PlayerBust();
         game.players[1].PlayerBust();

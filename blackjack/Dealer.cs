@@ -1,5 +1,5 @@
 public class Dealer : Participant {
-    
+
     /*public void DealerCheck(List<Player> players) {
       
     }*/
@@ -13,5 +13,4 @@ public class Dealer : Participant {
         }
         return false;
     }
-
 }

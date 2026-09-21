@@ -7,14 +7,6 @@ public class DealerTest {
     [Fact]
     public void DealerBlackjackTest(){
         string [] PlayerNames = {"Aiden", "Jane"};
-        Player Aiden = new Player{
-            PlayerID = 0,
-            Name = "Aiden",
-        };
-        Player Jane = new Player{
-            PlayerID = 1,
-            Name = "Jane",
-        };
         
         Game game = new Game();
         game.SetPlayerNames(PlayerNames);
@@ -35,8 +27,8 @@ public class DealerTest {
             Value = 10,
         };
 
-        game.dealer.Hand.Add(two);
-        game.dealer.Hand.Add(king);
+        game.dealer.Hand[0].Add(two);
+        game.dealer.Hand[0].Add(king);
         
         bool result = game.dealer.DealerBlackjack();
         Assert.False(result);
@@ -45,7 +37,7 @@ public class DealerTest {
             Assert.True(player.InGame);
             Assert.NotEqual(0, player.Bet);
         }
-        game.dealer.Hand.Clear();
+        game.dealer.Hand[0].Clear();
 
   
         Card ace = new Card {
@@ -55,8 +47,8 @@ public class DealerTest {
         };
 
 
-        game.dealer.Hand.Add(ace);
-        game.dealer.Hand.Add(king);
+        game.dealer.Hand[0].Add(ace);
+        game.dealer.Hand[0].Add(king);
 
         game.Insurrance();
         bool newresult = game.dealer.DealerBlackjack();

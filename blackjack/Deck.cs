@@ -83,6 +83,11 @@ public class Deck {
     }
 
     public Card DrawCard(){
+        if(deck.Count <= 0){
+            Console.WriteLine("Error: Deck is empty, now generating a new one");
+            DeckSize = 1;
+            CreateDeck();
+        }
         Card card = deck.First();
         deck.RemoveAt(0);
         return card;

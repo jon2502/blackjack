@@ -97,4 +97,22 @@ public class DeckTest {
         testdeck.CreateDeck();
         Assert.Equal(104, testdeck.deck.Count);
     }
+
+    [Fact]
+    public void EmptyDeckTest() {
+        Deck testdeck = new Deck();
+        testdeck.CreateDeck();
+        testdeck.DeckSize = 1;
+
+        Game game = new Game();
+        string [] PlayerNames = {""};
+        game.SetPlayerNames(PlayerNames);
+
+        for (int i = 0; i < 100; i++){
+            Card card = testdeck.DrawCard();
+            game.players[0].DrawACard(card, 0);
+        }
+
+        Assert.Equal(4, testdeck.deck.Count);
+    }
 }

@@ -42,12 +42,12 @@ public class Game {
         while(2 > i) {
             foreach(Player player in players){
                 Card Playercard = blackjackdeck.DrawCard();
-                player.DrawACard(Playercard);
+                player.DrawACard(Playercard, 0);
                 Console.WriteLine($"{player.Name} is ");
 
             }
             Card Dealercard = blackjackdeck.DrawCard();
-            dealer.DrawACard(Dealercard);
+            dealer.DrawACard(Dealercard, 0);
             i++;
         }
     }
