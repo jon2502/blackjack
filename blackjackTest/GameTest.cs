@@ -112,8 +112,8 @@ public class GameTest {
         
         Assert.Equal(33, game.players[0].Hand[0].Sum(card => card.Value));
 
-        game.players[0].PlayerBust();
-        game.players[1].PlayerBust();
+        game.players[0].BustCheck(0);
+        game.players[1].BustCheck(0);
 
         Assert.True(game.players[0].InGame);
         Assert.Equal(13, game.players[0].Hand[0].Sum(card => card.Value));

@@ -64,17 +64,19 @@ public class Player : Participant {
         return false;
     }
 
-    public void PlayerBust() {
-        int length = Hand.Count;
+    public override bool BustCheck(int index){
+         int length = Hand.Count;
         for (int i = 0; i < length; i++){
-            bool result = BustCheck(i);
+            bool result = base.BustCheck(index);
             if(result) {
                 Console.WriteLine($"{Name} Bust");
                 Stand[i] = true;
                 Bet[i] = 0;
                 CheckPlayerState();
+                return true;
             }
         }
+        return false;
     }
 
     public void DoubleDown(int i, Card card) {
@@ -82,7 +84,7 @@ public class Player : Participant {
         Stand[i] = true;
         Chips -= Bet[i];
         Bet[i] *= 2;
-        bool result = BustCheck(i);
+        bool result = base.BustCheck(i);
         if (result) {
             Bet[i] = 0;
         }

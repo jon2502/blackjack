@@ -11,7 +11,8 @@ public class Game {
         Name = "Dealer",
     };
     
-    public bool SetPlayerCount(string input){
+    public bool SetPlayerCount(){
+        string input = Console.ReadLine() ?? "";
         try {
             int output = Int32.Parse(input);
             Console.WriteLine(output);
@@ -62,8 +63,6 @@ public class Game {
         Console.WriteLine($"the {dealer.Name} has a {dealer.Hand[0][0].Suit}{dealer.Hand[0][0].Rank}");
 
     }
-
-
 
     public void Insurrance(){
         bool result = dealer.DealerBlackjack();

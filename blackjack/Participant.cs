@@ -7,6 +7,7 @@ public class Participant {
 
     public void DrawACard(Card card, int i){
        Hand[i].Add(card);
+       BustCheck(i);
     }
 
     public bool Blackjack(int i) {
@@ -17,7 +18,7 @@ public class Participant {
         return false;
     }
 
-    public bool BustCheck(int i){
+    public virtual bool BustCheck(int i){
         int Handsum = Hand[i].Sum(card => card.Value);
         int AceCount = Hand[i].FindAll(card => card.Rank == "A" && card.Value == 11).Count;
         

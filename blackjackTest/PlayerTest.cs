@@ -10,7 +10,8 @@ public class PlayerTest {
     [InlineData("8")]
     public void selectPlayeramountTestIncorrect(string value){
         Game game = new Game();
-        bool result = game.SetPlayerCount(value);
+        Console.SetIn(new StringReader(value));
+        bool result = game.SetPlayerCount();
         Assert.False(result);
     }
 
@@ -24,7 +25,8 @@ public class PlayerTest {
     [InlineData("7")]
     public void selectPlayeramountTestIntCorrect(string value) {
         Game game = new Game();
-        bool result = game.SetPlayerCount(value);
+        Console.SetIn(new StringReader(value));
+        bool result = game.SetPlayerCount();
         Assert.True(result);
     }
 

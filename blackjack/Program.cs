@@ -3,11 +3,11 @@
 namespace Blackjack {
     public class Program {
 
-        static bool RetrunValue () {
+        public static bool RetrunValue () {
             Console.WriteLine("y : yes");
             Console.WriteLine("anyother key : continue");
             string Output = Console.ReadLine() ?? "";
-            if (Output == "y") {
+            if (Output == "y" || Output== "Y") {
                 return true;
             } return false;
         }
@@ -23,8 +23,7 @@ namespace Blackjack {
 
             Console.WriteLine("Hello how may players are you: from 1 - 7");
             while (true){
-                string playeroutput = Console.ReadLine() ?? "";
-                bool sucsess = game.SetPlayerCount(playeroutput);
+                bool sucsess = game.SetPlayerCount();
                 if(sucsess == true){break;}
             }
             
@@ -36,9 +35,7 @@ namespace Blackjack {
                 NameList.Add(playerName);
                 i ++;
             }
-            Console.WriteLine($"Namelist is {NameList.Count()} long");
             game.SetPlayerNames(NameList);
-            //bool playing = true;
 
             Deck blackjackdeck = new Deck();
 
@@ -178,10 +175,9 @@ namespace Blackjack {
                                 if (Output) {
                                     Card card = blackjackdeck.DrawCard();
                                     player.DrawACard(card, HandIndex);
-                                    player.PlayerBust();
-
                                 } else {
                                     player.Stand[HandIndex] = true;
+                                    player.CheckPlayerState();
                                 }
                             }
                         }
