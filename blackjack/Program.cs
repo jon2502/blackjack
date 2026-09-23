@@ -11,6 +11,13 @@ namespace Blackjack {
                 return true;
             } return false;
         }
+
+        static void DisplayHand(List<Card> cards){
+            foreach(Card card in cards){
+                Console.WriteLine($"{card.Suit}{card.Rank}");
+            }
+        }
+
         static void Main(string[] args) {
             Game game = new Game();
 
@@ -53,23 +60,30 @@ namespace Blackjack {
 
                 }
             }
-            Console.WriteLine("finished");
 
             game.GetStartingHands(blackjackdeck);
 
             foreach (Player player in game.players) {
-                Console.WriteLine($"{player.Name} would you like to surrender and get half your bet back");
+                Console.WriteLine($"{player.Name} would you like to surrender and get half your bet back. youyr current hand is");
+                DisplayHand(player.Hand[0]);
+                bool Output = RetrunValue();
+                if (Output) {
+                    player.Surrender();
+                } else {
+                    break;
+                }
+            }
+            foreach (Player player in game.players) {
                 for (int HandIndex = 0; HandIndex < player.Hand.Count; HandIndex++) {
                     while (true) {
-                        bool result = player.Splitcheck(player.Hand[HandIndex]);
+                        bool result = player.Splitcheck(HandIndex);
                         if(result) {
                             if(player.Hand[HandIndex].FindAll(card => card.Rank == "A").Count == 2) {
                                 Console.WriteLine($"{player.Name} you have two aces so your hand will be split");
                                 player.Split(HandIndex);
                             } else {
-                                
-                                Console.WriteLine($"{player.Name} you have a {player.Hand[HandIndex][0].Suit}{player.Hand[HandIndex][0].Rank} and {player.Hand[HandIndex][1].Suit}{player.Hand[HandIndex][1].Rank}");
-                                Console.WriteLine($"You may split them if you choce");
+                                Console.WriteLine($"{player.Name} You have cards with the same value and may split them if you choce");
+                                DisplayHand(player.Hand[HandIndex]);
                                 bool Output = RetrunValue();
                                 if (Output) {
                                     player.Split(HandIndex);
@@ -98,22 +112,38 @@ namespace Blackjack {
                 }
             }
 
+            foreach (Player player in game.players) {
+                for (int HandIndex = 0; HandIndex < player.Hand.Count; HandIndex++) {
+                    Console.WriteLine($"{player.Name} Would you like to doubledown for your hand of?");
+                    DisplayHand(player.Hand[HandIndex]);
+                    bool Output = RetrunValue();
+                    if (Output) {
+                        if(player.Bet[HandIndex] > player.Chips){
+                            Console.WriteLine($"{player.Name} balance to low you cant Double down");
+                        } else {
+                            Card card = blackjackdeck.DrawCard();
+                            player.DoubleDown(HandIndex, card);
+                        }
+                    } else {
+                        break;
+                    }
+                }
+            }
+
             if(game.dealer.Hand[0][0].Rank == "A" && game.dealer.Hand[0].Count == 2){
                 Console.WriteLine($"{game.dealer.Name} has an Ace would you like you place insurance?");
                 foreach (Player player in game.players) {
-                    for (int handcount = 0; handcount < player.Hand.Count; handcount++) {
-                        if(player.Hand.Count > 1)
-                        {
-                            Console.WriteLine($"{player.Name} would you like to place insurance on hand {handcount} with a bet of {player.Bet[i]}");
-                        } else {
-                            Console.WriteLine($"{player.Name} would you like to place insurance");
-                        }
+                    for (int HandIndex = 0; HandIndex < player.Hand.Count; HandIndex++) {
+                        Console.WriteLine($"{player.Name} would you like to place insurance on your hand of");
+                        DisplayHand(player.Hand[HandIndex]);
+                        Console.WriteLine($"with a bet of {player.Bet[HandIndex]}");
+                        
                         bool Output = RetrunValue();
                         if (Output) {
                             Console.WriteLine($"{player.Name} How much would you like to place into insurance?");
                             while (true) {
                                 string input = Console.ReadLine() ?? "";
-                                bool sucsess = player.SetInsurance(input, handcount);
+                                bool sucsess = player.SetInsurance(input, HandIndex);
                                 if(sucsess){break;}
                             }
                         } else {
@@ -122,7 +152,45 @@ namespace Blackjack {
                     }
                 }
             }
-            //continue
+
+            game.dealer.DealerBlackjack();
+
+            while(game.dealer.Hand[0].Sum(card => card.Value) >= 16) {
+                Card card = blackjackdeck.DrawCard();
+                bool result = game.dealer.Dealerhit(card);
+                if(result == true) {
+                    game.Playing = false;
+                    break;
+                }
+            }
+
+            while (game.Playing == true) {
+                foreach (Player player in game.players) {
+                    if (player.InGame == true){
+                        Console.WriteLine("running");
+                        Console.WriteLine($"{player.Name}'s turn");
+                        for (int HandIndex = 0; HandIndex < player.Hand.Count; HandIndex++) {
+                        if (!player.Stand[HandIndex]){
+                                Console.WriteLine($"{player.Name} would you like to Hit or stand for your hand of");
+                                DisplayHand(player.Hand[HandIndex]);
+                                Console.WriteLine($"with a bet of {player.Bet[HandIndex]}");
+                                bool Output = RetrunValue();
+                                if (Output) {
+                                    Card card = blackjackdeck.DrawCard();
+                                    player.DrawACard(card, HandIndex);
+                                    player.PlayerBust();
+
+                                } else {
+                                    player.Stand[HandIndex] = true;
+                                }
+                            }
+                        }
+                    }
+                }
+                game.CheckIfGamesOver();
+            }
+            
+
         }
     }
 }

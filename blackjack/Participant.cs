@@ -6,8 +6,9 @@ public class Participant {
     public bool Bust {get; set;} = false;
 
     public void DrawACard(Card card, int i){
-       Hand[i].Add(card); 
+       Hand[i].Add(card);
     }
+
     public bool Blackjack(int i) {
         int Handsum = Hand[i].Sum(card => card.Value);
         if(Handsum == 21) {

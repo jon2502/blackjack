@@ -75,16 +75,22 @@ public class Player : Participant {
                 CheckPlayerState();
             }
         }
-
-        
     }
 
-    public void DoubleDown() {
-        
+    public void DoubleDown(int i, Card card) {
+        Hand[i].Add(card);
+        Stand[i] = true;
+        Chips -= Bet[i];
+        Bet[i] *= 2;
+        bool result = BustCheck(i);
+        if (result) {
+            Bet[i] = 0;
+        }
+        CheckPlayerState();
     }
 
-    public bool Splitcheck(List<Card> hand) {
-        if(hand.Count == 2 && hand[0].Value == hand[1].Value){
+    public bool Splitcheck(int i) {
+        if(Hand[i].Count == 2 && Hand[i][0].Value == Hand[i][1].Value){
             return true;
         } return false;
     }
@@ -103,9 +109,9 @@ public class Player : Participant {
         Bet.Clear();
         Insurance.Clear();
         Hand.Clear();
+        Stand.Clear();
         CheckPlayerState();
     }
-
 
     public void CheckPlayerState(){
         if(Stand.All(x => x==true) || Hand.Count <= 0){

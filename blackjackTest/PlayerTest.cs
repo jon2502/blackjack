@@ -213,7 +213,7 @@ public class PlayerTest {
         foreach (Player player in game.players) {
             for (int HandIndex = 0; HandIndex < player.Hand.Count; HandIndex++) {
                 while (true) {
-                    bool result = player.Splitcheck(player.Hand[HandIndex]);
+                    bool result = player.Splitcheck(HandIndex);
                     if(result) {
                     if(player.Hand[HandIndex].FindAll(card => card.Rank == "A").Count == 2) {
                         Console.WriteLine($"{player.Name} you have two aces so your hand will be split");
@@ -242,5 +242,65 @@ public class PlayerTest {
                 Assert.Single(player.Hand);
             }
         }
+    }
+     [Fact]
+    public void DoubleDowntest() {
+        Game game = new Game();
+        List<string> PlayerNames = new List<string> {"Aiden", "", "Jennifer"};
+        game.SetPlayerNames(PlayerNames);
+
+        Deck testdeck = new Deck();
+
+        Card two = new Card {
+            Suit = "♠",
+            Rank = "2",
+            Value = 2,
+        };
+
+        Card queen = new Card {
+            Suit = "♠",
+            Rank = "Q",
+            Value = 10,
+        };
+
+
+        testdeck.deck.Add(queen);
+        testdeck.deck.Add(queen);
+        testdeck.deck.Add(queen);
+        testdeck.deck.Add(queen);
+
+
+        game.players[0].Hand[0].Add(two);
+        game.players[0].Hand[0].Add(two);
+
+        game.players[1].Hand[0].Add(two);
+        game.players[1].Hand[0].Add(two);
+
+        game.players[2].Hand[0].Add(queen);
+        game.players[2].Hand[0].Add(queen);
+
+        game.players[0].SetBet("40",0);
+        game.players[1].SetBet("60",0);
+        game.players[2].SetBet("20",0);
+
+
+        Assert.Equal(40, game.players[0].Bet[0]);
+        Assert.Equal(60, game.players[1].Bet[0]);
+        Assert.Equal(20, game.players[2].Bet[0]);
+
+
+        foreach (Player player in game.players){
+            if(player.Bet[0] > player.Chips){
+                Console.WriteLine($"{player.Name} balance to low you cant Double down");
+            } else {
+                Card card = testdeck.DrawCard();
+                player.DoubleDown(0, card);
+            }
+        }
+        Assert.Equal(80, game.players[0].Bet[0]);
+        Assert.Equal(60, game.players[1].Bet[0]);
+        Assert.Equal(0, game.players[2].Bet[0]);
+        Assert.Equal(60, game.players[2].Chips);
+
     }
 }

@@ -11,7 +11,6 @@ public class Game {
         Name = "Dealer",
     };
     
-
     public bool SetPlayerCount(string input){
         try {
             int output = Int32.Parse(input);
@@ -49,8 +48,6 @@ public class Game {
             foreach(Player player in players){
                 Card Playercard = blackjackdeck.DrawCard();
                 player.DrawACard(Playercard, 0);
-                Console.WriteLine($"{player.Name} is ");
-
             }
             Card Dealercard = blackjackdeck.DrawCard();
             dealer.DrawACard(Dealercard, 0);
@@ -90,7 +87,6 @@ public class Game {
     }
 
     public void CheckIfGamesOver() {
-        //testdeck.deck, card => card.Rank == "2"
         bool check = players.All(player => player.InGame == false);
         if (check) {
             Playing = false;
