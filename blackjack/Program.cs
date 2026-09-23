@@ -2,6 +2,15 @@
 
 namespace Blackjack {
     public class Program {
+
+        static bool RetrunValue () {
+            Console.WriteLine("y : yes");
+            Console.WriteLine("anyother key : continue");
+            string Output = Console.ReadLine() ?? "";
+            if (Output == "y") {
+                return true;
+            } return false;
+        }
         static void Main(string[] args) {
             Game game = new Game();
 
@@ -39,7 +48,7 @@ namespace Blackjack {
                 Console.WriteLine($"{player.Name} place your bet");
                 while (true) {
                     string amount = Console.ReadLine() ?? "";
-                        bool result = player.SetBet(amount);
+                        bool result = player.SetBet(amount, 0);
                         if(result == true){break;}
 
                 }
@@ -49,7 +58,44 @@ namespace Blackjack {
             game.GetStartingHands(blackjackdeck);
 
             foreach (Player player in game.players) {
-                player.Blackjack();
+                Console.WriteLine($"{player.Name} would you like to surrender and get half your bet back");
+                for (int HandIndex = 0; HandIndex < player.Hand.Count; HandIndex++) {
+                    while (true) {
+                        bool result = player.Splitcheck(player.Hand[HandIndex]);
+                        if(result) {
+                            if(player.Hand[HandIndex].FindAll(card => card.Rank == "A").Count == 2) {
+                                Console.WriteLine($"{player.Name} you have two aces so your hand will be split");
+                                player.Split(HandIndex);
+                            } else {
+                                
+                                Console.WriteLine($"{player.Name} you have a {player.Hand[HandIndex][0].Suit}{player.Hand[HandIndex][0].Rank} and {player.Hand[HandIndex][1].Suit}{player.Hand[HandIndex][1].Rank}");
+                                Console.WriteLine($"You may split them if you choce");
+                                bool Output = RetrunValue();
+                                if (Output) {
+                                    player.Split(HandIndex);
+                                } else {
+                                    break;
+                                }
+                            }
+                            Card FirstCard = blackjackdeck.DrawCard();
+                            player.DrawACard(FirstCard, HandIndex);
+
+                            Card SecondCard = blackjackdeck.DrawCard();
+                            player.DrawACard(SecondCard, HandIndex+1);
+
+                            Console.WriteLine($"{player.Name} place bet for new hand");
+                            while (true) {
+                                string amount = Console.ReadLine() ?? "";
+                                    player.Bet.Add(0);
+                                    bool BetResult = player.SetBet(amount, HandIndex+1);
+                                    if(BetResult == true){break;}
+                            }
+                            player.PlayerBlackjack(HandIndex);
+                        } else{
+                            break;        
+                        }
+                    }
+                }
             }
 
             if(game.dealer.Hand[0][0].Rank == "A" && game.dealer.Hand[0].Count == 2){
@@ -62,64 +108,21 @@ namespace Blackjack {
                         } else {
                             Console.WriteLine($"{player.Name} would you like to place insurance");
                         }
-                        Console.WriteLine("i : place insurance");
-                        Console.WriteLine("anyother key : continue");
-                        while (true) {
-                            string output = Console.ReadLine() ?? "";
-                            if (output == "y" || output == "n"){
-                                if(output == "y") {
-                                    Console.WriteLine($"{player.Name} How much would you like to place into insurance?");
-                                    while (true) {
-                                        string input = Console.ReadLine() ?? "";
-                                        bool sucsess = player.SetInsurance(input, handcount);
-                                        if(sucsess){break;}
-                                    }
-                                }
-                                break;
-                            } else {
-                                Console.WriteLine($"{player.Name} please select a vaild value");
+                        bool Output = RetrunValue();
+                        if (Output) {
+                            Console.WriteLine($"{player.Name} How much would you like to place into insurance?");
+                            while (true) {
+                                string input = Console.ReadLine() ?? "";
+                                bool sucsess = player.SetInsurance(input, handcount);
+                                if(sucsess){break;}
                             }
+                        } else {
+                            break;
                         }
                     }
                 }
             }
-            game.dealer.DealerBlackjack();
-            while (true){
-                Card card = blackjackdeck.DrawCard();
-                bool result = game.dealer.Dealerhit(card);
-                if(result == true){break;}
-            }
-            //Split
-            /*
-            foreach(Player player in game.players){
-                bool result =
-                if (){
-                    
-                }
-                if(game.dealer.Hand[0].Rank == game.dealer.Hand[0].Rank) {
-                    
-                }
-            }*/
-
-            while(game.Playing == true) {
-        
-
-                game.CheckIfGamesOver();
-            }
-            //TurnSequence();
-
-            //Console.WriteLine("game is over");
-            //Console.WriteLine("play another round: y");
-            //Console.WriteLine("stop playing: n");
-                
+            //continue
         }
     }
 }
-
-
-
-
-
-
-
-

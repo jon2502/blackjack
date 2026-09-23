@@ -12,8 +12,10 @@ public class DealerTest {
         game.SetPlayerNames(PlayerNames);
 
 
-        game.players[0].SetBet("10");
-        game.players[1].SetBet("20");
+        game.players[0].SetBet("10", 0);
+        game.players[1].SetBet("20", 0);
+
+        List<int> NumbList = [10, 20];
 
         game.players[0].SetInsurance("5", 0);
         game.players[1].SetInsurance("10", 0);
@@ -35,7 +37,9 @@ public class DealerTest {
         
         bool result = game.dealer.DealerBlackjack();
         Assert.False(result);
+
         game.Insurrance();
+
         foreach (Player player in game.players){
             Assert.True(player.InGame);
             Assert.NotEqual(0, player.Bet[0]);
@@ -51,6 +55,9 @@ public class DealerTest {
         game.dealer.Hand[0].Clear();
         game.players[0].Chips += 5;
         game.players[1].Chips += 10;
+            
+        game.players[0].Insurance = [0];
+        game.players[1].Insurance = [0];
 
         game.players[0].SetInsurance("5", 0);
         game.players[1].SetInsurance("10", 0);
@@ -65,9 +72,11 @@ public class DealerTest {
         game.dealer.Hand[0].Add(ace);
         game.dealer.Hand[0].Add(king);
 
-        game.Insurrance();
         bool newresult = game.dealer.DealerBlackjack();
         Assert.True(newresult);
+
+        game.Insurrance();
+
         foreach (Player player in game.players){
             Assert.False(player.InGame);
             Assert.Empty(player.Bet);
@@ -76,5 +85,94 @@ public class DealerTest {
         Assert.Equal(10, game.players[0].Retuns);
         Assert.Equal(20, game.players[1].Retuns);
     }
+
+    [Fact]
+    public void DealerHitTest() {
+        Game game = new Game();
+
+        Card two = new Card {
+            Suit = "♠",
+            Rank = "2",
+            Value = 2,
+        };
+
+        Card three = new Card {
+            Suit = "♥",
+            Rank = "3",
+            Value = 3,
+        };
+
+        Card queen = new Card {
+            Suit = "♠",
+            Rank = "Q",
+            Value = 10,
+        };
+
+        Card ace = new Card {
+            Suit = "♥",
+            Rank = "A",
+            Value = 11,
+        };
+        Card five = new Card {
+            Suit = "♥",
+            Rank = "5",
+            Value = 5,
+        };
+
+        Deck testdeck = new Deck();
         
+        testdeck.deck.Add(two);
+        testdeck.deck.Add(three);
+        testdeck.deck.Add(queen);
+        testdeck.deck.Add(ace);
+        testdeck.deck.Add(five);
+
+        Card four = new Card {
+            Suit = "♠",
+            Rank = "4",
+            Value = 4,
+        };
+
+        Card king = new Card {
+            Suit = "♥",
+            Rank = "K",
+            Value = 10,
+        };
+
+
+        game.dealer.Hand[0].Add(four);
+        game.dealer.Hand[0].Add(king);
+
+        int LoopRan = 0;
+        int Handsum = game.dealer.Hand[0].Sum(card => card.Value);
+        while (Handsum <= 16){
+            Card card = testdeck.DrawCard();
+            Handsum += card.Value;
+            bool result = game.dealer.Dealerhit(card);
+            Assert.False(result);
+            LoopRan ++;
+        };
+
+        Assert.Equal(3, testdeck.deck.Count);
+        Assert.Equal(2, LoopRan);
+        Assert.Equal(19, Handsum);
+
+        game.dealer.Hand[0].Clear();
+        game.dealer.Hand[0].Add(four);
+        game.dealer.Hand[0].Add(king);
+        Handsum = game.dealer.Hand[0].Sum(card => card.Value);
+        LoopRan = 0;
+        while (Handsum <= 16){
+            Card card = testdeck.DrawCard();
+            Handsum += card.Value;
+            bool result = game.dealer.Dealerhit(card);
+            Assert.True(result);
+            LoopRan ++;
+        };
+
+        Assert.Equal(2, testdeck.deck.Count);
+        Assert.Equal(1, LoopRan);
+        Assert.Equal(24, Handsum);
+    }
+
 }

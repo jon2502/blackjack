@@ -73,16 +73,16 @@ public class PlayerTest {
 
 
 
-        bool JhondoeResult = game.players[0].SetBet("tets");
-        bool AideneResult = game.players[1].SetBet("150");
-        bool JaneResult = game.players[2].SetBet("20");
+        bool JhondoeResult = game.players[0].SetBet("tets",0);
+        bool AideneResult = game.players[1].SetBet("150",0);
+        bool JaneResult = game.players[2].SetBet("20",0);
 
         Assert.False(JhondoeResult);
         Assert.False(AideneResult);
         Assert.True(JaneResult);
 
-        Assert.Empty(game.players[0].Bet);
-        Assert.Empty(game.players[1].Bet);
+        Assert.Equal(0, game.players[0].Bet[0]);
+        Assert.Equal(0, game.players[0].Bet[0]);
         Assert.Equal(20, game.players[2].Bet[0]);
 
         Assert.Equal(100, game.players[0].Chips);
@@ -95,9 +95,9 @@ public class PlayerTest {
         Game game = new Game();
         List<string> PlayerNames = new List<string> {"", "Aiden", "Jane", "jack", "Sofia"};
         game.SetPlayerNames(PlayerNames);
-        game.players[2].SetBet("40");
-        game.players[3].SetBet("20");
-        game.players[4].SetBet("100");
+        game.players[2].SetBet("40",0);
+        game.players[3].SetBet("20",0);
+        game.players[4].SetBet("100",0);
 
         bool JhondoeResult = game.players[0].SetInsurance("tets", 0);
         bool AideneResult = game.players[1].SetInsurance("150", 0);
@@ -113,10 +113,10 @@ public class PlayerTest {
         Assert.False(JackResult);
         Assert.True(SofiaResult);
 
-        Assert.Empty(game.players[0].Insurance);
-        Assert.Empty(game.players[1].Insurance);
+        Assert.Equal(0, game.players[0].Insurance[0]);
+        Assert.Equal(0, game.players[1].Insurance[0]);
         Assert.Equal(20, game.players[2].Insurance[0]);
-        Assert.Empty(game.players[3].Insurance);
+        Assert.Equal(0, game.players[3].Insurance[0]);
         Assert.Equal(0, game.players[4].Insurance[0]);
 
         Assert.Equal(100, game.players[0].Chips);
@@ -133,7 +133,7 @@ public class PlayerTest {
         Game game = new Game();
         List<string> PlayerNames = new List<string> {""};
         game.SetPlayerNames(PlayerNames);
-        game.players[0].SetBet("100");
+        game.players[0].SetBet("100",0);
         game.players[0].Surrender();
 
         Assert.Empty(game.players[0].Bet);
@@ -141,5 +141,106 @@ public class PlayerTest {
         Assert.Equal(50, game.players[0].Chips);
         Assert.False(game.players[0].InGame);
 
+    }
+
+    [Fact]
+    public void SplitTest(){
+        Game game = new Game();
+        List<string> PlayerNames = new List<string> {"Aiden", "Jane", "", "Jennifer"};
+        game.SetPlayerNames(PlayerNames);
+
+        Card ace = new Card {
+            Suit = "♥",
+            Rank = "A",
+            Value = 11,
+        };
+        Card two = new Card {
+            Suit = "♠",
+            Rank = "2",
+            Value = 2,
+        };
+
+        Card three = new Card {
+            Suit = "♥",
+            Rank = "3",
+            Value = 3,
+        };
+
+        Card queen = new Card {
+            Suit = "♠",
+            Rank = "Q",
+            Value = 10,
+        };
+        Card five = new Card {
+            Suit = "♥",
+            Rank = "5",
+            Value = 5,
+        };
+        Card king = new Card {
+            Suit = "♠",
+            Rank = "K",
+            Value = 10,
+        };
+
+        Deck testdeck = new Deck();
+
+        testdeck.deck.Add(ace);
+        testdeck.deck.Add(two);
+        testdeck.deck.Add(three);
+        testdeck.deck.Add(five);
+        testdeck.deck.Add(five);
+        testdeck.deck.Add(five);
+        testdeck.deck.Add(five);
+        testdeck.deck.Add(five);
+        testdeck.deck.Add(five);
+        testdeck.deck.Add(five);
+        testdeck.deck.Add(five);
+
+        game.players[0].Hand[0].Add(ace);
+        game.players[0].Hand[0].Add(ace);
+
+        game.players[1].Hand[0].Add(queen);
+        game.players[1].Hand[0].Add(king);
+
+        game.players[2].Hand[0].Add(ace);
+        game.players[2].Hand[0].Add(ace);
+        game.players[2].Hand[0].Add(ace);
+
+        game.players[3].Hand[0].Add(king);
+        game.players[3].Hand[0].Add(five);
+
+
+        foreach (Player player in game.players) {
+            for (int HandIndex = 0; HandIndex < player.Hand.Count; HandIndex++) {
+                while (true) {
+                    bool result = player.Splitcheck(player.Hand[HandIndex]);
+                    if(result) {
+                    if(player.Hand[HandIndex].FindAll(card => card.Rank == "A").Count == 2) {
+                        Console.WriteLine($"{player.Name} you have two aces so your hand will be split");
+                        player.Split(HandIndex);
+                    } else {
+                        player.Split(HandIndex);
+                    }
+                        Card FirstCard = testdeck.DrawCard();
+                        player.DrawACard(FirstCard, HandIndex);
+
+                        Card SecondCard = testdeck.DrawCard();
+                        player.DrawACard(SecondCard, HandIndex+1); 
+                    } else {
+                        break;
+                    }
+                }
+            }
+
+            if(player.Name == "Aiden") {
+                Assert.Equal(3, player.Hand.Count);
+            }
+            if(player.Name == "Jane") {
+                Assert.Equal(2, player.Hand.Count);
+            }
+            if(player.Name == "Jhon Doe" || player.Name == "Jennifer"){
+                Assert.Single(player.Hand);
+            }
+        }
     }
 }

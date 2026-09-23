@@ -57,7 +57,10 @@ public class Game {
             i++;
         }
         foreach (Player player in players) {
-            Console.WriteLine($"{player.Name}'s hand is {player.Hand[0][0].Suit}{player.Hand[0][0].Rank} and {player.Hand[0][1].Suit}{player.Hand[0][1].Rank}");
+            bool result = player.PlayerBlackjack(0);
+            if (!result){
+                Console.WriteLine($"{player.Name}'s hand is {player.Hand[0][0].Suit}{player.Hand[0][0].Rank} and {player.Hand[0][1].Suit}{player.Hand[0][1].Rank}");
+            }
         }
         Console.WriteLine($"the {dealer.Name} has a {dealer.Hand[0][0].Suit}{dealer.Hand[0][0].Rank}");
 
@@ -69,17 +72,16 @@ public class Game {
         bool result = dealer.DealerBlackjack();
         if (result) {
             foreach (Player player in players) {
-            player.Bet.Clear();
-            player.InGame = false;
-            for (int i = 0; i < player.Insurance.Count; i++)
-            {
-                player.Retuns += player.Insurance[i] * 2;
-
-            }
-            player.Insurance.Clear();
-            player.Hand.Clear();
-            player.CheckPlayerState();
-        }
+                player.Bet.Clear();
+                player.InGame = false;
+                for (int i = 0; i < player.Insurance.Count; i++)
+                {
+                    player.Retuns += player.Insurance[i] * 2;
+                }
+                player.Insurance.Clear();
+                player.Hand.Clear();
+                player.CheckPlayerState();
+                }
         } else {
             foreach (Player player in players) {
                 player.Insurance.Clear();

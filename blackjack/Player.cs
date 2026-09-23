@@ -1,27 +1,27 @@
 using System;
 
 public class Player : Participant {
-    //public List<List<Card>> splithand  = new List<List<Card>>();
-
     public int PlayerID {get; set;}
     public double Chips {get; set;} = 100;
 
-    public List<double> Bet {get; set;} = new List<double>();
+    public List<double> Bet {get; set;} = [0];
+    public List<double> Insurance {get; set;} = [0];
 
-    public List<double> Insurance {get; set;} = new List<double>();
+    public List<bool> Stand {get; set;} = [false];
 
     public double Retuns {get; set;} = 0;
+    public bool InGame {get; set;} = true;
 
-    public bool SetBet(string value) {
+    public bool SetBet(string value, int i) {
         try {
-            int Intamount = Int32.Parse(value);
-            if (Intamount > Chips) {
+            double output = Double.Parse(value);
+            if (output > Chips) {
                 Console.WriteLine($"{Name} balance to low");
                 return false;
             } else {
-                Console.WriteLine(Intamount);
-                Chips -= Intamount;
-                Bet.Add(Intamount);
+                Console.WriteLine(output);
+                Chips -= output;
+                Bet[i] = output;
                 Console.WriteLine($"{Name} bet is {Bet[0]}");
                 return true;
             }
@@ -31,27 +31,19 @@ public class Player : Participant {
         }
     }
 
-/*    public bool CanInsure() {
-        if(Chips < Bet/2) {
-            Console.WriteLine($"{Name} dosent have enough to insure");
-            return false;
-        }
-        return true;
-    }*/
-
     public bool SetInsurance(string value, int i) {
         try {
-            int Intamount = Int32.Parse(value);
+             double output = Double.Parse(value);
             
-            if (Intamount > Chips) {
+            if (output > Chips) {
                 Console.WriteLine($"{Name} balance to low");
                 return false;
-            } else if (Intamount > Bet[i] / 2) {
+            } else if (output > Bet[i] / 2) {
                 Console.WriteLine($"{Name} Inssurance can max be half your bet");
                 return false;
             } else {
-                Chips -= Intamount;
-                Insurance.Add(Intamount); 
+                Chips -= output;
+                Insurance[i] = output; 
                 return true;
             }
         } catch {
@@ -60,13 +52,16 @@ public class Player : Participant {
         }
     }
 
-    public void PlayerBlackjack() {
-        bool result = Blackjack();
+    public bool PlayerBlackjack(int i) {
+        bool result = Blackjack(i);
         if(result) {
             Console.WriteLine($"{Name} got BlackJack");
-            InGame = false;
-            Retuns = Bet[0] * 1.5;
+            Retuns = Bet[i] * 1.5;
+            Stand[i] = true;
+            CheckPlayerState();
+            return true;
         }
+        return false;
     }
 
     public void PlayerBust() {
@@ -75,38 +70,45 @@ public class Player : Participant {
             bool result = BustCheck(i);
             if(result) {
                 Console.WriteLine($"{Name} Bust");
-                InGame = false;
+                Stand[i] = true;
                 Bet[i] = 0;
-        }
+                CheckPlayerState();
+            }
         }
 
         
     }
 
     public void DoubleDown() {
-
-        InGame = false;
+        
     }
 
-    /*public bool Splitcheck(List<Card> hand) {
-        if(hand[0].Rank == hand[1].Rank){
+    public bool Splitcheck(List<Card> hand) {
+        if(hand.Count == 2 && hand[0].Value == hand[1].Value){
             return true;
         } return false;
     }
 
-    public void Split() {
-        
-    }*/
+    public void Split(int i) {
+        Card card = Hand[i].Last();
+        Hand[i].RemoveAt(Hand[i].Count-1);
+        Hand.Add([card]);
+        Bet.Add(0);
+        Insurance.Add(0);
+        Stand.Add(false);
+    }
 
     public void Surrender() {
         Chips += Bet[0]/2;
         Bet.Clear();
+        Insurance.Clear();
         Hand.Clear();
         CheckPlayerState();
     }
 
+
     public void CheckPlayerState(){
-        if(Hand.Count <= 0){
+        if(Stand.All(x => x==true) || Hand.Count <= 0){
             InGame = false;
         } else {
             InGame = true;

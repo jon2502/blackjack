@@ -6,7 +6,7 @@ public class Dealer : Participant {
     }*/
     
     public bool DealerBlackjack() {
-        bool result = Blackjack();
+        bool result = Blackjack(0);
         if(result) {
             Console.WriteLine($"the {Name} got BlackJack with a hand of {Hand[0][0].Suit}{Hand[0][0].Rank} and {Hand[0][1].Suit}{Hand[0][1].Rank}");
             Console.WriteLine($"{Name} All players lose");
@@ -18,11 +18,10 @@ public class Dealer : Participant {
     
     public bool Dealerhit(Card card){
         int Handsum = Hand[0].Sum(card => card.Value);
-        if(Handsum <= 16) {
-            DrawACard(card, 0);
-            BustCheck(0);
-            return false;
-        }
-        return true;
+        DrawACard(card, 0);
+        bool result = BustCheck(0);
+        if (result){
+            return true;
+        } else return false;
     }
 }

@@ -1,19 +1,15 @@
 public class Participant {
     public string Name {get; set;} = "Jhon Doe";
 
-    public List<List<Card>> Hand = new List<List<Card>>{
-        new List<Card>()
-    };
-
-    public bool InGame {get; set;} = true;
+    public List<List<Card>> Hand = [[]];
 
     public bool Bust {get; set;} = false;
 
     public void DrawACard(Card card, int i){
        Hand[i].Add(card); 
     }
-    public bool Blackjack() {
-        int Handsum = Hand[0].Sum(card => card.Value);
+    public bool Blackjack(int i) {
+        int Handsum = Hand[i].Sum(card => card.Value);
         if(Handsum == 21) {
             return true;
         }
@@ -22,6 +18,14 @@ public class Participant {
 
     public bool BustCheck(int i){
         int Handsum = Hand[i].Sum(card => card.Value);
+        int AceCount = Hand[i].FindAll(card => card.Rank == "A" && card.Value == 11).Count;
+        
+        while (Handsum > 21 && AceCount > 0) {
+            Card? FoundAce = Hand[i].Find(card => card.Rank == "A" && card.Value == 11);
+            FoundAce?.Value = 1;
+            Handsum -= 10;
+            AceCount --;
+        }
         if(Handsum > 21) {
             Bust = true;
             return true;
