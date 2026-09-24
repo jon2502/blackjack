@@ -1,0 +1,91 @@
+<svg viewBox="23 3 703 745" xmlns="http://www.w3.org/2000/svg">
+<defs><filter id="shadow" x="-10%" y="-10%">
+  <feGaussianBlur in="SourceGraphic" stdDeviation="1" />
+</filter></defs><g transform="translate(0.5,0.5)" stroke-width="0.75">
+<rect width="225" height="371" x="32" y="372" stroke="none" fill="lightgray" style="filter:url(#shadow);"/>
+<rect width="225" height="371" x="30" y="370" stroke="black" fill="white"/>
+<text x="142" y="389" font-size="11.75px" font-family="Arial, Helvetica, sans-serif" font-weight="bold" font-style="normal" text-anchor="middle">Player : Participants</text>
+<line x1="30" y1="398" x2="255" y2="398" stroke="black"/>
+<text x="37" y="416" font-size="11.75px" font-family="Arial, Helvetica, sans-serif" font-weight="normal" font-style="normal" text-anchor="start">+ Chips: float</text>
+<text x="37" y="432" font-size="11.75px" font-family="Arial, Helvetica, sans-serif" font-weight="normal" font-style="normal" text-anchor="start">+ Bet: List&lt;float&gt;</text>
+<text x="37" y="448" font-size="11.75px" font-family="Arial, Helvetica, sans-serif" font-weight="normal" font-style="normal" text-anchor="start">+ Insurance: List&lt;float&gt;</text>
+<text x="37" y="464" font-size="11.75px" font-family="Arial, Helvetica, sans-serif" font-weight="normal" font-style="normal" text-anchor="start">+ Stand: List&lt;bool&gt;</text>
+<text x="37" y="480" font-size="11.75px" font-family="Arial, Helvetica, sans-serif" font-weight="normal" font-style="normal" text-anchor="start">+ Retuns: float</text>
+<text x="37" y="496" font-size="11.75px" font-family="Arial, Helvetica, sans-serif" font-weight="normal" font-style="normal" text-anchor="start">+ InGame: bool</text>
+<line x1="30" y1="506" x2="255" y2="506" stroke="black"/>
+<text x="37" y="524" font-size="11.75px" font-family="Arial, Helvetica, sans-serif" font-weight="normal" font-style="normal" text-anchor="start">+ PlayerOption(): bool</text>
+<text x="37" y="540" font-size="11.75px" font-family="Arial, Helvetica, sans-serif" font-weight="normal" font-style="normal" text-anchor="start">+ SetBet(value: string, i: int): bool</text>
+<text x="37" y="556" font-size="11.75px" font-family="Arial, Helvetica, sans-serif" font-weight="normal" font-style="normal" text-anchor="start">+ DoyouWantInssurance (i: int): bool</text>
+<text x="37" y="572" font-size="11.75px" font-family="Arial, Helvetica, sans-serif" font-weight="normal" font-style="normal" text-anchor="start">+ SetInsurance((value: string, i: int): void</text>
+<text x="37" y="588" font-size="11.75px" font-family="Arial, Helvetica, sans-serif" font-weight="normal" font-style="normal" text-anchor="start">+ PlayerBlackjack(i: int): void</text>
+<text x="37" y="604" font-size="11.75px" font-family="Arial, Helvetica, sans-serif" font-weight="normal" font-style="normal" text-anchor="start">+ BustCheck(index: int): bool</text>
+<text x="37" y="620" font-size="11.75px" font-family="Arial, Helvetica, sans-serif" font-weight="normal" font-style="normal" text-anchor="start">+ DoubleDown(i: int): bool</text>
+<text x="37" y="636" font-size="11.75px" font-family="Arial, Helvetica, sans-serif" font-weight="normal" font-style="normal" text-anchor="start">+ Split(i: int): bool</text>
+<text x="37" y="652" font-size="11.75px" font-family="Arial, Helvetica, sans-serif" font-weight="normal" font-style="normal" text-anchor="start">+ Surrender(i: int): void</text>
+<text x="37" y="668" font-size="11.75px" font-family="Arial, Helvetica, sans-serif" font-weight="normal" font-style="normal" text-anchor="start">+ StandOrHit(i: int): bool</text>
+<text x="37" y="684" font-size="11.75px" font-family="Arial, Helvetica, sans-serif" font-weight="normal" font-style="normal" text-anchor="start">+ Results(dealer: Dealer): void</text>
+<text x="37" y="700" font-size="11.75px" font-family="Arial, Helvetica, sans-serif" font-weight="normal" font-style="normal" text-anchor="start">+ CanPlay(): bool</text>
+<text x="37" y="716" font-size="11.75px" font-family="Arial, Helvetica, sans-serif" font-weight="normal" font-style="normal" text-anchor="start">+ WanttoContinue(): bool</text>
+<text x="37" y="732" font-size="11.75px" font-family="Arial, Helvetica, sans-serif" font-weight="normal" font-style="normal" text-anchor="start">+ CheckPlayerState(): void</text>
+<rect width="178" height="180" x="292" y="272" stroke="none" fill="lightgray" style="filter:url(#shadow);"/>
+<rect width="178" height="180" x="290" y="270" stroke="black" fill="white"/>
+<text x="379" y="289" font-size="11.75px" font-family="Arial, Helvetica, sans-serif" font-weight="bold" font-style="normal" text-anchor="middle">Participants</text>
+<line x1="290" y1="298" x2="468" y2="298" stroke="black"/>
+<text x="297" y="316" font-size="11.75px" font-family="Arial, Helvetica, sans-serif" font-weight="normal" font-style="normal" text-anchor="start">+ Name: string</text>
+<text x="297" y="332" font-size="11.75px" font-family="Arial, Helvetica, sans-serif" font-weight="normal" font-style="normal" text-anchor="start">+ Hand: List&lt;List&lt;Card&gt;&gt;</text>
+<text x="297" y="348" font-size="11.75px" font-family="Arial, Helvetica, sans-serif" font-weight="normal" font-style="normal" text-anchor="start">+ InGame: bool</text>
+<line x1="290" y1="358" x2="468" y2="358" stroke="black"/>
+<text x="297" y="376" font-size="11.75px" font-family="Arial, Helvetica, sans-serif" font-weight="normal" font-style="normal" text-anchor="start">+ DrawACard (card: Card): void</text>
+<text x="297" y="392" font-size="11.75px" font-family="Arial, Helvetica, sans-serif" font-weight="normal" font-style="normal" text-anchor="start">+ Blackjack(): bool</text>
+<text x="297" y="408" font-size="11.75px" font-family="Arial, Helvetica, sans-serif" font-weight="normal" font-style="normal" text-anchor="start">+ DisplayHand(i: Int): void</text>
+<text x="297" y="424" font-size="11.75px" font-family="Arial, Helvetica, sans-serif" font-weight="normal" font-style="normal" text-anchor="start">+ Blackjack(i: int): void</text>
+<text x="297" y="440" font-size="11.75px" font-family="Arial, Helvetica, sans-serif" font-weight="normal" font-style="normal" text-anchor="start">+ BustCheck(i: int): bool</text>
+<rect width="164" height="75" x="372" y="482" stroke="none" fill="lightgray" style="filter:url(#shadow);"/>
+<rect width="164" height="75" x="370" y="480" stroke="black" fill="white"/>
+<text x="452" y="499" font-size="11.75px" font-family="Arial, Helvetica, sans-serif" font-weight="bold" font-style="normal" text-anchor="middle">Dealer : Participants</text>
+<line x1="370" y1="509" x2="534" y2="509" stroke="black"/>
+<text x="377" y="527" font-size="11.75px" font-family="Arial, Helvetica, sans-serif" font-weight="normal" font-style="normal" text-anchor="start">+ DealerBlackjack(): bool</text>
+<text x="377" y="543" font-size="11.75px" font-family="Arial, Helvetica, sans-serif" font-weight="normal" font-style="normal" text-anchor="start">+ Dealerhit(card: Card): bool</text>
+<rect width="100" height="88" x="552" y="482" stroke="none" fill="lightgray" style="filter:url(#shadow);"/>
+<rect width="100" height="88" x="550" y="480" stroke="black" fill="white"/>
+<text x="600" y="499" font-size="11.75px" font-family="Arial, Helvetica, sans-serif" font-weight="bold" font-style="normal" text-anchor="middle">Card</text>
+<line x1="550" y1="508" x2="650" y2="508" stroke="black"/>
+<text x="557" y="526" font-size="11.75px" font-family="Arial, Helvetica, sans-serif" font-weight="normal" font-style="normal" text-anchor="start">+ Suit: string</text>
+<text x="557" y="542" font-size="11.75px" font-family="Arial, Helvetica, sans-serif" font-weight="normal" font-style="normal" text-anchor="start">+ Rant: string</text>
+<text x="557" y="558" font-size="11.75px" font-family="Arial, Helvetica, sans-serif" font-weight="normal" font-style="normal" text-anchor="start">+ Value: int</text>
+<rect width="260" height="228" x="372" y="12" stroke="none" fill="lightgray" style="filter:url(#shadow);"/>
+<rect width="260" height="228" x="370" y="10" stroke="black" fill="white"/>
+<text x="500" y="29" font-size="11.75px" font-family="Arial, Helvetica, sans-serif" font-weight="bold" font-style="normal" text-anchor="middle">Game</text>
+<line x1="370" y1="38" x2="630" y2="38" stroke="black"/>
+<text x="377" y="56" font-size="11.75px" font-family="Arial, Helvetica, sans-serif" font-weight="normal" font-style="normal" text-anchor="start">+ players: List&lt;Player&gt;</text>
+<text x="377" y="72" font-size="11.75px" font-family="Arial, Helvetica, sans-serif" font-weight="normal" font-style="normal" text-anchor="start">+ PlayerCount: int</text>
+<text x="377" y="88" font-size="11.75px" font-family="Arial, Helvetica, sans-serif" font-weight="normal" font-style="normal" text-anchor="start">+ Playing: bool</text>
+<line x1="370" y1="98" x2="630" y2="98" stroke="black"/>
+<text x="377" y="116" font-size="11.75px" font-family="Arial, Helvetica, sans-serif" font-weight="normal" font-style="normal" text-anchor="start">+ dealer: new Dealer</text>
+<text x="377" y="132" font-size="11.75px" font-family="Arial, Helvetica, sans-serif" font-weight="normal" font-style="normal" text-anchor="start">+ SetPlayerCount(input: string): bool</text>
+<text x="377" y="148" font-size="11.75px" font-family="Arial, Helvetica, sans-serif" font-weight="normal" font-style="normal" text-anchor="start">+ SetPlayerNames(playernames: string[]): void</text>
+<text x="377" y="164" font-size="11.75px" font-family="Arial, Helvetica, sans-serif" font-weight="normal" font-style="normal" text-anchor="start">+ GetStartingHands(blackjackdeck: Deck): void</text>
+<text x="377" y="180" font-size="11.75px" font-family="Arial, Helvetica, sans-serif" font-weight="normal" font-style="normal" text-anchor="start">+ CheckInsurrance(): void</text>
+<text x="377" y="196" font-size="11.75px" font-family="Arial, Helvetica, sans-serif" font-weight="normal" font-style="normal" text-anchor="start">+ CheckIfGamesOver(): void</text>
+<text x="377" y="212" font-size="11.75px" font-family="Arial, Helvetica, sans-serif" font-weight="normal" font-style="normal" text-anchor="start">+ GameCleanup(): void</text>
+<text x="377" y="228" font-size="11.75px" font-family="Arial, Helvetica, sans-serif" font-weight="normal" font-style="normal" text-anchor="start">+ CheckIfNewroundBegins(). void</text>
+<rect width="189" height="148" x="532" y="272" stroke="none" fill="lightgray" style="filter:url(#shadow);"/>
+<rect width="189" height="148" x="530" y="270" stroke="black" fill="white"/>
+<text x="624" y="289" font-size="11.75px" font-family="Arial, Helvetica, sans-serif" font-weight="bold" font-style="normal" text-anchor="middle">Deck</text>
+<line x1="530" y1="298" x2="719" y2="298" stroke="black"/>
+<text x="537" y="316" font-size="11.75px" font-family="Arial, Helvetica, sans-serif" font-weight="normal" font-style="normal" text-anchor="start">+ deck: List&lt;Card&gt;</text>
+<text x="537" y="332" font-size="11.75px" font-family="Arial, Helvetica, sans-serif" font-weight="normal" font-style="normal" text-anchor="start">+ DeckSize: int</text>
+<text x="537" y="348" font-size="11.75px" font-family="Arial, Helvetica, sans-serif" font-weight="normal" font-style="normal" text-anchor="start">+ PlayingCards: string []</text>
+<line x1="530" y1="358" x2="719" y2="358" stroke="black"/>
+<text x="537" y="376" font-size="11.75px" font-family="Arial, Helvetica, sans-serif" font-weight="normal" font-style="normal" text-anchor="start">+ SetDecksize(input: string): bool</text>
+<text x="537" y="392" font-size="11.75px" font-family="Arial, Helvetica, sans-serif" font-weight="normal" font-style="normal" text-anchor="start">+ CreateDeck(): bool</text>
+<text x="537" y="408" font-size="11.75px" font-family="Arial, Helvetica, sans-serif" font-weight="normal" font-style="normal" text-anchor="start">+ DrawCard(): Card</text>
+<path d="M 290 360 L 272 360 L 272 560 L 255 560" stroke="black" fill="none"/>
+<path d="M 255 560 L 264 565 L 264 555 L 255 560" stroke="black" fill="white"/>
+<path d="M 380 450 L 380 465 L 450 465 L 450 480" stroke="black" fill="none"/>
+<path d="M 450 480 L 455 471 L 445 471 L 450 480" stroke="black" fill="white"/>
+<path d="M 600 480 L 600 455 L 620 455 L 620 418" stroke="black" fill="none"/>
+<path d="M 600 480 L 600 455 L 390 455 L 390 450" stroke="black" fill="none"/>
+<path d="M 500 238 L 500 254 L 620 254 L 620 270" stroke="black" fill="none"/>
+<path d="M 500 238 L 500 254 L 380 254 L 380 270" stroke="black" fill="none"/>
+</g></svg>

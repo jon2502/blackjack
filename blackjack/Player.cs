@@ -1,20 +1,18 @@
 using System;
 
 public class Player : Participant {
-    public int PlayerID {get; set;}
-    public double Chips {get; set;} = 100;
-
-    public List<double> Bet {get; set;} = [0];
-    public List<double> Insurance {get; set;} = [0];
+    public float Chips {get; set;} = 100;
+    public List<float> Bet {get; set;} = [0];
+    public List<float> Insurance {get; set;} = [0];
 
     public List<bool> Stand {get; set;} = [false];
 
-    public double Retuns {get; set;} = 0;
+    public float Retuns {get; set;} = 0;
     public bool InGame {get; set;} = true;
 
     public static bool PlayerOption () {
             Console.WriteLine("y : yes");
-            Console.WriteLine("anyother key : continue");
+            Console.WriteLine("anyother key : no");
             string Output = Console.ReadLine() ?? "";
             if (Output == "y" || Output== "Y") {
                 return true;
@@ -23,7 +21,7 @@ public class Player : Participant {
 
     public bool SetBet(string value, int i) {
         try {
-            double output = Double.Parse(value);
+            float output = float.Parse(value);
             if (output > Chips) {
                 Console.WriteLine($"{Name} balance to low");
                 return false;
@@ -49,7 +47,7 @@ public class Player : Participant {
 
     public bool SetInsurance(string value, int i) {
         try {
-             double output = Double.Parse(value);
+             float output = float.Parse(value);
             
             if (output > Chips) {
                 Console.WriteLine($"{Name} balance to low");
@@ -72,7 +70,7 @@ public class Player : Participant {
         bool result = Blackjack(i);
         if(result) {
             Console.WriteLine($"{Name} got BlackJack");
-            Retuns = Bet[i] * 1.5;
+            Retuns = Bet[i] * 1.5f;
             Stand[i] = true;
             CheckPlayerState();
             return true;
@@ -161,6 +159,38 @@ public class Player : Participant {
         Console.WriteLine($"with a bet of {Bet[i]}");
         bool Output = PlayerOption();
         return Output;
+    }
+
+    public void Results(Dealer dealer) {
+        int DealerHandValue = dealer.Hand[0].Sum(card => card.Value);
+        for (int i = 0; i < Hand.Count; i++) {
+            int handValue = Hand[i].Sum(card => card.Value);
+            if(handValue > DealerHandValue) {
+                Retuns += Bet[0];
+                Chips += Bet[0];
+            } else if (handValue < DealerHandValue) {
+                Bet[0] = 0;
+            } else {
+                 Chips += Bet[0];
+            };
+        }
+        Chips += Retuns;
+        Retuns = 0;
+    }
+
+    public bool Canplay(){
+        double AllBets = Bet.Sum(bet => bet);
+        if(Chips <= 0 && AllBets <= 0 && Retuns <= 0){
+            return false;
+        }
+        return true;
+    }
+
+    public bool WanttoContinue() {
+        Console.WriteLine($"{Name} would you continue or would you like to leave the table");
+        bool Output = PlayerOption();
+        return Output;
+
     }
 
     public void CheckPlayerState(){

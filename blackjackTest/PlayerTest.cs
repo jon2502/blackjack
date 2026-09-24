@@ -38,13 +38,10 @@ public class PlayerTest {
         game.SetPlayerNames(PlayerNames);
     
         Assert.Equal("Aiden", game.players[0].Name);
-        Assert.Equal(0, game.players[0].PlayerID);
 
         Assert.Equal("Jhon Doe", game.players[1].Name);
-        Assert.Equal(1, game.players[1].PlayerID);
 
         Assert.Equal("Jennifer", game.players[2].Name);
-        Assert.Equal(2, game.players[2].PlayerID);
 
     }
 

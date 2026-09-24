@@ -5,24 +5,23 @@ namespace Blackjack {
         static void Main(string[] args) {
             Game game = new Game();
 
-            Console.WriteLine("Hello how may players are you: from 1 - 7");
+            Console.WriteLine($"Hello how may players are you: from 1 - {7-game.PlayerCount}");
             while (true){
                 string input = Console.ReadLine() ?? "";
                 bool sucsess = game.SetPlayerCount(input);
                 if(sucsess == true){break;}
             }
             
-            int i = 0;
             List<string> NameList = new List<string>();
-            while (game.PlayerCount >  i){
-                Console.WriteLine($"player {i+1} select write your name");
+            for (int i = 0; i < game.PlayerCount; i++) {
+                 Console.WriteLine($"player {i+1} select write your name");
                 string playerName = Console.ReadLine() ?? "";
                 NameList.Add(playerName);
                 i ++;
             }
             game.SetPlayerNames(NameList);
 
-            while (true) {
+            while (game.Playing) {
                 Deck blackjackdeck = new Deck();
 
                 Console.WriteLine("select deck size");
@@ -134,14 +133,21 @@ namespace Blackjack {
                     }
                     game.CheckIfGamesOver();
                 }
-
-                /*bool Continue = PrintFinal();
-                if (Continue) {
-                    //restark
-                } else {
-                    Console.WriteLine($"The game is over");
-                    break;
-                }*/
+                game.GameCleanup();
+                if(game.PlayerCount < 7)
+                Console.WriteLine("Would any new players like to join?");
+                Console.WriteLine("y : yes");
+                Console.WriteLine("anyother key : no");
+                string Output1 = Console.ReadLine() ?? "";
+                if (Output1 == "y" || Output1 == "Y") {
+                    Console.WriteLine($"Hello how may players are you: from 1 - {7-game.PlayerCount}");
+                    while (true){
+                        string input = Console.ReadLine() ?? "";
+                        bool sucsess = game.SetPlayerCount(input);
+                        if(sucsess == true){break;}
+                    }
+                }
+                game.CheckIfNewroundBegins();
             }
         }
     }

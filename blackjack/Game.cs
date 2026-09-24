@@ -15,15 +15,15 @@ public class Game {
         try {
             int output = Int32.Parse(input);
             Console.WriteLine(output);
-            if( output >= 1 && output <= 7){
+            if( output >= 1 && output <= 7-PlayerCount){
                 PlayerCount = output;
                 return true;
             } else {
-                Console.WriteLine("Please select a number between 1 and 7");
+                Console.WriteLine($"Please select a number between 1 and {7-PlayerCount}");
                 return false;
             }
         } catch {
-            Console.WriteLine("Please select a number between 1 and 7");
+            Console.WriteLine($"Please select a number between 1 and {7-PlayerCount}");
             return false;
         }
     }
@@ -36,7 +36,6 @@ public class Game {
             if (!string.IsNullOrWhiteSpace(playernames[i])){
                 player.Name = playernames[i];
             }
-            player.PlayerID = i;
             players.Add(player);
             Console.WriteLine(player.Name);
         }
@@ -91,4 +90,37 @@ public class Game {
         }
     }
 
+    public void GameCleanup(){
+        for (int i = 0; i < players.Count; i++){
+            players[i].Results(dealer);
+            bool canplay = players[i].Canplay();
+            if (!canplay) {
+                 Console.WriteLine($"{players[i].Name} is out of chips and cant continue");
+                players.RemoveAt(i);
+                i --;
+            }
+            bool WantToContinue = players[i].WanttoContinue();
+            if (!WantToContinue) {
+                Console.WriteLine($"{players[i].Name} has left the table with {players[i].Chips} chips");
+                players.RemoveAt(i);
+                i --;
+            }
+        }
+        PlayerCount = players.Count;
+    }
+
+  public void CheckIfNewroundBegins() {
+        if(players.Count > 0) {
+            foreach(Player player in players) {
+                player.Bet = [0];
+                player.Insurance = [0];
+                player.Stand = [false];
+                player.Hand = [[]];
+            }
+        } else {
+             Console.WriteLine($"no players at the table: game over");
+
+            Playing = false;
+        }
+    }
 }

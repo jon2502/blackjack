@@ -3,13 +3,10 @@ public class Participant {
 
     public List<List<Card>> Hand = [[]];
 
-    public bool Bust {get; set;} = false;
-
     public void DrawACard(Card card, int i){
        Hand[i].Add(card);
        BustCheck(i);
     }
-
 
     public void DisplayHand(int i){
         foreach(Card card in Hand[i]){
@@ -36,7 +33,6 @@ public class Participant {
             AceCount --;
         }
         if(Handsum > 21) {
-            Bust = true;
             return true;
         }
         return false;
