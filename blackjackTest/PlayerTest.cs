@@ -10,8 +10,7 @@ public class PlayerTest {
     [InlineData("8")]
     public void selectPlayeramountTestIncorrect(string value){
         Game game = new Game();
-        Console.SetIn(new StringReader(value));
-        bool result = game.SetPlayerCount();
+        bool result = game.SetPlayerCount(value);
         Assert.False(result);
     }
 
@@ -25,8 +24,7 @@ public class PlayerTest {
     [InlineData("7")]
     public void selectPlayeramountTestIntCorrect(string value) {
         Game game = new Game();
-        Console.SetIn(new StringReader(value));
-        bool result = game.SetPlayerCount();
+        bool result = game.SetPlayerCount(value);
         Assert.True(result);
     }
 
@@ -72,8 +70,6 @@ public class PlayerTest {
         Game game = new Game();
         List<string> PlayerNames = new List<string> {"", "Aiden", "Jane"};
         game.SetPlayerNames(PlayerNames);
-
-
 
         bool JhondoeResult = game.players[0].SetBet("tets",0);
         bool AideneResult = game.players[1].SetBet("150",0);
@@ -134,9 +130,10 @@ public class PlayerTest {
      public void SurrenderTest(){
         Game game = new Game();
         List<string> PlayerNames = new List<string> {""};
+        Console.SetIn(new StringReader("y"));
         game.SetPlayerNames(PlayerNames);
         game.players[0].SetBet("100",0);
-        game.players[0].Surrender();
+        game.players[0].Surrender(0);
 
         Assert.Empty(game.players[0].Bet);
         Assert.Empty(game.players[0].Insurance);
@@ -211,26 +208,22 @@ public class PlayerTest {
         game.players[3].Hand[0].Add(king);
         game.players[3].Hand[0].Add(five);
 
-
+        Console.SetIn(new StringReader("y"));
         foreach (Player player in game.players) {
             for (int HandIndex = 0; HandIndex < player.Hand.Count; HandIndex++) {
                 while (true) {
-                    bool result = player.Splitcheck(HandIndex);
-                    if(result) {
-                    if(player.Hand[HandIndex].FindAll(card => card.Rank == "A").Count == 2) {
-                        Console.WriteLine($"{player.Name} you have two aces so your hand will be split");
-                        player.Split(HandIndex);
-                    } else {
-                        player.Split(HandIndex);
-                    }
+                    bool DidSplit = player.Split(HandIndex);
+                    if (DidSplit) {
                         Card FirstCard = testdeck.DrawCard();
                         player.DrawACard(FirstCard, HandIndex);
 
                         Card SecondCard = testdeck.DrawCard();
-                        player.DrawACard(SecondCard, HandIndex+1); 
-                    } else {
-                        break;
+                        player.DrawACard(SecondCard, HandIndex+1);
+
+                        Console.WriteLine($"{player.Name} place bet for new hand");
+                        bool BetResult = player.SetBet("10", HandIndex+1);
                     }
+                    else {break;}
                 }
             }
 
@@ -292,11 +285,12 @@ public class PlayerTest {
 
 
         foreach (Player player in game.players){
-            if(player.Bet[0] > player.Chips){
-                Console.WriteLine($"{player.Name} balance to low you cant Double down");
-            } else {
+            Console.SetIn(new StringReader("y"));
+            bool DidDoubleDown = player.DoubleDown(0);
+
+            if(DidDoubleDown){
                 Card card = testdeck.DrawCard();
-                player.DoubleDown(0, card);
+                player.DrawACard(card,0);
             }
         }
         Assert.Equal(80, game.players[0].Bet[0]);

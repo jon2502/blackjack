@@ -38,7 +38,7 @@ public class DealerTest {
         bool result = game.dealer.DealerBlackjack();
         Assert.False(result);
 
-        game.Insurrance();
+        game.CheckInsurrance();
 
         foreach (Player player in game.players){
             Assert.True(player.InGame);
@@ -75,7 +75,7 @@ public class DealerTest {
         bool newresult = game.dealer.DealerBlackjack();
         Assert.True(newresult);
 
-        game.Insurrance();
+        game.CheckInsurrance();
 
         foreach (Player player in game.players){
             Assert.False(player.InGame);

@@ -10,6 +10,13 @@ public class Participant {
        BustCheck(i);
     }
 
+
+    public void DisplayHand(int i){
+        foreach(Card card in Hand[i]){
+            Console.WriteLine($"{card.Suit}{card.Rank}");
+        }
+    }
+
     public bool Blackjack(int i) {
         int Handsum = Hand[i].Sum(card => card.Value);
         if(Handsum == 21) {

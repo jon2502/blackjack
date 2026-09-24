@@ -11,8 +11,7 @@ public class Game {
         Name = "Dealer",
     };
     
-    public bool SetPlayerCount(){
-        string input = Console.ReadLine() ?? "";
+    public bool SetPlayerCount(string input){
         try {
             int output = Int32.Parse(input);
             Console.WriteLine(output);
@@ -64,7 +63,7 @@ public class Game {
 
     }
 
-    public void Insurrance(){
+    public void CheckInsurrance(){
         bool result = dealer.DealerBlackjack();
         if (result) {
             foreach (Player player in players) {
