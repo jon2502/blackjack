@@ -11,13 +11,12 @@ public class Dealer : Participant {
         return false;
     }
     
-    public bool Dealerhit(Card card){
+    public bool Dealerhit(){
         int Handsum = Hand[0].Sum(card => card.Value);
-        DrawACard(card, 0);
+        DisplayHand(0);
         bool result = BustCheck(0);
         if (result){
             return true;
-        } else 
-        return false;
+        }  return false;
     }
 }

@@ -101,10 +101,10 @@ public class DeckTest {
     [Fact]
     public void EmptyDeckTest() {
         Deck testdeck = new Deck();
-        testdeck.CreateDeck();
-        testdeck.DeckSize = 1;
+        Game game = new Game(testdeck);
+        game.blackjackdeck.CreateDeck();
+        game.blackjackdeck.DeckSize = 1;
 
-        Game game = new Game();
         List<string> PlayerNames = new List<string> {""};
         game.SetPlayerNames(PlayerNames);
 
@@ -113,6 +113,6 @@ public class DeckTest {
             game.players[0].DrawACard(card, 0);
         }
 
-        Assert.Equal(4, testdeck.deck.Count);
+        Assert.Equal(4, game.blackjackdeck.deck.Count);
     }
 }

@@ -8,7 +8,8 @@ public class DealerTest {
     public void DealerBlackjackTest(){
         
         List<string> PlayerNames = new List<string> {"Aiden", "Jane"};
-        Game game = new Game();
+        Deck testdeck = new Deck();
+        Game game = new Game(testdeck);
         game.SetPlayerNames(PlayerNames);
 
 
@@ -88,8 +89,6 @@ public class DealerTest {
 
     [Fact]
     public void DealerHitTest() {
-        Game game = new Game();
-
         Card two = new Card {
             Suit = "♠",
             Rank = "2",
@@ -120,12 +119,13 @@ public class DealerTest {
         };
 
         Deck testdeck = new Deck();
-        
         testdeck.deck.Add(two);
         testdeck.deck.Add(three);
         testdeck.deck.Add(queen);
         testdeck.deck.Add(ace);
         testdeck.deck.Add(five);
+
+        Game game = new Game(testdeck);
 
         Card four = new Card {
             Suit = "♠",
@@ -143,36 +143,20 @@ public class DealerTest {
         game.dealer.Hand[0].Add(four);
         game.dealer.Hand[0].Add(king);
 
-        int LoopRan = 0;
-        int Handsum = game.dealer.Hand[0].Sum(card => card.Value);
-        while (Handsum <= 16){
-            Card card = testdeck.DrawCard();
-            Handsum += card.Value;
-            bool result = game.dealer.Dealerhit(card);
-            Assert.False(result);
-            LoopRan ++;
-        };
+        game.DealerHitLoop();
+
 
         Assert.Equal(3, testdeck.deck.Count);
-        Assert.Equal(2, LoopRan);
-        Assert.Equal(19, Handsum);
+        Assert.Equal(19, game.dealer.Hand[0].Sum(card => card.Value));
 
         game.dealer.Hand[0].Clear();
         game.dealer.Hand[0].Add(four);
         game.dealer.Hand[0].Add(king);
-        Handsum = game.dealer.Hand[0].Sum(card => card.Value);
-        LoopRan = 0;
-        while (Handsum <= 16){
-            Card card = testdeck.DrawCard();
-            Handsum += card.Value;
-            bool result = game.dealer.Dealerhit(card);
-            Assert.True(result);
-            LoopRan ++;
-        };
+        
+        game.DealerHitLoop();
 
         Assert.Equal(2, testdeck.deck.Count);
-        Assert.Equal(1, LoopRan);
-        Assert.Equal(24, Handsum);
+        Assert.Equal(24, game.dealer.Hand[0].Sum(card => card.Value));
     }
 
 }

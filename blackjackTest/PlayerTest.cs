@@ -9,7 +9,8 @@ public class PlayerTest {
     [InlineData("-1")]
     [InlineData("8")]
     public void selectPlayeramountTestIncorrect(string value){
-        Game game = new Game();
+        Deck testdeck = new Deck();
+        Game game = new Game(testdeck);
         bool result = game.SetPlayerCount(value);
         Assert.False(result);
     }
@@ -23,16 +24,17 @@ public class PlayerTest {
     [InlineData("6")]
     [InlineData("7")]
     public void selectPlayeramountTestIntCorrect(string value) {
-        Game game = new Game();
+        Deck testdeck = new Deck();
+        Game game = new Game(testdeck);
         bool result = game.SetPlayerCount(value);
         Assert.True(result);
     }
 
 
     [Fact]
-    public void playerListtest()
-    {
-        Game game = new Game();
+    public void playerListtest() {
+        Deck testdeck = new Deck();
+        Game game = new Game(testdeck);
          List<string> PlayerNames = new List<string> {"Aiden", "", "Jennifer"};
         
         game.SetPlayerNames(PlayerNames);
@@ -47,14 +49,15 @@ public class PlayerTest {
 
     [Fact]
     public void StartingHandTest() {
-        Game game = new Game();
-         List<string> PlayerNames = new List<string> {"Aiden", "Jennifer"};
+        Deck testdeck = new Deck();
+        Game game = new Game(testdeck);
+        List<string> PlayerNames = new List<string> {"Aiden", "Jennifer"};
         game.SetPlayerNames(PlayerNames);
 
-        Deck testdeck = new Deck();
-        testdeck.CreateDeck();
+        
+        game.blackjackdeck.CreateDeck();
 
-        game.GetStartingHands(testdeck);
+        game.GetStartingHands();
 
         Assert.Equal(46, testdeck.deck.Count);
         Assert.Equal(2, game.players[0].Hand[0].Count);
@@ -64,7 +67,8 @@ public class PlayerTest {
 
     [Fact]
     public void SetBetTest() {
-        Game game = new Game();
+        Deck testdeck = new Deck();
+        Game game = new Game(testdeck);
         List<string> PlayerNames = new List<string> {"", "Aiden", "Jane"};
         game.SetPlayerNames(PlayerNames);
 
@@ -87,13 +91,19 @@ public class PlayerTest {
 
     [Fact]
     public void SetInsuranceTest() {
-        Game game = new Game();
+        Deck testdeck = new Deck();
+        Game game = new Game(testdeck);
         List<string> PlayerNames = new List<string> {"", "Aiden", "Jane", "jack", "Sofia"};
         game.SetPlayerNames(PlayerNames);
         game.players[2].SetBet("40",0);
         game.players[3].SetBet("20",0);
         game.players[4].SetBet("100",0);
-
+        for (int i = 0; i < game.players.Count; i++) {
+            Console.SetIn(new StringReader("y"));
+            bool result = game.players[i].DoyouWantInssurance(0);
+            Assert.True(result);
+        }
+        
         bool JhondoeResult = game.players[0].SetInsurance("tets", 0);
         bool AideneResult = game.players[1].SetInsurance("150", 0);
         bool JaneResult = game.players[2].SetInsurance("20", 0);
@@ -119,13 +129,36 @@ public class PlayerTest {
         Assert.Equal(40, game.players[2].Chips);
         Assert.Equal(80, game.players[3].Chips);
         Assert.Equal(0, game.players[4].Chips);
+    }
 
+    [Fact]
+     public void NoInsurranceTest(){
+        Deck testdeck = new Deck();
+        Game game = new Game(testdeck);
+        List<string> PlayerNames = new List<string> {"", "Aiden", "Jane"};
+        game.SetPlayerNames(PlayerNames);
+        game.players[0].SetBet("40",0);
+        game.players[1].SetBet("20",0);
+        game.players[2].SetBet("100",0);;
+        for (int i = 0; i < game.players.Count; i++) {
+            Console.SetIn(new StringReader("n"));
+            bool result = game.players[i].DoyouWantInssurance(0);
+            Assert.False(result);
+        }
 
+        Assert.Equal(0, game.players[0].Insurance[0]);
+        Assert.Equal(0, game.players[1].Insurance[0]);
+        Assert.Equal(0, game.players[2].Insurance[0]);
+
+        Assert.Equal(60, game.players[0].Chips);
+        Assert.Equal(80, game.players[1].Chips);
+        Assert.Equal(0, game.players[2].Chips);
     }
 
     [Fact]
      public void SurrenderTest(){
-        Game game = new Game();
+        Deck testdeck = new Deck();
+        Game game = new Game(testdeck);
         List<string> PlayerNames = new List<string> {""};
         Console.SetIn(new StringReader("y"));
         game.SetPlayerNames(PlayerNames);
@@ -141,10 +174,7 @@ public class PlayerTest {
 
     [Fact]
     public void SplitTest(){
-        Game game = new Game();
-        List<string> PlayerNames = new List<string> {"Aiden", "Jane", "", "Jennifer"};
-        game.SetPlayerNames(PlayerNames);
-
+        
         Card ace = new Card {
             Suit = "♥",
             Rank = "A",
@@ -192,6 +222,10 @@ public class PlayerTest {
         testdeck.deck.Add(five);
         testdeck.deck.Add(five);
 
+        Game game = new Game(testdeck);
+        List<string> PlayerNames = new List<string> {"Aiden", "Jane", "", "Jennifer"};
+        game.SetPlayerNames(PlayerNames);
+
         game.players[0].Hand[0].Add(ace);
         game.players[0].Hand[0].Add(ace);
 
@@ -211,11 +245,8 @@ public class PlayerTest {
                 while (true) {
                     bool DidSplit = player.Split(HandIndex);
                     if (DidSplit) {
-                        Card FirstCard = testdeck.DrawCard();
-                        player.DrawACard(FirstCard, HandIndex);
-
-                        Card SecondCard = testdeck.DrawCard();
-                        player.DrawACard(SecondCard, HandIndex+1);
+                        game.MoveCard(player, HandIndex);
+                        game.MoveCard(player, HandIndex+1);
 
                         Console.WriteLine($"{player.Name} place bet for new hand");
                         bool BetResult = player.SetBet("10", HandIndex+1);
@@ -237,12 +268,6 @@ public class PlayerTest {
     }
      [Fact]
     public void DoubleDowntest() {
-        Game game = new Game();
-        List<string> PlayerNames = new List<string> {"Aiden", "", "Jennifer"};
-        game.SetPlayerNames(PlayerNames);
-
-        Deck testdeck = new Deck();
-
         Card two = new Card {
             Suit = "♠",
             Rank = "2",
@@ -255,12 +280,17 @@ public class PlayerTest {
             Value = 10,
         };
 
-
+        Deck testdeck = new Deck();
+        
         testdeck.deck.Add(queen);
         testdeck.deck.Add(queen);
         testdeck.deck.Add(queen);
         testdeck.deck.Add(queen);
 
+        Game game = new Game(testdeck);
+
+        List<string> PlayerNames = new List<string> {"Aiden", "", "Jennifer"};
+        game.SetPlayerNames(PlayerNames);
 
         game.players[0].Hand[0].Add(two);
         game.players[0].Hand[0].Add(two);
@@ -286,14 +316,20 @@ public class PlayerTest {
             bool DidDoubleDown = player.DoubleDown(0);
 
             if(DidDoubleDown){
-                Card card = testdeck.DrawCard();
-                player.DrawACard(card,0);
+                game.MoveCard(player, 0);
             }
         }
         Assert.Equal(80, game.players[0].Bet[0]);
         Assert.Equal(60, game.players[1].Bet[0]);
         Assert.Equal(0, game.players[2].Bet[0]);
         Assert.Equal(60, game.players[2].Chips);
+    }
 
+    [Fact]
+    public void continueTest() {
+        Deck testdeck = new Deck();
+        Game game = new Game(testdeck);
+        List<string> PlayerNames = new List<string> {"Aiden"};
+        game.SetPlayerNames(PlayerNames);
     }
 }

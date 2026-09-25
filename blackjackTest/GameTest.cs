@@ -5,7 +5,8 @@ namespace blackjackTest;
 public class GameTest {
     [Fact]
     public void PlayerBlackjackTest() {
-        Game game = new Game();
+        Deck testdeck = new Deck();
+        Game game = new Game(testdeck);
         List<string> PlayerNames = new List<string> {"Aiden", "Jane"};
         game.SetPlayerNames(PlayerNames);
 
@@ -53,7 +54,8 @@ public class GameTest {
 
     [Fact]
      public void PlayerBustTest(){
-        Game game = new Game();
+        Deck testdeck = new Deck();
+        Game game = new Game(testdeck);
         List<string> PlayerNames = new List<string>{"Aiden", "Jane"};
         game.SetPlayerNames(PlayerNames);
 
@@ -125,7 +127,8 @@ public class GameTest {
 
     [Fact]
     public void GameDone() {
-        Game game = new Game();
+        Deck testdeck = new Deck();
+        Game game = new Game(testdeck);
         List<string> PlayerNames = new List<string>{"Aiden", "Jane"};
         game.SetPlayerNames(PlayerNames);
         foreach(Player player in game.players){

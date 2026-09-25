@@ -73,6 +73,7 @@ public class Player : Participant {
             Retuns = Bet[i] * 1.5f;
             Stand[i] = true;
             CheckPlayerState();
+            Console.WriteLine("running");
             return true;
         }
         return false;

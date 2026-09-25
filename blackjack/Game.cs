@@ -10,7 +10,11 @@ public class Game {
     public Dealer dealer = new Dealer {
         Name = "Dealer",
     };
-    
+    public Deck blackjackdeck;
+    public Game(Deck deck)
+    {
+        blackjackdeck = deck;
+    }
     public bool SetPlayerCount(string input){
         try {
             int output = Int32.Parse(input);
@@ -41,15 +45,13 @@ public class Game {
         }
         }
 
-    public void GetStartingHands(Deck blackjackdeck) {
+    public void GetStartingHands() {
         int i = 0;
         while(2 > i) {
             foreach(Player player in players){
-                Card Playercard = blackjackdeck.DrawCard();
-                player.DrawACard(Playercard, 0);
+                MoveCard(player,0);
             }
-            Card Dealercard = blackjackdeck.DrawCard();
-            dealer.DrawACard(Dealercard, 0);
+            MoveCard(dealer,0);
             i++;
         }
         foreach (Player player in players) {
@@ -79,6 +81,17 @@ public class Game {
         } else {
             foreach (Player player in players) {
                 player.Insurance.Clear();
+            }
+        }
+    }
+
+    public void DealerHitLoop(){
+        while(dealer.Hand[0].Sum(card => card.Value) <= 16) {
+            MoveCard(dealer, 0);
+            bool result = dealer.Dealerhit();
+            if(result == true) {
+                Playing = false;
+                break;
             }
         }
     }
@@ -117,10 +130,14 @@ public class Game {
                 player.Stand = [false];
                 player.Hand = [[]];
             }
+            Playing = true;
         } else {
              Console.WriteLine($"no players at the table: game over");
-
-            Playing = false;
         }
+    }
+
+    public void MoveCard(Participant participant, int Hand){
+        Card card = blackjackdeck.DrawCard();
+        participant.DrawACard(card, Hand);
     }
 }

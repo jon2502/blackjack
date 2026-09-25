@@ -3,7 +3,9 @@
 namespace Blackjack {
     public class Program {
         static void Main(string[] args) {
-            Game game = new Game();
+            
+            Deck blackjackdeck = new Deck();
+            Game game = new Game(blackjackdeck);
 
             Console.WriteLine($"Hello how may players are you: from 1 - {7-game.PlayerCount}");
             while (true){
@@ -22,15 +24,14 @@ namespace Blackjack {
             game.SetPlayerNames(NameList);
 
             while (game.Playing) {
-                Deck blackjackdeck = new Deck();
 
                 Console.WriteLine("select deck size");
                 while (true){
                     string deckcount = Console.ReadLine() ?? "";
-                    bool sucsess = blackjackdeck.SetDecksize(deckcount);
+                    bool sucsess = game.blackjackdeck.SetDecksize(deckcount);
                     if(sucsess == true){break;}
                 }
-                blackjackdeck.CreateDeck();
+                game.blackjackdeck.CreateDeck();
                 
                 Console.WriteLine($"{game.players[0].Name}");
                 foreach (Player player in game.players) {
@@ -42,7 +43,7 @@ namespace Blackjack {
                     }
                 }
 
-                game.GetStartingHands(blackjackdeck);
+                game.GetStartingHands();
 
                 foreach (Player player in game.players) {
                     player.Surrender(0);
@@ -53,11 +54,8 @@ namespace Blackjack {
                         while (true) {
                             bool DidSplit = player.Split(HandIndex);
                             if (DidSplit) {
-                                Card FirstCard = blackjackdeck.DrawCard();
-                                player.DrawACard(FirstCard, HandIndex);
-
-                                Card SecondCard = blackjackdeck.DrawCard();
-                                player.DrawACard(SecondCard, HandIndex+1);
+                                game.MoveCard(player,HandIndex);
+                                game.MoveCard(player,HandIndex+1);
 
                                 Console.WriteLine($"{player.Name} place bet for new hand");
                                 while (true) {
@@ -76,8 +74,7 @@ namespace Blackjack {
                     for (int HandIndex = 0; HandIndex < player.Hand.Count; HandIndex++) {
                         bool DidDoubleDown = player.DoubleDown(HandIndex);
                         if (DidDoubleDown) {
-                            Card card = blackjackdeck.DrawCard();
-                            player.DrawACard(card,HandIndex);
+                            game.MoveCard(player,HandIndex);
                             player.DisplayHand(HandIndex);
                         }
                     }
@@ -104,14 +101,7 @@ namespace Blackjack {
 
                 game.CheckInsurrance();
 
-                while(game.dealer.Hand[0].Sum(card => card.Value) >= 16) {
-                    Card card = blackjackdeck.DrawCard();
-                    bool result = game.dealer.Dealerhit(card);
-                    if(result == true) {
-                        game.Playing = false;
-                        break;
-                    }
-                }
+                game.DealerHitLoop();
 
                 while (game.Playing == true) {
                     foreach (Player player in game.players) {
@@ -121,8 +111,7 @@ namespace Blackjack {
                             if (!player.Stand[HandIndex]){
                                 bool Output = player.StandOrHit(HandIndex);
                                     if (Output) {
-                                        Card card = blackjackdeck.DrawCard();
-                                        player.DrawACard(card, HandIndex);
+                                        game.MoveCard(player,HandIndex);
                                     } else {
                                         player.Stand[HandIndex] = true;
                                         player.CheckPlayerState();
@@ -133,6 +122,7 @@ namespace Blackjack {
                     }
                     game.CheckIfGamesOver();
                 }
+
                 game.GameCleanup();
                 if(game.PlayerCount < 7)
                 Console.WriteLine("Would any new players like to join?");
