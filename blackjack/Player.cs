@@ -22,7 +22,10 @@ public class Player : Participant {
     public bool SetBet(string value, int i) {
         try {
             float output = float.Parse(value);
-            if (output > Chips) {
+            if (output <= 1) {
+                Console.WriteLine($"{Name} please select a value of 2 or greater");
+                return false;
+            } else if (output > Chips) {
                 Console.WriteLine($"{Name} balance to low");
                 return false;
             } else {
@@ -47,8 +50,7 @@ public class Player : Participant {
 
     public bool SetInsurance(string value, int i) {
         try {
-             float output = float.Parse(value);
-            
+            float output = float.Parse(value);
             if (output > Chips) {
                 Console.WriteLine($"{Name} balance to low");
                 return false;
@@ -80,16 +82,13 @@ public class Player : Participant {
     }
 
     public override bool BustCheck(int index){
-         int length = Hand.Count;
-        for (int i = 0; i < length; i++){
-            bool result = base.BustCheck(index);
-            if(result) {
-                Console.WriteLine($"{Name} Bust");
-                Stand[i] = true;
-                Bet[i] = 0;
-                CheckPlayerState();
-                return true;
-            }
+        bool result = base.BustCheck(index);
+        if(result) {
+            Console.WriteLine($"{Name} Bust");
+            Stand[index] = true;
+            Bet[index] = 0;
+            CheckPlayerState();
+            return true;
         }
         return false;
     }
@@ -101,6 +100,7 @@ public class Player : Participant {
         if (Output) {
             if(Bet[i] > Chips){
                 Console.WriteLine($"{Name} balance to low you cant Double down");
+                return false;
             } else {
                 Stand[i] = true;
                 Chips -= Bet[i];
@@ -162,23 +162,6 @@ public class Player : Participant {
         return Output;
     }
 
-    public void Results(Dealer dealer) {
-        int DealerHandValue = dealer.Hand[0].Sum(card => card.Value);
-        for (int i = 0; i < Hand.Count; i++) {
-            int handValue = Hand[i].Sum(card => card.Value);
-            if(handValue > DealerHandValue) {
-                Retuns += Bet[0];
-                Chips += Bet[0];
-            } else if (handValue < DealerHandValue) {
-                Bet[0] = 0;
-            } else {
-                 Chips += Bet[0];
-            };
-        }
-        Chips += Retuns;
-        Retuns = 0;
-    }
-
     public bool Canplay(){
         double AllBets = Bet.Sum(bet => bet);
         if(Chips <= 0 && AllBets <= 0 && Retuns <= 0){
@@ -187,7 +170,7 @@ public class Player : Participant {
         return true;
     }
 
-    public bool WanttoContinue() {
+    public bool WantToContinue() {
         Console.WriteLine($"{Name} would you continue or would you like to leave the table");
         bool Output = PlayerOption();
         return Output;

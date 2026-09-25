@@ -2,32 +2,56 @@
 
 namespace Blackjack {
     public class Program {
+
+        public static  string ReturnString(){
+            string input = Console.ReadLine() ?? "";
+            return input;
+        } 
+
+        public static void PrintplayerNumber(int i){
+            Console.WriteLine($"player {i+1} select write your name");
+        }
+
+        public static void Printdecksize(){
+            Console.WriteLine("select deck size");
+        }
+
+        public static void PlaceYourBets(string name){
+            Console.WriteLine($"{name} place your bet");
+        }
+
+        public static void PlaceYourBetFornewHand(string name){
+            Console.WriteLine($"{name} place bet for new hand");
+        }
+
+        public static void PlayersTurn(string name){
+            Console.WriteLine($"{name}'s turn");
+        }
+        public static void Instructions(){
+            Console.WriteLine("Would any new players like to join?");
+            Console.WriteLine("y : yes");
+            Console.WriteLine("anyother key : no");
+        }
+
         static void Main(string[] args) {
-            
             Deck blackjackdeck = new Deck();
             Game game = new Game(blackjackdeck);
 
-            Console.WriteLine($"Hello how may players are you: from 1 - {7-game.PlayerCount}");
-            while (true){
-                string input = Console.ReadLine() ?? "";
-                bool sucsess = game.SetPlayerCount(input);
-                if(sucsess == true){break;}
-            }
+            game.SetPlayerCount();
             
             List<string> NameList = new List<string>();
             for (int i = 0; i < game.PlayerCount; i++) {
-                 Console.WriteLine($"player {i+1} select write your name");
-                string playerName = Console.ReadLine() ?? "";
+                PrintplayerNumber(i);
+                string playerName = ReturnString();
                 NameList.Add(playerName);
-                i ++;
             }
+
             game.SetPlayerNames(NameList);
 
-            while (game.Playing) {
-
-                Console.WriteLine("select deck size");
+            while (game.Playing == true) {
+            Printdecksize();
                 while (true){
-                    string deckcount = Console.ReadLine() ?? "";
+                    string deckcount = ReturnString();
                     bool sucsess = game.blackjackdeck.SetDecksize(deckcount);
                     if(sucsess == true){break;}
                 }
@@ -35,11 +59,11 @@ namespace Blackjack {
                 
                 Console.WriteLine($"{game.players[0].Name}");
                 foreach (Player player in game.players) {
-                    Console.WriteLine($"{player.Name} place your bet");
+                    PlaceYourBets(player.Name);
                     while (true) {
-                        string amount = Console.ReadLine() ?? "";
-                            bool result = player.SetBet(amount, 0);
-                            if(result == true){break;}
+                        string amount = ReturnString();
+                        bool result = player.SetBet(amount, 0);
+                        if(result == true){break;}
                     }
                 }
 
@@ -56,10 +80,9 @@ namespace Blackjack {
                             if (DidSplit) {
                                 game.MoveCard(player,HandIndex);
                                 game.MoveCard(player,HandIndex+1);
-
-                                Console.WriteLine($"{player.Name} place bet for new hand");
+                                PlaceYourBetFornewHand(player.Name);
                                 while (true) {
-                                    string amount = Console.ReadLine() ?? "";
+                                    string amount = ReturnString();
                                     bool BetResult = player.SetBet(amount, HandIndex+1);
                                     if(BetResult == true){break;}
                                 }
@@ -70,15 +93,7 @@ namespace Blackjack {
                     }
                 }
 
-                foreach (Player player in game.players) {
-                    for (int HandIndex = 0; HandIndex < player.Hand.Count; HandIndex++) {
-                        bool DidDoubleDown = player.DoubleDown(HandIndex);
-                        if (DidDoubleDown) {
-                            game.MoveCard(player,HandIndex);
-                            player.DisplayHand(HandIndex);
-                        }
-                    }
-                }
+                game.DoubleDownOption();
 
                 if(game.dealer.Hand[0][0].Rank == "A" && game.dealer.Hand[0].Count == 2){
                     Console.WriteLine($"{game.dealer.Name} has an Ace would you like you place insurance?");
@@ -88,7 +103,7 @@ namespace Blackjack {
                             if (Output) {
                                 Console.WriteLine($"{player.Name} How much would you like to place into insurance?");
                                 while (true) {
-                                    string input = Console.ReadLine() ?? "";
+                                    string input = ReturnString();
                                     bool sucsess = player.SetInsurance(input, HandIndex);
                                     if(sucsess){break;}
                                 }
@@ -100,15 +115,14 @@ namespace Blackjack {
                 }
 
                 game.CheckInsurrance();
-
                 game.DealerHitLoop();
 
                 while (game.Playing == true) {
                     foreach (Player player in game.players) {
                         if (player.InGame == true){
-                            Console.WriteLine($"{player.Name}'s turn");
+                            PlayersTurn(player.Name);
                             for (int HandIndex = 0; HandIndex < player.Hand.Count; HandIndex++) {
-                            if (!player.Stand[HandIndex]){
+                            if (player.Stand[HandIndex] != true){
                                 bool Output = player.StandOrHit(HandIndex);
                                     if (Output) {
                                         game.MoveCard(player,HandIndex);
@@ -124,20 +138,14 @@ namespace Blackjack {
                 }
 
                 game.GameCleanup();
-                if(game.PlayerCount < 7)
-                Console.WriteLine("Would any new players like to join?");
-                Console.WriteLine("y : yes");
-                Console.WriteLine("anyother key : no");
-                string Output1 = Console.ReadLine() ?? "";
-                if (Output1 == "y" || Output1 == "Y") {
-                    Console.WriteLine($"Hello how may players are you: from 1 - {7-game.PlayerCount}");
-                    while (true){
-                        string input = Console.ReadLine() ?? "";
-                        bool sucsess = game.SetPlayerCount(input);
-                        if(sucsess == true){break;}
+                if(game.PlayerCount < 7) {
+                    Instructions();
+                     string Output1 = ReturnString();
+                    if (Output1 == "y" || Output1 == "Y") {
+                        game.SetPlayerCount();
                     }
                 }
-                game.CheckIfNewroundBegins();
+                game.CheckIfNewRoundBegins();
             }
         }
     }

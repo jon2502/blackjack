@@ -23,16 +23,13 @@ public class Participant {
     }
 
     public virtual bool BustCheck(int i){
-        int Handsum = Hand[i].Sum(card => card.Value);
         int AceCount = Hand[i].FindAll(card => card.Rank == "A" && card.Value == 11).Count;
-        
-        while (Handsum > 21 && AceCount > 0) {
+        while (Hand[i].Sum(card => card.Value) > 21 && AceCount > 0) {
             Card? FoundAce = Hand[i].Find(card => card.Rank == "A" && card.Value == 11);
             FoundAce?.Value = 1;
-            Handsum -= 10;
             AceCount --;
         }
-        if(Handsum > 21) {
+        if(Hand[i].Sum(card => card.Value) > 21) {
             return true;
         }
         return false;

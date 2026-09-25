@@ -1,7 +1,6 @@
 using Blackjack;
 
 namespace blackjackTest;
-
 public class GameTest {
     [Fact]
     public void PlayerBlackjackTest() {
@@ -146,5 +145,101 @@ public class GameTest {
 
         game.CheckIfGamesOver();
         Assert.False(game.Playing);
+    }
+
+    [Fact]
+    public void CheckIfNewRoundBegins(){
+        Deck testdeck = new Deck();
+        Game game = new Game(testdeck);
+        List<string> PlayerNames = new List<string>{"Aiden", "Jane"};
+        game.SetPlayerNames(PlayerNames);
+        game.PlayerCount = 2;
+
+        game.CheckIfNewRoundBegins();
+        Assert.Equal(2, game.players.Count);
+        Assert.Equal(2, game.PlayerCount);
+        Assert.True(game.Playing);
+
+        game.players.Clear();
+        game.PlayerCount = 0;
+
+        game.CheckIfNewRoundBegins();
+        Assert.Empty(game.players);
+        Assert.Equal(0, game.PlayerCount);
+        Assert.False(game.Playing);
+    }
+
+    [Fact]
+    public void GameCleanupTest(){
+        Deck testdeck = new Deck();
+        Game game = new Game(testdeck);
+        List<string> PlayerNames = new List<string>{"Aiden", "Jane", "Jack"};
+        game.SetPlayerNames(PlayerNames);
+
+        
+        Card ten = new Card {
+            Suit = "♦",
+            Rank = "10",
+            Value = 10,
+        };
+        Card three = new Card {
+            Suit = "♦",
+            Rank = "3",
+            Value = 3,
+        };
+        Card king = new Card {
+            Suit = "♥",
+            Rank = "K",
+            Value = 10,
+        };
+
+        Card six = new Card {
+            Suit = "♠",
+            Rank = "6",
+            Value = 6,
+        };
+
+        Card five = new Card {
+            Suit = "♣",
+            Rank = "5",
+            Value = 5,
+        };
+
+        Card ace = new Card {
+            Suit = "♥",
+            Rank = "A",
+            Value = 11,
+        };
+        game.players[0].Hand.Add([]);
+        game.players[0].Bet.Add(0);
+
+        game.players[0].SetBet("10",0);
+        game.players[0].SetBet("40",1);
+        game.players[1].SetBet("30",0);
+        game.players[2].SetBet("100",0);
+
+
+        game.dealer.Hand[0].Add(five);
+        game.dealer.Hand[0].Add(six);
+        game.dealer.Hand[0].Add(five);
+
+
+        game.players[0].Hand[0].Add(five);
+        game.players[0].Hand[0].Add(six);
+        game.players[0].Hand[0].Add(five);
+
+        game.players[0].Hand[1].Add(six);
+        game.players[0].Hand[1].Add(three);
+        game.players[0].Hand[1].Add(ace);
+
+        game.players[1].Hand[0].Add(three);
+        game.players[1].Hand[0].Add(ace);
+
+        game.players[2].Hand[0].Add(five);
+        game.players[2].Hand[0].Add(six);
+        /*
+        Console.SetIn(new StringReader("n"));
+        */
+        game.GameCleanup();
     }
 }

@@ -15,20 +15,23 @@ public class Game {
     {
         blackjackdeck = deck;
     }
-    public bool SetPlayerCount(string input){
-        try {
-            int output = Int32.Parse(input);
-            Console.WriteLine(output);
-            if( output >= 1 && output <= 7-PlayerCount){
-                PlayerCount = output;
-                return true;
-            } else {
+    public bool SetPlayerCount(){
+        Console.WriteLine($"Hello how may players are you: from 1 - {7-PlayerCount}");
+        while (true){
+            string input = Console.ReadLine() ?? "";
+            try {
+                int output = Int32.Parse(input);
+                if(output >= 1 && output <= 7-PlayerCount){
+                    PlayerCount = output;
+                    return true;
+                } else {
+                    Console.WriteLine($"Please select a number between 1 and {7-PlayerCount}");
+                    return false;
+                }
+            } catch {
                 Console.WriteLine($"Please select a number between 1 and {7-PlayerCount}");
                 return false;
             }
-        } catch {
-            Console.WriteLine($"Please select a number between 1 and {7-PlayerCount}");
-            return false;
         }
     }
 
@@ -43,7 +46,7 @@ public class Game {
             players.Add(player);
             Console.WriteLine(player.Name);
         }
-        }
+    }
 
     public void GetStartingHands() {
         int i = 0;
@@ -62,6 +65,19 @@ public class Game {
         }
         Console.WriteLine($"the {dealer.Name} has a {dealer.Hand[0][0].Suit}{dealer.Hand[0][0].Rank}");
 
+    }
+
+    public void DoubleDownOption(){
+        foreach (Player player in players) {
+            for (int i = 0; i < player.Hand.Count; i++) {
+                bool DidDoubleDown = player.DoubleDown(i);
+                if (DidDoubleDown) {
+                    MoveCard(player, i);
+                    player.DisplayHand(i);
+                    player.CheckPlayerState();
+                }
+            }
+        }
     }
 
     public void CheckInsurrance(){
@@ -104,25 +120,37 @@ public class Game {
     }
 
     public void GameCleanup(){
-        for (int i = 0; i < players.Count; i++){
-            players[i].Results(dealer);
-            bool canplay = players[i].Canplay();
-            if (!canplay) {
-                 Console.WriteLine($"{players[i].Name} is out of chips and cant continue");
-                players.RemoveAt(i);
-                i --;
+        int DealerHandValue = dealer.Hand[0].Sum(card => card.Value);
+        for (int playerIndex = 0; playerIndex < players.Count; playerIndex++){
+            for (int HandIndex = 0; HandIndex < players[playerIndex].Hand.Count; HandIndex++) {
+                int handValue = players[playerIndex].Hand[HandIndex].Sum(card => card.Value);
+                if(handValue > DealerHandValue) {
+                    players[playerIndex].Retuns += players[playerIndex].Bet[HandIndex];
+                } else if (handValue < DealerHandValue) {
+                    players[playerIndex].Bet[HandIndex] = 0;
+                } else {
+                    players[playerIndex].Retuns += players[playerIndex].Bet[HandIndex];
+                };
             }
-            bool WantToContinue = players[i].WanttoContinue();
+            players[playerIndex].Chips += players[playerIndex].Retuns;
+            players[playerIndex].Retuns = 0;
+            bool canplay = players[playerIndex].Canplay();
+            if (!canplay) {
+                 Console.WriteLine($"{players[playerIndex].Name} is out of chips and cant continue");
+                players.RemoveAt(playerIndex);
+                playerIndex --;
+            }
+            bool WantToContinue = players[playerIndex].WantToContinue();
             if (!WantToContinue) {
-                Console.WriteLine($"{players[i].Name} has left the table with {players[i].Chips} chips");
-                players.RemoveAt(i);
-                i --;
+                Console.WriteLine($"{players[playerIndex].Name} has left the table with {players[playerIndex].Chips} chips");
+                players.RemoveAt(playerIndex);
+                playerIndex --;
             }
         }
         PlayerCount = players.Count;
     }
 
-  public void CheckIfNewroundBegins() {
+  public void CheckIfNewRoundBegins() {
         if(players.Count > 0) {
             foreach(Player player in players) {
                 player.Bet = [0];
@@ -130,8 +158,10 @@ public class Game {
                 player.Stand = [false];
                 player.Hand = [[]];
             }
+            blackjackdeck.deck= [];
             Playing = true;
         } else {
+            Playing = false;
              Console.WriteLine($"no players at the table: game over");
         }
     }
