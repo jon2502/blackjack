@@ -28,29 +28,12 @@ namespace Blackjack {
             Console.WriteLine($"{name} How much would you like to place into insurance?");
         }
 
-        public static void PlayersTurn(string name){
-            Console.WriteLine($"{name}'s turn");
-        }
-        public static void Instructions(){
-            Console.WriteLine("Would any new players like to join?");
-            Console.WriteLine("y : yes");
-            Console.WriteLine("anyother key : no");
-        }
-
         static void Main(string[] args) {
             Deck blackjackdeck = new Deck();
             Game game = new Game(blackjackdeck);
 
             game.SetPlayerCount();
-            
-            List<string> NameList = new List<string>();
-            for (int i = 0; i < game.PlayerCount; i++) {
-                PrintplayerNumber(i);
-                string playerName = ReturnString();
-                NameList.Add(playerName);
-            }
-
-            game.SetPlayerNames(NameList);
+            game.SetPlayerNames();
 
             while (game.Playing == true) {
             Printdecksize();
@@ -121,34 +104,12 @@ namespace Blackjack {
                 game.CheckInsurrance();
                 game.DealerHitLoop();
 
-                while (game.Playing == true) {
-                    foreach (Player player in game.players) {
-                        if (player.InGame == true){
-                            PlayersTurn(player.Name);
-                            for (int HandIndex = 0; HandIndex < player.Hand.Count; HandIndex++) {
-                            if (player.Stand[HandIndex] != true){
-                                bool Output = player.StandOrHit(HandIndex);
-                                    if (Output) {
-                                        game.MoveCard(player,HandIndex);
-                                    } else {
-                                        player.Stand[HandIndex] = true;
-                                        player.CheckPlayerState();
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    game.CheckIfGamesOver();
-                }
+               game.TurnRotation();
 
-                game.GameCleanup();
-                if(game.PlayerCount < 7) {
-                    Instructions();
-                     string Output1 = ReturnString();
-                    if (Output1 == "y" || Output1 == "Y") {
-                        game.SetPlayerCount();
-                    }
-                }
+                game.Results();
+                game.CanPlayersContinue();
+                game.DoPlayersWantContinue();
+                game.CheckIfnewPlayersJoin();
                 game.CheckIfNewRoundBegins();
             }
         }

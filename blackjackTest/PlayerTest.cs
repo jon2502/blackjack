@@ -37,9 +37,9 @@ public class PlayerTest {
     public void PlayerListtest() {
         Deck testdeck = new Deck();
         Game game = new Game(testdeck);
-         List<string> PlayerNames = new List<string> {"Aiden", "", "Jennifer"};
-        
-        game.SetPlayerNames(PlayerNames);
+        Console.SetIn(new StringReader("Aiden\n\nJennifer"));
+        game.PlayerCount = 3;
+        game.SetPlayerNames();
     
         Assert.Equal("Aiden", game.players[0].Name);
 
@@ -53,8 +53,9 @@ public class PlayerTest {
     public void StartingHandTest() {
         Deck testdeck = new Deck();
         Game game = new Game(testdeck);
-        List<string> PlayerNames = new List<string> {"Aiden", "Jennifer"};
-        game.SetPlayerNames(PlayerNames);
+        Console.SetIn(new StringReader("Aiden\nJane"));
+        game.PlayerCount = 2;
+        game.SetPlayerNames();
 
         
         game.blackjackdeck.CreateDeck();
@@ -71,13 +72,14 @@ public class PlayerTest {
     public void SetBetTest() {
         Deck testdeck = new Deck();
         Game game = new Game(testdeck);
-        List<string> PlayerNames = new List<string> {"", "Aiden", "Jane", "Jennifer"};
-        game.SetPlayerNames(PlayerNames);
+        Console.SetIn(new StringReader("\nAiden\nJane\nJennifer"));
+        game.PlayerCount = 4;
+        game.SetPlayerNames();
 
         bool JhondoeResult = game.players[0].SetBet("tets",0);
         bool AideneResult = game.players[1].SetBet("150",0);
         bool JaneResult = game.players[2].SetBet("20",0);
-        bool jenniferResult = game.players[2].SetBet("1",0);
+        bool jenniferResult = game.players[3].SetBet("-1",0);
         Assert.False(JhondoeResult);
         Assert.False(AideneResult);
         Assert.True(JaneResult);
@@ -98,8 +100,10 @@ public class PlayerTest {
     public void SetInsuranceTest() {
         Deck testdeck = new Deck();
         Game game = new Game(testdeck);
-        List<string> PlayerNames = new List<string> {"", "Aiden", "Jane", "jack", "Sofia"};
-        game.SetPlayerNames(PlayerNames);
+        Console.SetIn(new StringReader("\nAiden\nJane\njack\nSofia"));
+        game.PlayerCount = 5;
+
+        game.SetPlayerNames();
         game.players[2].SetBet("40",0);
         game.players[3].SetBet("20",0);
         game.players[4].SetBet("100",0);
@@ -140,8 +144,9 @@ public class PlayerTest {
      public void NoInsurranceTest(){
         Deck testdeck = new Deck();
         Game game = new Game(testdeck);
-        List<string> PlayerNames = new List<string> {"", "Aiden", "Jane"};
-        game.SetPlayerNames(PlayerNames);
+        Console.SetIn(new StringReader("\nAiden\nJane"));
+        game.PlayerCount = 3;
+        game.SetPlayerNames();
         game.players[0].SetBet("40",0);
         game.players[1].SetBet("20",0);
         game.players[2].SetBet("100",0);;
@@ -164,9 +169,12 @@ public class PlayerTest {
      public void SurrenderTest(){
         Deck testdeck = new Deck();
         Game game = new Game(testdeck);
-        List<string> PlayerNames = new List<string> {""};
+        Console.SetIn(new StringReader(""));
+        game.PlayerCount = 1;
+
+        game.SetPlayerNames();
+
         Console.SetIn(new StringReader("y"));
-        game.SetPlayerNames(PlayerNames);
         game.players[0].SetBet("100",0);
         game.players[0].Surrender(0);
 
@@ -228,8 +236,10 @@ public class PlayerTest {
         testdeck.deck.Add(five);
 
         Game game = new Game(testdeck);
-        List<string> PlayerNames = new List<string> {"Aiden", "Jane", "", "Jennifer"};
-        game.SetPlayerNames(PlayerNames);
+        Console.SetIn(new StringReader("Aiden\nJane\n\nJennifer"));
+        game.PlayerCount = 4;
+
+        game.SetPlayerNames();
 
         game.players[0].Hand[0].Add(ace);
         game.players[0].Hand[0].Add(ace);
@@ -276,9 +286,10 @@ public class PlayerTest {
         Deck testdeck = new Deck();
 
         Game game = new Game(testdeck);
-        List<string> PlayerNames = new List<string> {"Aiden", "Jane",};
         game.blackjackdeck.CreateDeck();
-        game.SetPlayerNames(PlayerNames);
+        Console.SetIn(new StringReader("\nAiden\nJane"));
+        game.PlayerCount = 3;
+        game.SetPlayerNames();
 
         Card queen = new Card {
             Suit = "♠",
@@ -345,8 +356,10 @@ public class PlayerTest {
 
 
         Game game = new Game(testdeck);
-        List<string> PlayerNames = new List<string> {"Aiden", "", "Jennifer,", "jack"};
-        game.SetPlayerNames(PlayerNames);
+        Console.SetIn(new StringReader("Aiden\nJane\nJennifer\nJack"));
+        game.PlayerCount = 4;
+
+        game.SetPlayerNames();
 
         game.players[0].Hand[0].Add(two);
         game.players[0].Hand[0].Add(two);
@@ -408,9 +421,11 @@ public class PlayerTest {
     [Fact]
     public void ContinueTest() {
         Deck testdeck = new Deck();
-        Game game = new Game(testdeck);
-        List<string> PlayerNames = new List<string> {"Aiden"};
-        game.SetPlayerNames(PlayerNames);
+        Game game = new Game(testdeck);                
+        Console.SetIn(new StringReader("Aiden"));
+        game.PlayerCount = 1;
+
+        game.SetPlayerNames();
         Console.SetIn(new StringReader("y"));
         bool result = game.players[0].WantToContinue();
         Assert.True(result);
@@ -421,7 +436,10 @@ public class PlayerTest {
         Deck testdeck = new Deck();
         Game game = new Game(testdeck);
         List<string> PlayerNames = new List<string> {"Aiden"};
-        game.SetPlayerNames(PlayerNames);
+        Console.SetIn(new StringReader("Aiden"));
+        game.PlayerCount = 1;
+
+        game.SetPlayerNames();
         Console.SetIn(new StringReader("n"));
         bool result = game.players[0].WantToContinue();
         Assert.False(result);
@@ -431,19 +449,23 @@ public class PlayerTest {
     public void HitTest(){
         Deck testdeck = new Deck();
         Game game = new Game(testdeck);
-        List<string> PlayerNames = new List<string> {""};
-        game.SetPlayerNames(PlayerNames);
+        Console.SetIn(new StringReader("Aiden"));
+        game.PlayerCount = 1;
+        game.SetPlayerNames();
         game.blackjackdeck.CreateDeck();
         Console.SetIn(new StringReader("y"));
         bool result = game.players[0].StandOrHit(0);
-        Assert.True(result);    }
+        Assert.True(result);    
+        
+        }
 
     [Fact]
     public void StandTest(){
         Deck testdeck = new Deck();
         Game game = new Game(testdeck);
-        List<string> PlayerNames = new List<string> {""};
-        game.SetPlayerNames(PlayerNames);
+        Console.SetIn(new StringReader("Jane"));
+        game.PlayerCount = 1;
+        game.SetPlayerNames();
         game.blackjackdeck.CreateDeck();
         Console.SetIn(new StringReader("n"));
         bool result = game.players[0].StandOrHit(0);
@@ -454,8 +476,9 @@ public class PlayerTest {
     public void CanPlayTest(){
         Deck testdeck = new Deck();
         Game game = new Game(testdeck);
-        List<string> PlayerNames = new List<string> {""};
-        game.SetPlayerNames(PlayerNames);
+        Console.SetIn(new StringReader("Aiden"));
+        game.PlayerCount = 1;
+        game.SetPlayerNames();
         bool TrueResult = game.players[0].Canplay();
         Assert.True(TrueResult);
         game.players[0].Chips = 0;

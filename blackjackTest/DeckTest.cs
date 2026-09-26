@@ -105,8 +105,9 @@ public class DeckTest {
         game.blackjackdeck.CreateDeck();
         game.blackjackdeck.DeckSize = 1;
 
-        List<string> PlayerNames = new List<string> {""};
-        game.SetPlayerNames(PlayerNames);
+        Console.SetIn(new StringReader(""));
+        game.PlayerCount = 1;
+        game.SetPlayerNames();
 
         for (int i = 0; i < 100; i++){
             Card card = testdeck.DrawCard();

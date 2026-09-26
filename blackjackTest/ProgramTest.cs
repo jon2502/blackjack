@@ -10,8 +10,6 @@ public class ProgramTest {
         Program.PlaceYourBets("Jane");
         Program.PlaceYourBetFornewHand("Jane");
         Program.AskingAboutInsurance("Jane");
-        Program.PlayersTurn("Jane");
-        Program.Instructions();
     }
 
     [Fact]

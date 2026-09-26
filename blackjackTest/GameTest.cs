@@ -6,8 +6,9 @@ public class GameTest {
     public void PlayerBlackjackTest() {
         Deck testdeck = new Deck();
         Game game = new Game(testdeck);
-        List<string> PlayerNames = new List<string> {"Aiden", "Jane"};
-        game.SetPlayerNames(PlayerNames);
+        Console.SetIn(new StringReader("Aiden\nJane"));
+        game.PlayerCount=2;
+        game.SetPlayerNames();
 
         game.players[0].SetBet("10",0);
         game.players[1].SetBet("20",0);
@@ -55,8 +56,9 @@ public class GameTest {
      public void PlayerBustTest(){
         Deck testdeck = new Deck();
         Game game = new Game(testdeck);
-        List<string> PlayerNames = new List<string>{"Aiden", "Jane"};
-        game.SetPlayerNames(PlayerNames);
+        Console.SetIn(new StringReader("Aiden\nJane"));
+        game.PlayerCount = 2;
+        game.SetPlayerNames();
 
         game.players[0].SetBet("10",0);
         game.players[1].SetBet("20",0);
@@ -128,8 +130,9 @@ public class GameTest {
     public void GameDone() {
         Deck testdeck = new Deck();
         Game game = new Game(testdeck);
-        List<string> PlayerNames = new List<string>{"Aiden", "Jane"};
-        game.SetPlayerNames(PlayerNames);
+        Console.SetIn(new StringReader("Aiden\nJane"));
+        game.PlayerCount=2;
+        game.SetPlayerNames();
         foreach(Player player in game.players){
             player.CheckPlayerState();
         }
@@ -151,9 +154,9 @@ public class GameTest {
     public void CheckIfNewRoundBegins(){
         Deck testdeck = new Deck();
         Game game = new Game(testdeck);
-        List<string> PlayerNames = new List<string>{"Aiden", "Jane"};
-        game.SetPlayerNames(PlayerNames);
+        Console.SetIn(new StringReader("Aiden\nJane"));
         game.PlayerCount = 2;
+        game.SetPlayerNames();
 
         game.CheckIfNewRoundBegins();
         Assert.Equal(2, game.players.Count);
@@ -169,12 +172,14 @@ public class GameTest {
         Assert.False(game.Playing);
     }
 
-    /* [Fact]
-   public void GameCleanupTest(){
+    [Fact]
+   public void ResultTest(){
         Deck testdeck = new Deck();
         Game game = new Game(testdeck);
-        List<string> PlayerNames = new List<string>{"Aiden", "Jane", "Jack"};
-        game.SetPlayerNames(PlayerNames);
+        Console.SetIn(new StringReader("Aiden\nJane\nJack"));
+        game.PlayerCount=3;
+
+        game.SetPlayerNames();
 
         
         Card ten = new Card {
@@ -237,8 +242,65 @@ public class GameTest {
 
         game.players[2].Hand[0].Add(five);
         game.players[2].Hand[0].Add(six);
-        Console.SetIn(new StringReader("n"));
 
-        game.GameCleanup();
-    }        */
+        game.Results();
+        Assert.Equal(2, game.players[0].Hand.Count);
+        Assert.Equal(16, game.players[0].Hand[0].Sum(card=>card.Value));
+        Assert.Equal(20, game.players[0].Hand[1].Sum(card=>card.Value));
+
+        Assert.Equal(140, game.players[0].Chips);
+        Assert.Equal(70, game.players[1].Chips);
+        Assert.Equal(0, game.players[2].Chips);
+    }
+
+    [Fact]
+    public void CanPlayersContinuetest(){
+        Deck testdeck = new Deck();
+        Game game = new Game(testdeck);
+        Console.SetIn(new StringReader("Aiden\n\n\nJane\nJack"));
+        game.PlayerCount = 5;
+        game.SetPlayerNames();
+
+        Assert.Equal(5, game.players.Count);
+
+        game.players[0].Chips = 0;
+        game.players[1].Chips = 0;
+
+        game.CanPlayersContinue();
+
+        Assert.Equal(3, game.players.Count);
+    }
+
+    [Fact]
+    public void PlayersWantToContinueTest() {
+        Deck testdeck = new Deck();
+        Game game = new Game(testdeck);
+        game.PlayerCount = 5;
+        Console.SetIn(new StringReader("Aiden\n\n\nJane\nJack"));
+
+        game.SetPlayerNames();
+
+        Assert.Equal(5, game.players.Count);
+
+        Console.SetIn(new StringReader("n\nn\ny\ny\ny"));
+
+        game.DoPlayersWantContinue();
+        Assert.Equal(3, game.players.Count);
+    }
+
+    [Fact]
+    public void CheckIfnewPlayersJoinTest(){
+                Deck testdeck = new Deck();
+        Game game = new Game(testdeck);
+        Console.SetIn(new StringReader("Aiden\n\n\nJane\nJack"));
+        game.PlayerCount = 5;
+        game.SetPlayerNames();
+
+        Assert.Equal(5, game.players.Count);
+
+        Console.SetIn(new StringReader("y\n2\njhonny\nJennifer"));
+        game.CheckIfnewPlayersJoin();
+
+        Assert.Equal(7, game.players.Count);
+    }
 }

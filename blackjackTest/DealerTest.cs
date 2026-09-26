@@ -7,10 +7,11 @@ public class DealerTest {
     [Fact]
     public void DealerBlackjackTest(){
         
-        List<string> PlayerNames = new List<string> {"Aiden", "Jane"};
         Deck testdeck = new Deck();
         Game game = new Game(testdeck);
-        game.SetPlayerNames(PlayerNames);
+        Console.SetIn(new StringReader("Aiden\nJane"));
+        game.PlayerCount = 2;
+        game.SetPlayerNames();
 
 
         game.players[0].SetBet("10", 0);
