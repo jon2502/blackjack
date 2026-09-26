@@ -3,7 +3,7 @@
 namespace Blackjack {
     public class Program {
 
-        public static  string ReturnString(){
+        public static string ReturnString(){
             string input = Console.ReadLine() ?? "";
             return input;
         } 
@@ -22,6 +22,13 @@ namespace Blackjack {
 
         public static void PlaceYourBetFornewHand(string name){
             Console.WriteLine($"{name} place bet for new hand");
+        }
+
+        public static void TheDealerHasAnAce(string dealer) {
+            Console.WriteLine($"the {dealer} has an Ace would you like you place insurance?");
+        }
+        public static void AskingAboutInsurance(string name) {
+            Console.WriteLine($"{name} How much would you like to place into insurance?");
         }
 
         public static void PlayersTurn(string name){
@@ -96,12 +103,12 @@ namespace Blackjack {
                 game.DoubleDownOption();
 
                 if(game.dealer.Hand[0][0].Rank == "A" && game.dealer.Hand[0].Count == 2){
-                    Console.WriteLine($"{game.dealer.Name} has an Ace would you like you place insurance?");
+                    TheDealerHasAnAce(game.dealer.Name);
                     foreach (Player player in game.players) {
                         for (int HandIndex = 0; HandIndex < player.Hand.Count; HandIndex++) {
                             bool Output = player.DoyouWantInssurance(HandIndex);
                             if (Output) {
-                                Console.WriteLine($"{player.Name} How much would you like to place into insurance?");
+                                AskingAboutInsurance(player.Name);
                                 while (true) {
                                     string input = ReturnString();
                                     bool sucsess = player.SetInsurance(input, HandIndex);

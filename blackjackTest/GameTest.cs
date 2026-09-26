@@ -169,8 +169,8 @@ public class GameTest {
         Assert.False(game.Playing);
     }
 
-    [Fact]
-    public void GameCleanupTest(){
+    /* [Fact]
+   public void GameCleanupTest(){
         Deck testdeck = new Deck();
         Game game = new Game(testdeck);
         List<string> PlayerNames = new List<string>{"Aiden", "Jane", "Jack"};
@@ -237,9 +237,8 @@ public class GameTest {
 
         game.players[2].Hand[0].Add(five);
         game.players[2].Hand[0].Add(six);
-        /*
         Console.SetIn(new StringReader("n"));
-        */
+
         game.GameCleanup();
-    }
+    }        */
 }

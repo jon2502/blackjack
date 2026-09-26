@@ -9,7 +9,16 @@ public class ProgramTest {
         Program.Printdecksize();
         Program.PlaceYourBets("Jane");
         Program.PlaceYourBetFornewHand("Jane");
-        Program.PlayersTurn("jane");
+        Program.TheDealerHasAnAce("dealer");
+        Program.AskingAboutInsurance("Jane");
+        Program.PlayersTurn("Jane");
         Program.Instructions();
+    }
+
+    [Fact]
+    public void ReturnStringTest() {
+        Console.SetIn(new StringReader("Jhon"));
+        string Output = Program.ReturnString();
+        Assert.Equal("Jhon", Output);
     }
 }
