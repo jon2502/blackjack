@@ -35,7 +35,8 @@ public class DealerTest {
 
         game.dealer.Hand[0].Add(two);
         game.dealer.Hand[0].Add(king);
-        
+        bool check = game.dealer.DoesTheDealerHaveAnAce();
+        Assert.False(check);
         bool result = game.dealer.DealerBlackjack();
         Assert.False(result);
 
@@ -72,7 +73,9 @@ public class DealerTest {
 
         game.dealer.Hand[0].Add(ace);
         game.dealer.Hand[0].Add(king);
-
+        
+        bool newCheck = game.dealer.DoesTheDealerHaveAnAce();
+        Assert.True(newCheck);
         bool newresult = game.dealer.DealerBlackjack();
         Assert.True(newresult);
 

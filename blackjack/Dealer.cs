@@ -1,5 +1,11 @@
 public class Dealer : Participant {
     
+    public bool DoesTheDealerHaveAnAce() {
+        if(Hand[0][0].Rank == "A" && Hand[0].Count == 2) {
+                Console.WriteLine($"the {Name} has an Ace would you like you place insurance?");
+                return true;
+        } return false;
+    }        
     public bool DealerBlackjack() {
         bool result = Blackjack(0);
         if(result) {

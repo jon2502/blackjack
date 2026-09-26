@@ -9,7 +9,6 @@ public class ProgramTest {
         Program.Printdecksize();
         Program.PlaceYourBets("Jane");
         Program.PlaceYourBetFornewHand("Jane");
-        Program.TheDealerHasAnAce("dealer");
         Program.AskingAboutInsurance("Jane");
         Program.PlayersTurn("Jane");
         Program.Instructions();

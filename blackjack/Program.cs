@@ -24,9 +24,6 @@ namespace Blackjack {
             Console.WriteLine($"{name} place bet for new hand");
         }
 
-        public static void TheDealerHasAnAce(string dealer) {
-            Console.WriteLine($"the {dealer} has an Ace would you like you place insurance?");
-        }
         public static void AskingAboutInsurance(string name) {
             Console.WriteLine($"{name} How much would you like to place into insurance?");
         }
@@ -102,8 +99,8 @@ namespace Blackjack {
 
                 game.DoubleDownOption();
 
-                if(game.dealer.Hand[0][0].Rank == "A" && game.dealer.Hand[0].Count == 2){
-                    TheDealerHasAnAce(game.dealer.Name);
+                bool check = game.dealer.DoesTheDealerHaveAnAce();
+                if(check == true){
                     foreach (Player player in game.players) {
                         for (int HandIndex = 0; HandIndex < player.Hand.Count; HandIndex++) {
                             bool Output = player.DoyouWantInssurance(HandIndex);
@@ -114,11 +111,11 @@ namespace Blackjack {
                                     bool sucsess = player.SetInsurance(input, HandIndex);
                                     if(sucsess){break;}
                                 }
-                            } else {
-                                break;
+                                } else {
+                                    break;
                             }
                         }
-                    }
+                    }  
                 }
 
                 game.CheckInsurrance();
