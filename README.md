@@ -30,3 +30,9 @@ Here i chose to make use of C#
 ![testingresults](images/testingresult.png)
 ## UML Diagram
 ![UML Class Diagram](images/blackjavkclasses.class.svg)
+
+##Further development
+- Streamlining of code
+- Creating a user interface
+- Create a executable file
+- Add more games

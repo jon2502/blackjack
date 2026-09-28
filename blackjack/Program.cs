@@ -2,12 +2,6 @@
 
 namespace Blackjack {
     public class Program {
-
-        public static string ReturnString(){
-            string input = Console.ReadLine() ?? "";
-            return input;
-        } 
-
         public static void PrintplayerNumber(int i){
             Console.WriteLine($"player {i+1} select write your name");
         }
@@ -50,10 +44,8 @@ namespace Blackjack {
 
                 game.DoubleDownOption();
 
-
                 game.CheckInsurrance();
 
-                game.CheckInsurrance();
                 game.DealerHitLoop();
 
                 game.TurnRotation();
