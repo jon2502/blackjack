@@ -10,18 +10,16 @@ public class DealerTest {
         
         Deck testdeck = new Deck();
         Game game = new Game(testdeck);
-        Console.SetIn(new StringReader("Aiden\nJane"));
+        Console.SetIn(new StringReader("Aiden\nJane\n10\n20\n5\n10\n5\n10"));
         game.PlayerCount = 2;
         game.SetPlayerNames();
 
 
-        game.players[0].SetBet("10", 0);
-        game.players[1].SetBet("20", 0);
+        game.players[0].SetBet(0);
+        game.players[1].SetBet(0);
 
-        List<int> NumbList = [10, 20];
-
-        game.players[0].SetInsurance("5", 0);
-        game.players[1].SetInsurance("10", 0);
+        game.players[0].SetInsurance(0);
+        game.players[1].SetInsurance(0);
 
         Card two = new Card {
             Suit = "♠",
@@ -63,8 +61,8 @@ public class DealerTest {
         game.players[0].Insurance = [0];
         game.players[1].Insurance = [0];
 
-        game.players[0].SetInsurance("5", 0);
-        game.players[1].SetInsurance("10", 0);
+        game.players[0].SetInsurance(0);
+        game.players[1].SetInsurance(0);
   
         Card ace = new Card {
             Suit = "♦",

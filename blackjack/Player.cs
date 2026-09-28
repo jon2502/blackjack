@@ -19,25 +19,27 @@ public class Player : Participant {
             } return false;
         }
 
-    public bool SetBet(string value, int i) {
-        try {
-            float output = float.Parse(value);
-            if (output <= 1) {
-                Console.WriteLine($"{Name} please select a value of 2 or greater");
-                return false;
-            } else if (output > Chips) {
-                Console.WriteLine($"{Name} balance to low");
-                return false;
-            } else {
-                Chips -= output;
-                Bet[i] = output;
-                Console.WriteLine($"{Name} bet is {Bet[i]}");
-                return true;
+    public void SetBet(int i) {
+        bool Betting = true;
+        while (Betting) {
+            string value = Console.ReadLine() ?? "";
+            try {
+                float output = float.Parse(value);
+                if (output <= 1) {
+                    Console.WriteLine($"{Name} please select a value of 2 or greater");
+                } else if (output > Chips) {
+                    Console.WriteLine($"{Name} balance to low");
+                } else {
+                    Chips -= output;
+                    Bet[i] = output;
+                    Console.WriteLine($"{Name} bet is {Bet[i]}");
+                    Betting = false;
+                }
+            } catch {
+                Console.WriteLine($"{Name} please select a number");
             }
-        } catch {
-            Console.WriteLine($"{Name} please select a number");
-            return false;
         }
+        
     }
 
     public bool DoyouWantInssurance (int i){
@@ -48,24 +50,26 @@ public class Player : Participant {
         return Output;
     }
 
-    public bool SetInsurance(string value, int i) {
-        try {
-            float output = float.Parse(value);
-            if (output > Chips) {
-                Console.WriteLine($"{Name} balance to low");
-                return false;
-            } else if (output > Bet[i] / 2) {
-                Console.WriteLine($"{Name} Inssurance can max be half your bet");
-                return false;
-            } else {
-                Chips -= output;
-                Insurance[i] = output; 
-                return true;
+    public void SetInsurance(int i) {
+        bool SettingInsurance = true;
+        while (SettingInsurance) {
+            string value = Console.ReadLine() ?? "";
+            try {
+                float output = float.Parse(value);
+                if (output > Chips) {
+                    Console.WriteLine($"{Name} balance to low");
+                } else if (output > Bet[i] / 2) {
+                    Console.WriteLine($"{Name} Inssurance can max be half your bet");
+                } else {
+                    Chips -= output;
+                    Insurance[i] = output;
+                    SettingInsurance = false;
+                }
+            } catch {
+                Console.WriteLine($"{Name} please select a valid full number");
             }
-        } catch {
-            Console.WriteLine($"{Name} please select a valid full number");
-            return false;
         }
+        
     }
 
     public bool PlayerBlackjack(int i) {

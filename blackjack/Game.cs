@@ -80,12 +80,9 @@ public class Game {
                     MoveCard(player,HandIndex);
                     MoveCard(player, player.Hand.Count - 1);
                     Console.WriteLine($"{player.Name} place bet for new hand");
-                    bool betting = true;
-                    while (betting) {
-                        string amount = Console.ReadLine() ?? "";
-                        bool BetResult = player.SetBet(amount, player.Hand.Count - 1);
-                        if(BetResult == true)betting = false;
-                    }
+      
+                    player.SetBet(player.Hand.Count - 1);
+    
                     player.PlayerBlackjack(HandIndex);
                 } else {HandIndex++;}
             }

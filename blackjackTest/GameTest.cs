@@ -6,12 +6,12 @@ public class GameTest {
     public void PlayerBlackjackTest() {
         Deck testdeck = new Deck();
         Game game = new Game(testdeck);
-        Console.SetIn(new StringReader("Aiden\nJane"));
+        Console.SetIn(new StringReader("Aiden\nJane\n10\n20"));
         game.PlayerCount=2;
         game.SetPlayerNames();
 
-        game.players[0].SetBet("10",0);
-        game.players[1].SetBet("20",0);
+        game.players[0].SetBet(0);
+        game.players[1].SetBet(0);
 
         Card ace = new Card {
             Suit = "♦",
@@ -56,12 +56,12 @@ public class GameTest {
      public void PlayerBustTest(){
         Deck testdeck = new Deck();
         Game game = new Game(testdeck);
-        Console.SetIn(new StringReader("Aiden\nJane"));
+        Console.SetIn(new StringReader("Aiden\nJane\n10\n20"));
         game.PlayerCount = 2;
         game.SetPlayerNames();
 
-        game.players[0].SetBet("10",0);
-        game.players[1].SetBet("20",0);
+        game.players[0].SetBet(0);
+        game.players[1].SetBet(0);
 
         Card ten = new Card {
             Suit = "♦",
@@ -176,7 +176,7 @@ public class GameTest {
    public void ResultTest(){
         Deck testdeck = new Deck();
         Game game = new Game(testdeck);
-        Console.SetIn(new StringReader("Aiden\nJane\nJack"));
+        Console.SetIn(new StringReader("Aiden\nJane\nJack\n10\n40\n30\n100"));
         game.PlayerCount=3;
 
         game.SetPlayerNames();
@@ -218,10 +218,10 @@ public class GameTest {
         game.players[0].Hand.Add([]);
         game.players[0].Bet.Add(0);
 
-        game.players[0].SetBet("10",0);
-        game.players[0].SetBet("40",1);
-        game.players[1].SetBet("30",0);
-        game.players[2].SetBet("100",0);
+        game.players[0].SetBet(0);
+        game.players[0].SetBet(1);
+        game.players[1].SetBet(0);
+        game.players[2].SetBet(0);
 
 
         game.dealer.Hand[0].Add(five);

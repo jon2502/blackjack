@@ -36,7 +36,7 @@ namespace Blackjack {
             game.SetPlayerNames();
 
             while (game.Playing == true) {
-            Printdecksize();
+                Printdecksize();
                 while (true){
                     string deckcount = ReturnString();
                     bool sucsess = game.blackjackdeck.SetDecksize(deckcount);
@@ -47,11 +47,7 @@ namespace Blackjack {
                 Console.WriteLine($"{game.players[0].Name}");
                 foreach (Player player in game.players) {
                     PlaceYourBets(player.Name);
-                    while (true) {
-                        string amount = ReturnString();
-                        bool result = player.SetBet(amount, 0);
-                        if(result == true){break;}
-                    }
+                    player.SetBet(0);
                 }
 
                 game.GetStartingHands();
@@ -69,11 +65,7 @@ namespace Blackjack {
                             bool Output = player.DoyouWantInssurance(HandIndex);
                             if (Output) {
                                 AskingAboutInsurance(player.Name);
-                                while (true) {
-                                    string input = ReturnString();
-                                    bool sucsess = player.SetInsurance(input, HandIndex);
-                                    if(sucsess){break;}
-                                }
+                                player.SetInsurance(HandIndex);
                                 } else {
                                     break;
                             }
