@@ -1,4 +1,5 @@
 using Blackjack;
+[assembly: CollectionBehavior(DisableTestParallelization = true)]
 
 namespace blackjackTest;
 

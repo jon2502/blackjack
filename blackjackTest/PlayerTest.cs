@@ -1,5 +1,5 @@
 using Blackjack;
-using Xunit;
+
 
 namespace blackjackTest;
 
@@ -141,6 +141,7 @@ public class PlayerTest {
     }
 
     [Fact]
+    
      public void NoInsurranceTest(){
         Deck testdeck = new Deck();
         Game game = new Game(testdeck);
@@ -176,7 +177,7 @@ public class PlayerTest {
 
         Console.SetIn(new StringReader("y"));
         game.players[0].SetBet("100",0);
-        game.players[0].Surrender(0);
+        game.DoPlayersWantToSurrender();
 
         Assert.Empty(game.players[0].Bet);
         Assert.Empty(game.players[0].Insurance);
@@ -236,11 +237,10 @@ public class PlayerTest {
         testdeck.deck.Add(five);
 
         Game game = new Game(testdeck);
-        Console.SetIn(new StringReader("Aiden\nJane\n\nJennifer"));
+        Console.SetIn(new StringReader("Aiden\nJane\nJack\nJennifer\n20\n15\ny\n10"));
         game.PlayerCount = 4;
 
         game.SetPlayerNames();
-
         game.players[0].Hand[0].Add(ace);
         game.players[0].Hand[0].Add(ace);
 
@@ -254,32 +254,40 @@ public class PlayerTest {
         game.players[3].Hand[0].Add(king);
         game.players[3].Hand[0].Add(five);
 
-        Console.SetIn(new StringReader("y"));
-        foreach (Player player in game.players) {
-            for (int HandIndex = 0; HandIndex < player.Hand.Count; HandIndex++) {
-                while (true) {
-                    bool DidSplit = player.Split(HandIndex);
-                    if (DidSplit) {
-                        game.MoveCard(player, HandIndex);
-                        game.MoveCard(player, HandIndex+1);
+        Assert.Equal(4, game.players.Count);
+        game.DoPlayersWantToSplit();
 
-                        bool BetResult = player.SetBet("10", HandIndex+1);
-                    }
-                    else {break;}
-                }
-            }
+        Assert.Equal(3, game.players[0].Hand.Count);
+        List<Card> hand1 = new List<Card>();
+        hand1.Add(ace);
+        hand1.Add(three);
 
-            if(player.Name == "Aiden") {
-                Assert.Equal(3, player.Hand.Count);
-            }
-            if(player.Name == "Jane") {
-                Assert.Equal(2, player.Hand.Count);
-            }
-            if(player.Name == "Jhon Doe" || player.Name == "Jennifer"){
-                Assert.Single(player.Hand);
-            }
-        }
+        List<Card> hand2 = new List<Card>();
+        hand2.Add(ace);
+        hand2.Add(two);
+
+        List<Card> hand3 = new List<Card>();
+        hand3.Add(ace);
+        hand3.Add(five);
+
+        Assert.Equal(hand1, game.players[0].Hand[0]);
+        Assert.Equal(hand2, game.players[0].Hand[1]);
+        Assert.Equal(hand3, game.players[0].Hand[2]);
+
+        Assert.Equal(2, game.players[1].Hand.Count);
+        Assert.Single(game.players[2].Hand);
+        Assert.Single(game.players[3].Hand);
+
+        Assert.Equal(3, game.players[0].Bet.Count);
+
+        Assert.Equal(0, game.players[0].Bet[0]);
+        Assert.Equal(20, game.players[0].Bet[1]);
+        Assert.Equal(15, game.players[0].Bet[2]);
+        Assert.Equal(10, game.players[1].Bet[1]);
+        Assert.Equal(0, game.players[2].Bet.Sum(bet=>bet));
+        Assert.Equal(0, game.players[3].Bet.Sum(bet=>bet));    
     }
+    
     [Fact]
     public void NoSplitTest(){        
         Console.SetIn(new StringReader("n"));

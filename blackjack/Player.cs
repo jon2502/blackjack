@@ -113,10 +113,10 @@ public class Player : Participant {
 
     public bool Split(int i) {
         if(Hand[i].Count == 2 && Hand[i][0].Value == Hand[i][1].Value){
-            if(Hand[i].FindAll(card => card.Rank == "A").Count == 2) {
+            if(Hand[i][0].Rank == "A" && Hand[i][1].Rank == "A") {
                 Console.WriteLine($"{Name} you have two aces so your hand will be split");
-                Card card = Hand[i].Last();
-                Hand[i].RemoveAt(Hand[i].Count-1);
+                Card card = Hand[i][0];
+                Hand[i].RemoveAt(0);
                 Hand.Add([card]);
                 Bet.Add(0);
                 Insurance.Add(0);
@@ -127,8 +127,8 @@ public class Player : Participant {
                 DisplayHand(i);
                 bool Output = PlayerOption();
                 if (Output) {
-                    Card card = Hand[i].Last();
-                    Hand[i].RemoveAt(Hand[i].Count-1);
+                    Card card = Hand[i][0];
+                    Hand[i].RemoveAt(0);
                     Hand.Add([card]);
                     Bet.Add(0);
                     Insurance.Add(0);

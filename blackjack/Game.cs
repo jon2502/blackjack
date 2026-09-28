@@ -38,7 +38,7 @@ public class Game {
     public void SetPlayerNames(){
         for (int i = players.Count; i < PlayerCount; i++) {
             Player player = new Player();
-                        string playername = Console.ReadLine() ?? "";
+            string playername = Console.ReadLine() ?? "";
             if (!string.IsNullOrWhiteSpace(playername)){
                 player.Name = playername;
             }
@@ -65,6 +65,33 @@ public class Game {
 
     }
 
+    public void DoPlayersWantToSurrender(){
+        foreach (Player player in players) {
+            player.Surrender(0);
+        }
+    }
+
+    public void DoPlayersWantToSplit(){
+        foreach (Player player in players) {
+            int HandIndex = 0;
+            while (HandIndex < player.Hand.Count) {  
+                bool DidSplit = player.Split(HandIndex);
+                if (DidSplit) {
+                    MoveCard(player,HandIndex);
+                    MoveCard(player, player.Hand.Count - 1);
+                    Console.WriteLine($"{player.Name} place bet for new hand");
+                    bool betting = true;
+                    while (betting) {
+                        string amount = Console.ReadLine() ?? "";
+                        bool BetResult = player.SetBet(amount, player.Hand.Count - 1);
+                        if(BetResult == true)betting = false;
+                    }
+                    player.PlayerBlackjack(HandIndex);
+                } else {HandIndex++;}
+            }
+        }
+    }
+
     public void DoubleDownOption(){
         foreach (Player player in players) {
             for (int i = 0; i < player.Hand.Count; i++) {
@@ -72,6 +99,7 @@ public class Game {
                 if (DidDoubleDown) {
                     MoveCard(player, i);
                     player.DisplayHand(i);
+                    player.BustCheck(i);
                     player.CheckPlayerState();
                 }
             }
@@ -154,6 +182,12 @@ public class Game {
             for (int i = 0; i < players[playerIndex].Bet.Count; i++) {
                 players[playerIndex].Chips += players[playerIndex].Bet[i];
             }
+            if (players[playerIndex].Retuns < players[playerIndex].Bet.Sum(bet => bet)) {
+                Console.WriteLine($"{players[playerIndex].Name} has {players[playerIndex].Retuns} returns and has lost {players[playerIndex].Retuns -  players[playerIndex].Bet.Sum(bet => bet)}");
+            } else {
+                Console.WriteLine($"{players[playerIndex].Name} has {players[playerIndex].Retuns} returns");
+            }         
+
             players[playerIndex].Retuns = 0;
         }
     }

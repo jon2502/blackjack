@@ -56,29 +56,9 @@ namespace Blackjack {
 
                 game.GetStartingHands();
 
-                foreach (Player player in game.players) {
-                    player.Surrender(0);
-                }
+                game.DoPlayersWantToSurrender();
 
-                foreach (Player player in game.players) {
-                    for (int HandIndex = 0; HandIndex < player.Hand.Count; HandIndex++) {
-                        while (true) {
-                            bool DidSplit = player.Split(HandIndex);
-                            if (DidSplit) {
-                                game.MoveCard(player,HandIndex);
-                                game.MoveCard(player,HandIndex+1);
-                                PlaceYourBetFornewHand(player.Name);
-                                while (true) {
-                                    string amount = ReturnString();
-                                    bool BetResult = player.SetBet(amount, HandIndex+1);
-                                    if(BetResult == true){break;}
-                                }
-                                player.PlayerBlackjack(HandIndex);
-                            }
-                            else {break;}
-                        }
-                    }
-                }
+                game.DoPlayersWantToSplit();
 
                 game.DoubleDownOption();
 
@@ -104,7 +84,7 @@ namespace Blackjack {
                 game.CheckInsurrance();
                 game.DealerHitLoop();
 
-               game.TurnRotation();
+                game.TurnRotation();
 
                 game.Results();
                 game.CanPlayersContinue();

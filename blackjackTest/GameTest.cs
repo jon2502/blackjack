@@ -290,7 +290,7 @@ public class GameTest {
 
     [Fact]
     public void CheckIfnewPlayersJoinTest(){
-                Deck testdeck = new Deck();
+        Deck testdeck = new Deck();
         Game game = new Game(testdeck);
         Console.SetIn(new StringReader("Aiden\n\n\nJane\nJack"));
         game.PlayerCount = 5;
@@ -302,5 +302,79 @@ public class GameTest {
         game.CheckIfnewPlayersJoin();
 
         Assert.Equal(7, game.players.Count);
+    }
+
+    [Fact]
+    public void TurnRotationTest() {
+        Card two = new Card {
+            Suit = "♠",
+            Rank = "2",
+            Value = 2,
+        };
+
+        Card three = new Card {
+            Suit = "♥",
+            Rank = "3",
+            Value = 3,
+        };
+
+        Card queen = new Card {
+            Suit = "♠",
+            Rank = "Q",
+            Value = 10,
+        };
+
+        Card ace = new Card {
+            Suit = "♥",
+            Rank = "A",
+            Value = 11,
+        };
+        Card five = new Card {
+            Suit = "♥",
+            Rank = "5",
+            Value = 5,
+        };
+
+        Deck testdeck = new Deck();
+        testdeck.deck.Add(two);
+        testdeck.deck.Add(three);
+        testdeck.deck.Add(queen);
+        testdeck.deck.Add(ace);
+        testdeck.deck.Add(five);
+
+        Game game = new Game(testdeck);
+        Console.SetIn(new StringReader("Aiden\nJane\ny\nn\nn\nn"));
+        game.PlayerCount = 2;
+        game.SetPlayerNames();
+
+        game.players[0].Hand.Add([]);
+        game.players[0].Stand.Add(false);
+        game.players[0].Bet.Add(0);
+        game.players[0].Insurance.Add(0);
+
+        Assert.Equal(2, game.players[0].Hand.Count);
+        Assert.Equal(2, game.players[0].Stand.Count);
+
+        game.players[0].Hand[0].Add(two);
+        game.players[0].Hand[0].Add(three);
+
+        game.players[0].Hand[1].Add(queen);
+        game.players[0].Hand[1].Add(five);
+
+        game.players[1].Hand[0].Add(ace);
+        game.players[1].Hand[0].Add(three);
+
+        game.TurnRotation();
+
+        Assert.Equal(3, game.players[0].Hand[0].Count);
+        Assert.Equal(7, game.players[0].Hand[0].Sum(card => card.Value));
+
+        Assert.Equal(2, game.players[0].Hand[1].Count);
+        Assert.Equal(15, game.players[0].Hand[1].Sum(card => card.Value));
+
+        Assert.Equal(2, game.players[1].Hand[0].Count);
+        Assert.Equal(14, game.players[1].Hand[0].Sum(card => card.Value));
+
+        Assert.False(game.Playing);
     }
 }

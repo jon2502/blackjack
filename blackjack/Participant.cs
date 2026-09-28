@@ -5,7 +5,6 @@ public class Participant {
 
     public void DrawACard(Card card, int i){
        Hand[i].Add(card);
-       BustCheck(i);
     }
 
     public void DisplayHand(int i){
