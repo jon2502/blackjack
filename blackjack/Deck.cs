@@ -11,19 +11,22 @@ public class Deck {
 
     private readonly string [] DefaultPlayingCards= {"2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"};
 
-    public bool SetDecksize(string input) {
-        try {
-            int Output = Int32.Parse(input);
-            if( Output >= 1 && Output <= 8){
-                DeckSize = Output;
-                return true;
-            } else {
+    public void SetDecksize() {
+        Console.WriteLine("select deck size");
+        bool Setting = true;
+        while (Setting) {
+            string input = Console.ReadLine() ?? "";
+            try {
+                int Output = Int32.Parse(input);
+                if( Output >= 1 && Output <= 8){
+                    DeckSize = Output;
+                    Setting = false;
+                } else {
+                    Console.WriteLine("Please select a number between 1 and 8");
+                }
+            } catch {
                 Console.WriteLine("Please select a number between 1 and 8");
-                return false;
             }
-        } catch {
-            Console.WriteLine("Please select a number between 1 and 8");
-            return false;
         }
     }
 

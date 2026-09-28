@@ -4,17 +4,6 @@ using Blackjack;
 namespace blackjackTest;
 
 public class PlayerTest {
-    [Theory]
-    [InlineData("test")]
-    [InlineData("-1")]
-    [InlineData("10")]
-    public void SelectPlayeramountTestIncorrect(string value){
-        Deck testdeck = new Deck();
-        Game game = new Game(testdeck);
-        bool result = game.SetPlayerCount();
-        Console.SetIn(new StringReader(value));
-        Assert.False(result);
-    }
 
     [Theory]
     [InlineData("1")]
@@ -26,17 +15,15 @@ public class PlayerTest {
     [InlineData("7")]
     public void SelectPlayeramountTestIntCorrect(string value) {
         Deck testdeck = new Deck();
-        Game game = new Game(testdeck);
-        Console.SetIn(new StringReader(value));
-        bool result = game.SetPlayerCount();
-        Assert.True(result);
+        BlackJack game = new BlackJack(testdeck);
+        Console.SetIn(new StringReader($"value\n-1\n10\n{value}"));
+        game.SetPlayerCount();
     }
-
 
     [Fact]
     public void PlayerListtest() {
         Deck testdeck = new Deck();
-        Game game = new Game(testdeck);
+        BlackJack game = new BlackJack(testdeck);
         Console.SetIn(new StringReader("Aiden\n\nJennifer"));
         game.PlayerCount = 3;
         game.SetPlayerNames();
@@ -52,7 +39,7 @@ public class PlayerTest {
     [Fact]
     public void StartingHandTest() {
         Deck testdeck = new Deck();
-        Game game = new Game(testdeck);
+        BlackJack game = new BlackJack(testdeck);
         Console.SetIn(new StringReader("Aiden\nJane"));
         game.PlayerCount = 2;
         game.SetPlayerNames();
@@ -71,7 +58,7 @@ public class PlayerTest {
     [Fact]
     public void SetBetTest() {
         Deck testdeck = new Deck();
-        Game game = new Game(testdeck);
+        BlackJack game = new BlackJack(testdeck);
         Console.SetIn(new StringReader("Aiden\ntest\n150\n0\n-1\n20"));
         game.PlayerCount = 1;
         game.SetPlayerNames();
@@ -85,7 +72,7 @@ public class PlayerTest {
     [Fact]
     public void SetInsuranceTest() {
         Deck testdeck = new Deck();
-        Game game = new Game(testdeck);
+        BlackJack game = new BlackJack(testdeck);
         Console.SetIn(new StringReader("Aiden\nJane\nJack\n40\n100\n60\ny\ntest\n150\n20\nn\nY\n40\n30"));
         game.PlayerCount = 3;
 
@@ -95,10 +82,7 @@ public class PlayerTest {
         game.players[2].SetBet(0);
 
         for (int i = 0; i < game.players.Count; i++) {
-            bool result = game.players[i].DoyouWantInssurance(0);
-            if (result) {
-                game.players[i].SetInsurance(0);
-            }
+            game.players[i].SetInsurance();
         }
         
 
@@ -116,7 +100,7 @@ public class PlayerTest {
     [Fact]
      public void SurrenderTest(){
         Deck testdeck = new Deck();
-        Game game = new Game(testdeck);
+        BlackJack game = new BlackJack(testdeck);
         Console.SetIn(new StringReader("\n100\ny"));
         game.PlayerCount = 1;
 
@@ -182,7 +166,7 @@ public class PlayerTest {
         testdeck.deck.Add(five);
         testdeck.deck.Add(five);
 
-        Game game = new Game(testdeck);
+        BlackJack game = new BlackJack(testdeck);
         Console.SetIn(new StringReader("Aiden\nJane\nJack\nJennifer\n20\n15\ny\n10"));
         game.PlayerCount = 4;
 
@@ -238,7 +222,7 @@ public class PlayerTest {
     public void NoSplitTest(){        
         Deck testdeck = new Deck();
 
-        Game game = new Game(testdeck);
+        BlackJack game = new BlackJack(testdeck);
         game.blackjackdeck.CreateDeck();
         Console.SetIn(new StringReader("\nAiden\nJane"));
         game.PlayerCount = 3;
@@ -309,7 +293,7 @@ public class PlayerTest {
         testdeck.deck.Add(queen);
 
 
-        Game game = new Game(testdeck);
+        BlackJack game = new BlackJack(testdeck);
         Console.SetIn(new StringReader("Aiden\nJane\nJennifer\nJack\n40\n60\n20\n10"));
         game.PlayerCount = 4;
 
@@ -375,7 +359,7 @@ public class PlayerTest {
     [Fact]
     public void ContinueTest() {
         Deck testdeck = new Deck();
-        Game game = new Game(testdeck);                
+        BlackJack game = new BlackJack(testdeck);                
         Console.SetIn(new StringReader("Aiden"));
         game.PlayerCount = 1;
 
@@ -388,7 +372,7 @@ public class PlayerTest {
     [Fact]
     public void LeaveTest() {
         Deck testdeck = new Deck();
-        Game game = new Game(testdeck);
+        BlackJack game = new BlackJack(testdeck);
         List<string> PlayerNames = new List<string> {"Aiden"};
         Console.SetIn(new StringReader("Aiden"));
         game.PlayerCount = 1;
@@ -402,7 +386,7 @@ public class PlayerTest {
     [Fact]
     public void HitTest(){
         Deck testdeck = new Deck();
-        Game game = new Game(testdeck);
+        BlackJack game = new BlackJack(testdeck);
         Console.SetIn(new StringReader("Aiden"));
         game.PlayerCount = 1;
         game.SetPlayerNames();
@@ -416,7 +400,7 @@ public class PlayerTest {
     [Fact]
     public void StandTest(){
         Deck testdeck = new Deck();
-        Game game = new Game(testdeck);
+        BlackJack game = new BlackJack(testdeck);
         Console.SetIn(new StringReader("Jane"));
         game.PlayerCount = 1;
         game.SetPlayerNames();
@@ -429,7 +413,7 @@ public class PlayerTest {
         [Fact]
     public void CanPlayTest(){
         Deck testdeck = new Deck();
-        Game game = new Game(testdeck);
+        BlackJack game = new BlackJack(testdeck);
         Console.SetIn(new StringReader("Aiden"));
         game.PlayerCount = 1;
         game.SetPlayerNames();

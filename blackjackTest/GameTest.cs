@@ -5,7 +5,7 @@ public class GameTest {
     [Fact]
     public void PlayerBlackjackTest() {
         Deck testdeck = new Deck();
-        Game game = new Game(testdeck);
+        BlackJack game = new BlackJack(testdeck);
         Console.SetIn(new StringReader("Aiden\nJane\n10\n20"));
         game.PlayerCount=2;
         game.SetPlayerNames();
@@ -55,7 +55,7 @@ public class GameTest {
     [Fact]
      public void PlayerBustTest(){
         Deck testdeck = new Deck();
-        Game game = new Game(testdeck);
+        BlackJack game = new BlackJack(testdeck);
         Console.SetIn(new StringReader("Aiden\nJane\n10\n20"));
         game.PlayerCount = 2;
         game.SetPlayerNames();
@@ -129,7 +129,7 @@ public class GameTest {
     [Fact]
     public void GameDone() {
         Deck testdeck = new Deck();
-        Game game = new Game(testdeck);
+        BlackJack game = new BlackJack(testdeck);
         Console.SetIn(new StringReader("Aiden\nJane"));
         game.PlayerCount=2;
         game.SetPlayerNames();
@@ -153,7 +153,7 @@ public class GameTest {
     [Fact]
     public void CheckIfNewRoundBegins(){
         Deck testdeck = new Deck();
-        Game game = new Game(testdeck);
+        BlackJack game = new BlackJack(testdeck);
         Console.SetIn(new StringReader("Aiden\nJane"));
         game.PlayerCount = 2;
         game.SetPlayerNames();
@@ -175,7 +175,7 @@ public class GameTest {
     [Fact]
    public void ResultTest(){
         Deck testdeck = new Deck();
-        Game game = new Game(testdeck);
+        BlackJack game = new BlackJack(testdeck);
         Console.SetIn(new StringReader("Aiden\nJane\nJack\n10\n40\n30\n100"));
         game.PlayerCount=3;
 
@@ -256,7 +256,7 @@ public class GameTest {
     [Fact]
     public void CanPlayersContinuetest(){
         Deck testdeck = new Deck();
-        Game game = new Game(testdeck);
+        BlackJack game = new BlackJack(testdeck);
         Console.SetIn(new StringReader("Aiden\n\n\nJane\nJack"));
         game.PlayerCount = 5;
         game.SetPlayerNames();
@@ -274,7 +274,7 @@ public class GameTest {
     [Fact]
     public void PlayersWantToContinueTest() {
         Deck testdeck = new Deck();
-        Game game = new Game(testdeck);
+        BlackJack game = new BlackJack(testdeck);
         game.PlayerCount = 5;
         Console.SetIn(new StringReader("Aiden\n\n\nJane\nJack"));
 
@@ -291,7 +291,7 @@ public class GameTest {
     [Fact]
     public void CheckIfnewPlayersJoinTest(){
         Deck testdeck = new Deck();
-        Game game = new Game(testdeck);
+        BlackJack game = new BlackJack(testdeck);
         Console.SetIn(new StringReader("Aiden\n\n\nJane\nJack"));
         game.PlayerCount = 5;
         game.SetPlayerNames();
@@ -342,7 +342,7 @@ public class GameTest {
         testdeck.deck.Add(ace);
         testdeck.deck.Add(five);
 
-        Game game = new Game(testdeck);
+        BlackJack game = new BlackJack(testdeck);
         Console.SetIn(new StringReader("Aiden\nJane\ny\nn\nn\nn"));
         game.PlayerCount = 2;
         game.SetPlayerNames();

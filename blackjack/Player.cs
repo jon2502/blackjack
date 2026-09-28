@@ -42,44 +42,46 @@ public class Player : Participant {
         
     }
 
-    public bool DoyouWantInssurance (int i){
-        Console.WriteLine($"{Name} would you like to place insurance on your hand of");
-        DisplayHand(i);
-        Console.WriteLine($"with a bet of {Bet[i]}");
-        bool Output = PlayerOption();
-        return Output;
-    }
-
-    public void SetInsurance(int i) {
-        bool SettingInsurance = true;
-        while (SettingInsurance) {
-            string value = Console.ReadLine() ?? "";
-            try {
-                float output = float.Parse(value);
-                if (output > Chips) {
-                    Console.WriteLine($"{Name} balance to low");
-                } else if (output > Bet[i] / 2) {
-                    Console.WriteLine($"{Name} Inssurance can max be half your bet");
-                } else {
-                    Chips -= output;
-                    Insurance[i] = output;
-                    SettingInsurance = false;
+    public void SetInsurance() {
+        for (int i = 0; i < Hand.Count; i++) {
+             Console.WriteLine($"{Name} would you like to place insurance on your hand of");
+            DisplayHand(i);
+            Console.WriteLine($"with a bet of {Bet[i]}");
+            bool Output = PlayerOption();
+            if (Output) {
+                Console.WriteLine($"{Name} How much would you like to place into insurance?");
+                bool SettingInsurance = true;
+                while (SettingInsurance) {
+                    string value = Console.ReadLine() ?? "";
+                    try {
+                        float output = float.Parse(value);
+                        if (output > Chips) {
+                            Console.WriteLine($"{Name} balance to low");
+                        } else if (output > Bet[i] / 2) {
+                            Console.WriteLine($"{Name} Inssurance can max be half your bet");
+                        } else {
+                            Chips -= output;
+                            Insurance[i] = output;
+                            Console.WriteLine($"Insurance of {Insurance[i]} has been set for the hand");
+                            SettingInsurance = false;
+                        }
+                    } catch {
+                        Console.WriteLine($"{Name} please select a valid full number");
+                    }
                 }
-            } catch {
-                Console.WriteLine($"{Name} please select a valid full number");
             }
         }
-        
     }
 
     public bool PlayerBlackjack(int i) {
         bool result = Blackjack(i);
         if(result) {
             Console.WriteLine($"{Name} got BlackJack");
+            Console.WriteLine($"{Bet[i] * 1.5f} has been aded to returns");
+
             Retuns = Bet[i] * 1.5f;
             Stand[i] = true;
             CheckPlayerState();
-            Console.WriteLine("running");
             return true;
         }
         return false;
@@ -88,7 +90,8 @@ public class Player : Participant {
     public override bool BustCheck(int index){
         bool result = base.BustCheck(index);
         if(result) {
-            Console.WriteLine($"{Name} Bust");
+            Console.WriteLine($"{Name} has Busted with a hand of");
+            DisplayHand(index);
             Stand[index] = true;
             Bet[index] = 0;
             CheckPlayerState();
@@ -149,7 +152,8 @@ public class Player : Participant {
         DisplayHand(i);
         bool Output = PlayerOption();
         if (Output) {
-             Chips += Bet[0]/2;
+            Console.WriteLine($"Surrende accepted now returning {Bet[i]/2} to your chip pool");
+            Chips += Bet[i]/2;
             Bet.Clear();
             Insurance.Clear();
             Hand.Clear();
@@ -183,6 +187,7 @@ public class Player : Participant {
 
     public void CheckPlayerState(){
         if(Stand.All(x => x==true) || Hand.Count <= 0){
+            Console.WriteLine($"{Name} has no active hands left and is now out of the game");
             InGame = false;
         } else {
             InGame = true;

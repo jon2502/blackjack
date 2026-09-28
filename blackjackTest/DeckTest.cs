@@ -15,26 +15,11 @@ public class DeckTest {
 
     public void DeckSelectionTest(string input){
         Deck blackjackdeck = new Deck();
-
-        bool result = blackjackdeck.SetDecksize(input);
+        Console.SetIn(new StringReader($"\n10\n9\ny\n0\n-1\n{input}"));
+        blackjackdeck.SetDecksize();
         int intValue = Int32.Parse(input);
         
-        Assert.True(result);
         Assert.Equal(intValue, blackjackdeck.DeckSize);
-    }
-
-    [Theory]
-    [InlineData("-1")]
-    [InlineData("0")]
-    [InlineData("9")]
-    [InlineData("10")]
-    [InlineData("test")]
-    public void DeckSelectionTestfail(string input){
-        Deck blackjackdeck = new Deck();
-
-        bool result =  blackjackdeck.SetDecksize(input);;
-        Assert.False(result);
-
     }
 
     [Fact]
@@ -101,7 +86,7 @@ public class DeckTest {
     [Fact]
     public void EmptyDeckTest() {
         Deck testdeck = new Deck();
-        Game game = new Game(testdeck);
+        BlackJack game = new BlackJack(testdeck);
         game.blackjackdeck.CreateDeck();
         game.blackjackdeck.DeckSize = 1;
 

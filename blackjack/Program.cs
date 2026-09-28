@@ -12,10 +12,6 @@ namespace Blackjack {
             Console.WriteLine($"player {i+1} select write your name");
         }
 
-        public static void Printdecksize(){
-            Console.WriteLine("select deck size");
-        }
-
         public static void PlaceYourBets(string name){
             Console.WriteLine($"{name} place your bet");
         }
@@ -24,27 +20,23 @@ namespace Blackjack {
             Console.WriteLine($"{name} place bet for new hand");
         }
 
-        public static void AskingAboutInsurance(string name) {
-            Console.WriteLine($"{name} How much would you like to place into insurance?");
-        }
-
-        static void Main(string[] args) {
+        public static BlackJack CreateGame(){
             Deck blackjackdeck = new Deck();
-            Game game = new Game(blackjackdeck);
+            BlackJack game = new BlackJack(blackjackdeck);
 
             game.SetPlayerCount();
             game.SetPlayerNames();
 
+            return game;
+        }
+
+        static void Main(string[] args) {
+            BlackJack game = CreateGame();
+
             while (game.Playing == true) {
-                Printdecksize();
-                while (true){
-                    string deckcount = ReturnString();
-                    bool sucsess = game.blackjackdeck.SetDecksize(deckcount);
-                    if(sucsess == true){break;}
-                }
+                game.blackjackdeck.SetDecksize();
                 game.blackjackdeck.CreateDeck();
                 
-                Console.WriteLine($"{game.players[0].Name}");
                 foreach (Player player in game.players) {
                     PlaceYourBets(player.Name);
                     player.SetBet(0);
@@ -58,20 +50,8 @@ namespace Blackjack {
 
                 game.DoubleDownOption();
 
-                bool check = game.dealer.DoesTheDealerHaveAnAce();
-                if(check == true){
-                    foreach (Player player in game.players) {
-                        for (int HandIndex = 0; HandIndex < player.Hand.Count; HandIndex++) {
-                            bool Output = player.DoyouWantInssurance(HandIndex);
-                            if (Output) {
-                                AskingAboutInsurance(player.Name);
-                                player.SetInsurance(HandIndex);
-                                } else {
-                                    break;
-                            }
-                        }
-                    }  
-                }
+
+                game.CheckInsurrance();
 
                 game.CheckInsurrance();
                 game.DealerHitLoop();

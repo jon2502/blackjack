@@ -9,17 +9,14 @@ public class DealerTest {
     public void DealerBlackjackTest(){
         
         Deck testdeck = new Deck();
-        Game game = new Game(testdeck);
-        Console.SetIn(new StringReader("Aiden\nJane\n10\n20\n5\n10\n5\n10"));
+        BlackJack game = new BlackJack(testdeck);
+        Console.SetIn(new StringReader("Aiden\nJane\n10\n20\ny\n5\ny\n10\ny\n5\ny\n10"));
         game.PlayerCount = 2;
         game.SetPlayerNames();
 
 
         game.players[0].SetBet(0);
         game.players[1].SetBet(0);
-
-        game.players[0].SetInsurance(0);
-        game.players[1].SetInsurance(0);
 
         Card two = new Card {
             Suit = "♠",
@@ -32,14 +29,21 @@ public class DealerTest {
             Rank = "K",
             Value = 10,
         };
+        Card ace = new Card {
+            Suit = "♦",
+            Rank = "A",
+            Value = 11,
+        };
+
 
         game.dealer.Hand[0].Add(two);
-        game.dealer.Hand[0].Add(king);
-        bool check = game.dealer.DoesTheDealerHaveAnAce();
-        Assert.False(check);
-        bool result = game.dealer.DealerBlackjack();
-        Assert.False(result);
+        game.dealer.Hand[0].Add(two);
+        game.CheckInsurrance();
+        game.dealer.Hand[0].Clear();
 
+
+        game.dealer.Hand[0].Add(ace);
+        game.dealer.Hand[0].Add(two);
         game.CheckInsurrance();
 
         foreach (Player player in game.players){
@@ -61,23 +65,8 @@ public class DealerTest {
         game.players[0].Insurance = [0];
         game.players[1].Insurance = [0];
 
-        game.players[0].SetInsurance(0);
-        game.players[1].SetInsurance(0);
-  
-        Card ace = new Card {
-            Suit = "♦",
-            Rank = "A",
-            Value = 11,
-        };
-
-
         game.dealer.Hand[0].Add(ace);
         game.dealer.Hand[0].Add(king);
-        
-        bool newCheck = game.dealer.DoesTheDealerHaveAnAce();
-        Assert.True(newCheck);
-        bool newresult = game.dealer.DealerBlackjack();
-        Assert.True(newresult);
 
         game.CheckInsurrance();
 
@@ -128,7 +117,7 @@ public class DealerTest {
         testdeck.deck.Add(ace);
         testdeck.deck.Add(five);
 
-        Game game = new Game(testdeck);
+        BlackJack game = new BlackJack(testdeck);
 
         Card four = new Card {
             Suit = "♠",

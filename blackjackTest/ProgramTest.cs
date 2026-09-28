@@ -6,10 +6,8 @@ public class ProgramTest {
     public void Testprinting()
     {
         Program.PrintplayerNumber(0);
-        Program.Printdecksize();
         Program.PlaceYourBets("Jane");
         Program.PlaceYourBetFornewHand("Jane");
-        Program.AskingAboutInsurance("Jane");
     }
 
     [Fact]
@@ -17,5 +15,11 @@ public class ProgramTest {
         Console.SetIn(new StringReader("Jhon"));
         string Output = Program.ReturnString();
         Assert.Equal("Jhon", Output);
+    }
+
+    [Fact]
+    public void CreateTest() {
+        Console.SetIn(new StringReader("3\njhon\n\n"));
+        BlackJack game = Program.CreateGame();
     }
 }
