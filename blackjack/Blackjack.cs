@@ -30,6 +30,14 @@ public class BlackJack:Game {
 
     }
 
+    public void SetStartingBets(){
+        foreach (Player player in players) {
+            Console.WriteLine($"{player.Name} place your bet");
+            player.SetBet(0);
+        }
+
+    }
+
     public void DoPlayersWantToSurrender(){
         foreach (Player player in players) {
             player.Surrender(0);
@@ -178,10 +186,10 @@ public class BlackJack:Game {
     public void DoPlayersWantContinue(){
         for (int playerIndex = 0; playerIndex < players.Count; playerIndex++) {
             bool WantToContinue = players[playerIndex].WantToContinue();
-            if (!WantToContinue) {
+            if (WantToContinue == false) {
                 Console.WriteLine($"{players[playerIndex].Name} has left the table with {players[playerIndex].Chips} chips");
                 players.RemoveAt(playerIndex);
-                PlayerCount =- 1;
+                PlayerCount -= 1;
                 playerIndex --;
             }
         }

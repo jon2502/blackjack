@@ -2,17 +2,6 @@
 
 namespace Blackjack {
     public class Program {
-        public static void PrintplayerNumber(int i){
-            Console.WriteLine($"player {i+1} select write your name");
-        }
-
-        public static void PlaceYourBets(string name){
-            Console.WriteLine($"{name} place your bet");
-        }
-
-        public static void PlaceYourBetFornewHand(string name){
-            Console.WriteLine($"{name} place bet for new hand");
-        }
 
         public static BlackJack CreateGame(){
             Deck blackjackdeck = new Deck();
@@ -24,19 +13,27 @@ namespace Blackjack {
             return game;
         }
 
+        public static void BlackJackSetup(BlackJack game){
+            game.blackjackdeck.SetDecksize();
+            game.blackjackdeck.CreateDeck();
+            game.SetStartingBets();
+            game.GetStartingHands();
+        }
+
+        public static void BlackjackEnd(BlackJack game) {
+                game.Results();
+                game.CanPlayersContinue();
+                game.DoPlayersWantContinue();
+                game.CheckIfnewPlayersJoin();
+                game.CheckIfNewRoundBegins();
+        }
+
         static void Main(string[] args) {
             BlackJack game = CreateGame();
 
             while (game.Playing == true) {
-                game.blackjackdeck.SetDecksize();
-                game.blackjackdeck.CreateDeck();
-                
-                foreach (Player player in game.players) {
-                    PlaceYourBets(player.Name);
-                    player.SetBet(0);
-                }
 
-                game.GetStartingHands();
+                BlackJackSetup(game);
 
                 game.DoPlayersWantToSurrender();
 
@@ -49,12 +46,6 @@ namespace Blackjack {
                 game.DealerHitLoop();
 
                 game.TurnRotation();
-
-                game.Results();
-                game.CanPlayersContinue();
-                game.DoPlayersWantContinue();
-                game.CheckIfnewPlayersJoin();
-                game.CheckIfNewRoundBegins();
             }
         }
     }

@@ -360,13 +360,12 @@ public class PlayerTest {
     public void ContinueTest() {
         Deck testdeck = new Deck();
         BlackJack game = new BlackJack(testdeck);                
-        Console.SetIn(new StringReader("Aiden"));
-        game.PlayerCount = 1;
-
+        Console.SetIn(new StringReader("3\nAiden\nJhon\nJackie\ny\ny\nn"));
+        game.SetPlayerCount();
         game.SetPlayerNames();
-        Console.SetIn(new StringReader("y"));
-        bool result = game.players[0].WantToContinue();
-        Assert.True(result);
+        game.DoPlayersWantContinue();
+        Assert.Equal(2, game.players.Count);
+        Assert.Equal(2, game.PlayerCount);
     }
 
     [Fact]

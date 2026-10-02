@@ -37,6 +37,8 @@ public class Game {
     public void SetPlayerNames(){
         for (int i = players.Count; i < PlayerCount; i++) {
             Player player = new Player();
+            Console.WriteLine($"player {i+1}: write your name");
+
             string playername = Console.ReadLine() ?? "";
             if (!string.IsNullOrWhiteSpace(playername)){
                 player.Name = playername;
