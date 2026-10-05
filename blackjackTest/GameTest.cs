@@ -298,7 +298,7 @@ public class GameTest {
 
         Assert.Equal(5, game.players.Count);
 
-        Console.SetIn(new StringReader("y\n2\njhonny\nJennifer"));
+        Console.SetIn(new StringReader("Y\n2\njhonny\nJennifer"));
         game.CheckIfnewPlayersJoin();
 
         Assert.Equal(7, game.players.Count);
