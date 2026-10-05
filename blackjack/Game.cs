@@ -5,15 +5,15 @@ public class Game {
 
     public int MaxPlayers{get; set;}
     
+    public int PlayerCount {get; set;} = 0;
+
+    public bool Playing {get; set;} = true;
+
     public Game(int max, int min)
     {
         MaxPlayers = max;
         MinPlayers = min;
     }
-
-    public int PlayerCount {get; set;} = 0;
-
-    public bool Playing {get; set;} = true;
 
     public void SetPlayerCount(){
         bool Setting = true;

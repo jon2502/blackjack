@@ -26,13 +26,17 @@ Here i chose to make use of C#
     - Continued testing
 - final finishing touches and adjustments
 
-## Project testing
-![testingresults](images/testingresult.png)
-## UML Diagram
-![UML Class Diagram](images/blackjavkclasses.class.svg)
-
 ## Further development
 - Streamlining of code
 - Creating a user interface
 - Create a executable file
 - Add more games
+
+## UML Diagram
+![UML Class Diagram](images/blackjavkclasses.class.svg)
+
+## Project testing
+![CodeCoverage](images/CodeCoverage.png)
+![TestCoverage](images/TestCoverage.png)
+
+
